@@ -1,0 +1,29 @@
+@import 'font-awesome/css/font-awesome.min.css';
+
+h1{
+    margin-left: 0.5rem;
+}
+
+h4{
+    padding-bottom: 0.3rem;
+}
+
+.container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.column {
+    flex: 1; 
+    margin: 0.5rem;   
+}
+
+.horizontal-layout {
+    flex-direction: row;
+}
+
+.vertical-layout {
+    flex-direction: column;
+}
+
+
