@@ -20,14 +20,31 @@ import { FormsModule } from '@angular/forms';
 import { FileUploadModule } from 'primeng/fileupload';
 import { EventsPageComponent } from './main-content/events-page/events-page.component';
 import { CalendarModule } from 'primeng/calendar';
+import { TableModule } from 'primeng/table';
+import { LoginComponent } from './login/login.component';
+import { PasswordModule } from 'primeng/password';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
+import { SliderModule } from 'primeng/slider';
+import { ToastModule } from 'primeng/toast';
+import { CardModule } from 'primeng/card';
+import { CategoriesComponent } from './main-content/categories/categories.component';
+import { MainComponent } from './main/main.component';
 
 const appRoutes: Routes =[
+  // { path: '', redirectTo: '/login', pathMatch: 'full' },
+  {path: '', component: AdminPageComponent},
   {path: 'admin-page', component: AdminPageComponent},
   {path: 'user-page', component: UserPageComponent},
   {path: 'events-page', component: EventsPageComponent},
-  {path: '**', component: PageNotFoundComponent}
+  {path: 'categories', component: CategoriesComponent},
+  {path: 'main-content', component: MainContentComponent}
+  
  
 ]
+
+
 
 @NgModule({
   declarations: [
@@ -38,7 +55,9 @@ const appRoutes: Routes =[
     UserPageComponent,
     MainContentComponent,
     EventsPageComponent,
-    
+    LoginComponent,
+    CategoriesComponent,
+    MainComponent,  
   ],
   imports: [
     BrowserModule,
@@ -54,6 +73,14 @@ const appRoutes: Routes =[
     FormsModule,
     FileUploadModule,
     CalendarModule,
+    TableModule,
+    PasswordModule,
+    InputTextareaModule,
+    MultiSelectModule,
+    DropdownModule,
+    SliderModule,
+    ToastModule,
+    CardModule,
 
     RouterModule.forRoot(
       appRoutes, {enableTracing: true}
@@ -65,6 +92,8 @@ const appRoutes: Routes =[
   ],
 
   bootstrap: [AppComponent]
+  
 })
+
 
 export class AppModule { }
