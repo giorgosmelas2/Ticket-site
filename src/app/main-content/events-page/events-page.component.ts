@@ -5,15 +5,15 @@ import { AuthenticationService } from '../../authentication.service';
 @Component({
   selector: 'app-events-page',
   templateUrl: './events-page.component.html',
-  styleUrl: './events-page.component.css'
+  styleUrls: ['./events-page.component.css']
 })
-
 
 export class EventsPageComponent {
   constructor(private authService: AuthenticationService) {}
 
   isFullScreen: boolean = true;
   isPanelOpen =  false;
+  rangeDates: any;
   text: string = '';
   
   statuses: { label: string, value: any }[] = [
@@ -21,14 +21,15 @@ export class EventsPageComponent {
     { label: 'Option 2', value: 'value2' },
   ];
 
-  rangeDates: any;
+ 
   products: any[] = [
     // Your product data goes here
   ];
   value: number = 1;
 
  //Checks for fullscreen or halfscreen  @HostListener('window:resize', ['$event'])
-  onResize(event: Event): void {
+ @HostListener('window:resize', ['$event']) 
+ onResize(event: Event): void {
     this.checkLayout();
   }
  //Checks for fullscreen or halfscreen

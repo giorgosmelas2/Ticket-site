@@ -8,6 +8,7 @@ import { AuthenticationService } from '../../authentication.service';
   templateUrl: './admin-page.component.html',
   styleUrls: ['./admin-page.component.css']
 })
+
 export class AdminPageComponent {
   constructor(private authService: AuthenticationService) {}
  

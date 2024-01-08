@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HostListener } from '@angular/core';
+import { AuthenticationService } from '../../authentication.service';
 
 
 @Component({
@@ -8,6 +9,8 @@ import { HostListener } from '@angular/core';
   styleUrl: './user-page.component.css'
 })
 export class UserPageComponent {
+  constructor(private authService: AuthenticationService) {}
+
 
   text: string = '';
   isPanelOpen =  false;
@@ -39,10 +42,10 @@ export class UserPageComponent {
     this.isFullScreen = window.innerWidth > 768; 
   }
 
-  // Η μεθοδος αυτη θα ανεβαζει την φωτο που διαλεξαμε
-  onUpload(event: any) {
-    console.log('File uploaded!', event);
+  isLoggedIn(): boolean {
+    return this.authService.isAuthenticated();
   }
+
 
   onRowEditInit(product: any): void {
     console.log('Editing initiated for product:', product);

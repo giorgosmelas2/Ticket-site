@@ -40,14 +40,20 @@ h4{
     background-color: black;
     color: white;
     border: none;
-    border-radius: 10px; /* Adjust the border-radius as needed for the desired roundness */
-    padding: 10px 20px; /* Adjust padding as needed */
+    border-radius: 10px;
+    padding: 10px 20px;
     cursor: pointer;
 }
 
-/* Optional: Add hover effect */
 .btn-dark:hover {
-    background-color: #333; /* Darken the background color on hover */
+    background-color: #333;
+}
+
+.loggin-message{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
 
