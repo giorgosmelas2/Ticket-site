@@ -19,7 +19,7 @@ export class LoginComponent {
   onLogin() {
     // Perform login logic if needed
     console.log('Logging in...');
-    // Navigate to the main-content route
-    this.router.navigate(['/main']);
+    // Navigate to the main route
+    // this.router.navigate(['/test']);
   }
 }

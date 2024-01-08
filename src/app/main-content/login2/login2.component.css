@@ -1,0 +1,21 @@
+h1{
+    margin-bottom: 1.6rem;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    
+}
+
+.rounded-box {
+    border-radius: 10px; /* Adjust the value to change the roundness */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 0.8rem;
+}
+
+.centered-box {
+    text-align: center;
+}
