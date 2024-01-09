@@ -19,6 +19,11 @@ export class Login2Component {
     const predefinedUsername = 'admin';
     const predefinedPassword = 'password';
 
+    if(!this.username || !this.password){
+      alert('Please fill the sessions.');
+      return;
+    }
+
     if(this.username == predefinedUsername && this.password == predefinedPassword){
       this.authService.login(this.username);
       this.isLoggedIn = true;
