@@ -16,7 +16,11 @@ export class EventsPageComponent {
   isFullScreen: boolean = true;
   isPanelOpen =  false;
   rangeDates: any;
-  text: string = '';
+  title: string = '';
+  description: string = '';
+  coordinates: string = '';
+  tickets: string = '';
+  price: string = '';
   selectedCategory: any = '';
   categories: any[] = [];
   event: any[] = [];
@@ -27,14 +31,17 @@ export class EventsPageComponent {
     { label: 'Option 2', value: 'value2' },
   ];
 
- //Checks for fullscreen or halfscreen  @HostListener('window:resize', ['$event'])
- @HostListener('window:resize', ['$event']) 
- onResize(event: Event): void {
+  //This method is called when the component initializes
+  ngOnInit(): void {
+    const storedEntries = localStorage.getItem('categories_entries');
+    this.categories = this.dataService.getEntries();
+    
     this.checkLayout();
   }
-  
- //Checks for fullscreen or halfscreen
-  ngOnInit(): void {
+
+ //Checks any change in the window
+ @HostListener('window:resize', ['$event']) 
+ onResize(event: Event): void {
     this.checkLayout();
   }
 
@@ -51,6 +58,25 @@ export class EventsPageComponent {
   isLoggedIn(): boolean {
     return this.authService.isAuthenticated();
   }
+
+  //Method called when user clicks submit button
+  onSubmit(): void {
+    if(!this.title || !this.description || !this.selectedCategory || !this.coordinates || !this.price || !this.tickets || !this.rangeDates){
+      alert('Please fill all flieds before submit');
+    }
+  }
+
+  //Method called when user clicks the clear button to clear the fields
+  onClear(): void {
+    this.title = '';
+    this.description = '';
+    this.selectedCategory = '';
+    this.coordinates = '';
+    this.price = '';
+    this.tickets = '';
+    this.rangeDates = '';
+  }
+
 
   onRowEditInit(product: any): void {
     console.log('Editing initiated for product:', product);

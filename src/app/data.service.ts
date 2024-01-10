@@ -18,6 +18,14 @@ export class DataService {
     localStorage.setItem(this.localStorageKey, JSON.stringify(data));
   }
 
+  getCategories(): any[] {
+    const storedCategories = localStorage.getItem(this.localStorageKeyCategories);
+    return storedCategories ? JSON.parse(storedCategories) : [];
+  }
+
+  setCategories(categories: any[]): void {
+    localStorage.setItem(this.localStorageKeyCategories, JSON.stringify(categories));
+  }
 
 
 }

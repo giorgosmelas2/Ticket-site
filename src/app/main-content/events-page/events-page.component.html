@@ -74,58 +74,86 @@
                     <div class="column-left">
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Title</h5>
-                            <input type="text" pInputText [(ngModel)]="text" />        
+                            <input type="text" pInputText [(ngModel)]="title" />        
                         </div>
-        
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Description</h5>
-                            <textarea rows="5" cols="30" pInputTextarea [autoResize]="true"></textarea>
+                            <textarea 
+                                rows="5" 
+                                cols="30" 
+                                pInputTextarea 
+                                [autoResize]="true" 
+                                [(ngModel)]="description" >
+                            </textarea>
                         </div> 
-
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Category</h5>
                             <p-cascadeSelect 
                                 [(ngModel)]="selectedCategory" 
                                 [options]="categories" 
-                                optionLabel="cname" 
+                                optionLabel="title" 
                                 optionGroupLabel="name" 
-                                [optionGroupChildren]="['states', 'cities']" 
+                                [optionGroupChildren]="['categories']" 
                                 [style]="{ minWidth: '14rem' }" 
                                 placeholder="Select category">
-                        </p-cascadeSelect>
+                            </p-cascadeSelect>
                         </div> 
                     </div>
         
                     <div class="column-right">
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Date</h5>
-                            <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true"></p-calendar>
+                            <p-calendar 
+                                [(ngModel)]="rangeDates" 
+                                selectionMode="range" 
+                                [readonlyInput]="true">
+                            </p-calendar>
                         </div>
-
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Coordinates</h5>
-                            <input type="text" pInputText [(ngModel)]="text" />        
+                            <input 
+                                type="text" 
+                                pInputText 
+                                [(ngModel)]="coordinates" 
+                            />        
                         </div>
-        
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Tickets</h5>
-                            <input type="text" pInputText [(ngModel)]="text" />
+                            <input 
+                                type="text" 
+                                pInputText 
+                                [(ngModel)]="tickets" 
+                            />
                         </div>
-
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Price</h5>
-                            <input type="text" pInputText [(ngModel)]="text" />
+                            <input 
+                                type="text" 
+                                pInputText 
+                                [(ngModel)]="price" 
+                            />
                         </div>
                         <div>
                             <h5>Cover</h5>
-                            <p-fileUpload mode="basic" chooseLabel="Choose" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" [maxFileSize]="10000000" (onUpload)="onUpload($event)"></p-fileUpload>
+                            <p-fileUpload 
+                                mode="basic" 
+                                chooseLabel="Choose" 
+                                name="demo[]" 
+                                url="https://www.primefaces.org/cdn/api/upload.php" 
+                                accept="image/*" 
+                                [maxFileSize]="10000000" 
+                                (onUpload)="onUpload($event)">
+                            </p-fileUpload>
                         </div>
                     </div>
                 </div>
 
             </div>
             <div class="centered">
-                <button type="button" class="btn btn-dark">Submit</button>
+                <div class="button-container">
+                    <button type="button" class="btn btn-dark" (click)="onClear()" >Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+                </div>
             </div>
         </p-panel>
     </div>  

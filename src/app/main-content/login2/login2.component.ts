@@ -20,7 +20,7 @@ export class Login2Component {
     const predefinedPassword = 'password';
 
     if(!this.username || !this.password){
-      alert('Please fill the sessions.');
+      alert('Please fill the fields.');
       return;
     }
 

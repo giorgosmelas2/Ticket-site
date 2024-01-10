@@ -72,35 +72,38 @@
                     <div class="column-left">
                         <div style="margin-bottom: 0.5rem;">
                             <h5>User ID</h5>
-                            <input type="text" pInputText [(ngModel)]="text" />        
+                            <input type="text" pInputText [(ngModel)]="userID" />        
                         </div>
         
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Username</h5>
-                            <input type="text" pInputText [(ngModel)]="text" />        
+                            <input type="text" pInputText [(ngModel)]="username" />        
                         </div>  
 
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Password</h5>
-                            <input type="text" pInputText [(ngModel)]="text" />        
+                            <input type="text" pInputText [(ngModel)]="password" />        
                         </div>
                     </div>
         
                     <div class="column-right">
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Total money spend</h5>
-                            <input type="text" pInputText [(ngModel)]="text" />
+                            <input type="text" pInputText [(ngModel)]="totalMoneySpend" />
                         </div>
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Total tickets buyed</h5>
-                            <input type="text" pInputText [(ngModel)]="text" />
+                            <input type="text" pInputText [(ngModel)]="totalTicketsBuyed" />
                         </div>
                     </div>
                 </div>
 
             </div>
             <div class="centered">
-                <button type="button" class="btn btn-dark">Submit</button>
+                <div class="button-container">
+                    <button type="button" class="btn btn-dark" (click)="onClear()" >Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+                </div>
             </div>
         </p-panel>
     </div>  

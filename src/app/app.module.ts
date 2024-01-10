@@ -20,6 +20,7 @@ import { ButtonModule} from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { SidebarModule } from 'primeng/sidebar';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { ListboxModule } from 'primeng/listbox';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 
@@ -71,7 +72,7 @@ import { Login2Component } from './main-content/login2/login2.component';
     ToastModule,
     CardModule,
     SidebarModule,
-    CascadeSelectModule
+    CascadeSelectModule,
   ],
 
   providers: [

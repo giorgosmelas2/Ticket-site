@@ -17,7 +17,8 @@ export class CategoriesComponent {
 
   isFullScreen: boolean = true;
   isPanelOpen =  false;
-  text: string = '';
+
+  input: string = '';
   formSubmitted = false;
   entries: any[] = [];
   event: any[] = [];
@@ -27,30 +28,54 @@ export class CategoriesComponent {
     { label: 'Option 2', value: 'value2' },
   ];
 
-  
+  // //This method is called when the component initializes
+  ngOnInit(): void {
+    const storedEntries = localStorage.getItem('categories_entries');
+    this.entries = this.dataService.getEntries();
+    this.formSubmitted = true;
+    
+    this.checkLayout();
+  }
 
+  //Checks any change in the window
+  @HostListener('window:resize', ['$event']) 
+  onResize(event: Event): void {
+    this.checkLayout();
+  }
+
+  //Checks for fullscreen or halfscreen
+  private checkLayout(): void {
+    this.isFullScreen = window.innerWidth > 768; 
+  }
+
+  //Checks if user has logged in
   isLoggedIn(): boolean {
     return this.authService.isAuthenticated();
   }
 
   //When the submit button is clicked a new table is added
   onSubmit(): void {
-    if (!this.text) {
-      alert('Please fill in the title before submitting.');
+    if (!this.input) {
+      alert('Please fill in the field before submitting.');
       return;
     }else{
       const newEntry = { 
-        title: this.text,
+        title: this.input,
        };
 
       this.entries.push(newEntry);
 
       // Save data to localStorage
-      // Save data to the service
       this.dataService.setEntries(this.entries);
 
       this.formSubmitted = true;
     }
+  }
+
+  //Method called when user clicks the clear button to clear the fields
+  onClear(): void {
+    this.input = '';
+    
   }
 
   onDelete(index: number) {
@@ -61,30 +86,6 @@ export class CategoriesComponent {
     this.dataService.setEntries(this.entries);
   }
   
-  //Checks for fullscreen or halfscreen  @HostListener('window:resize', ['$event'])
-  @HostListener('window:resize', ['$event']) 
-  onResize(event: Event): void {
-    this.checkLayout();
-  }
-
-  //Checks for fullscreen or halfscreen
-  ngOnInit(): void {
-    // Retrieve data from localStorage on component initialization
-    const storedEntries = localStorage.getItem('categories_entries');
-    
-    if (storedEntries) {
-      this.entries = this.dataService.getEntries();
-      this.formSubmitted = true;
-    }
-
-    this.checkLayout();
-  }
-
-  //Checks for fullscreen or halfscreen
-  private checkLayout(): void {
-    this.isFullScreen = window.innerWidth > 768; 
-  }
-
   onRowEditInit(product: any): void {
     console.log('Editing initiated for product:', product);
     // Rest of the implementation

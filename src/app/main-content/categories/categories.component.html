@@ -83,11 +83,14 @@
             <div class="centered">
                 <div style="margin-bottom: 0.5rem;">
                     <h5>Title</h5>
-                    <input type="text" pInputText [(ngModel)]="text" />        
+                    <input type="text" pInputText [(ngModel)]="input" />        
                 </div>
             </div>
             <div class="centered">
-                <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+                <div class="button-container">
+                    <button type="button" class="btn btn-dark" (click)="onClear()" >Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+                </div>
             </div>
         </p-panel>
     </div>
