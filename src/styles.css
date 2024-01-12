@@ -106,12 +106,11 @@ h4{
 
 .horizontal-layout {
     flex-direction: row;
-    width: 45%;
+    width: 46%;
 }
 
 .vertical-layout {
-    flex-direction: column;
-    
+    flex-direction: column; 
 }
 
 .centered{

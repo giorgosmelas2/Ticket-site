@@ -4,16 +4,25 @@ import { AdminPageComponent } from './main-content/admin-page/admin-page.compone
 import { EventsPageComponent } from './main-content/events-page/events-page.component';
 import { UserPageComponent } from './main-content/user-page/user-page.component';
 import { CategoriesComponent } from './main-content/categories/categories.component';
-import { Login2Component } from './main-content/login2/login2.component';
-
+import { OrdersComponent } from './main-content/orders/orders.component';
+import { MainContentComponent } from './main-content/main-content.component';
+import { LoginTestComponent } from './login/login.component';
 
 const routes: Routes = [
-  {path: '', component: Login2Component},
-  {path: 'login2', component:  Login2Component },
-  {path: 'categories', component: CategoriesComponent},
-  {path: 'admin-page', component: AdminPageComponent},
-  {path: 'events-page', component: EventsPageComponent},
-  {path: 'user-page', component: UserPageComponent},
+  {path: '', component: LoginTestComponent},
+  {path: 'login', component: LoginTestComponent},
+  {
+    path: 'main-content',
+    component: MainContentComponent,
+    children: [
+      { path: '', redirectTo: 'categories', pathMatch: 'full' }, // Default child route
+      { path: 'categories', component: CategoriesComponent },
+      { path: 'admin-page', component: AdminPageComponent },
+      { path: 'events-page', component: EventsPageComponent },
+      { path: 'user-page', component: UserPageComponent },
+      { path: 'orders', component: OrdersComponent },
+    ],
+  },
 ];
 
 @NgModule({

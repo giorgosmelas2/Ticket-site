@@ -1,0 +1,67 @@
+<h1>Orders</h1>
+    <div style="margin-bottom: 1.5rem;">
+        <p-table [value]="orders" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:12.5%">Title</th>
+                    <th style="width:12.5%">Description</th>
+                    <th style="width:12.5%">Date</th>
+                    <th style="width:12.5%">Coordinates</th>
+                    <th style="width:12.5%">Cover</th>
+                    <th style="width:12.5%">Tickets</th>
+                    <th style="width:12.5%">Price</th>
+                    <th style="width:12.5%"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-event let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="event">
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="event.code">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{event.code}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="event.name" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{event.name}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <p-dropdown [options]="statuses" appendTo="body" [(ngModel)]="event.inventoryStatus" [style]="{'width':'100%'}"></p-dropdown>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{event.inventoryStatus}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="event.price">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{event.price | currency: 'USD'}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <div class="flex align-items-center justify-content-center gap-2">
+                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(event)" class="p-button-rounded p-button-text"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(event)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(event)" class="p-button-rounded p-button-text p-button-danger"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>

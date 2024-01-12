@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import {Routes} from '@angular/router';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -20,9 +21,6 @@ import { ButtonModule} from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { SidebarModule } from 'primeng/sidebar';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
-import { ListboxModule } from 'primeng/listbox';
-import { MessagesModule } from 'primeng/messages';
-import { MessageModule } from 'primeng/message';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -32,8 +30,9 @@ import { MainContentComponent } from './main-content/main-content.component';
 import { EventsPageComponent } from './main-content/events-page/events-page.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CategoriesComponent } from './main-content/categories/categories.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { Login2Component } from './main-content/login2/login2.component';
+import { OrdersComponent } from './main-content/orders/orders.component';
+import { LoginTestComponent } from './login/login.component';
+import { Sidebar2Component } from './main-content/sidebar2/sidebar2.component';
 
 
 
@@ -45,12 +44,15 @@ import { Login2Component } from './main-content/login2/login2.component';
     MainContentComponent,
     EventsPageComponent,
     CategoriesComponent,
-    SidebarComponent,
-    Login2Component,
+    OrdersComponent,
+    LoginTestComponent,
+    Sidebar2Component,
+    
     
   ],
 
   imports: [
+    
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

@@ -4,7 +4,7 @@
             <li>
                 <a pRipple class=" flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
                     style="color:  rgb(49, 48, 48); text-decoration: none;" 
-                    routerLink="/admin-page" 
+                    routerLink="/main-content/admin-page" 
                     routerLinkActive="active" 
                     aria-current="page">
                     <i class="pi pi-user mr-2" style="color: white;"></i>
@@ -14,7 +14,7 @@
             <li>
                 <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
                     style="color:  rgb(49, 48, 48); text-decoration: none;" 
-                    routerLink="/user-page" 
+                    routerLink="/main-content/user-page" 
                     routerLinkActive="active" 
                     aria-current="page">
                     <i class="pi pi-users mr-2" style="color: white;"></i>
@@ -24,7 +24,7 @@
             <li>
                 <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
                     style="color:  rgb(49, 48, 48); text-decoration: none;" 
-                    routerLink="/categories" 
+                    routerLink="/main-content/categories" 
                     routerLinkActive="active" 
                     aria-current="page">
                     <i class="pi pi-list mr-2" style="color: white;"></i>
@@ -34,11 +34,21 @@
             <li>
                 <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
                     style="color: rgb(49, 48, 48); text-decoration: none;" 
-                    routerLink="/events-page" 
+                    routerLink="/main-content/events-page" 
                     routerLinkActive="active" 
                     aria-current="page">
                     <i class="pi pi-search mr-2" style="color: white;"></i>
                     <span class="font-medium" style="color: white;">Events</span>
+                </a>
+            </li>
+            <li>
+                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
+                    style="color: rgb(49, 48, 48); text-decoration: none;" 
+                    routerLink="/main-content/orders" 
+                    routerLinkActive="active" 
+                    aria-current="page">
+                    <i class="pi pi-euro mr-2" style="color: white;"></i>
+                    <span class="font-medium" style="color: white;">Orders</span>
                 </a>
             </li>
         </ul>
@@ -48,6 +58,9 @@
             <ng-container *ngIf="isLoggedIn(); else notLoggedIn">
                 <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
                     style="color: rgb(49, 48, 48); text-decoration: none;"  
+                    routerLink="/login" 
+                    routerLinkActive="active" 
+                    aria-current="page"
                     (click)="onLogout()">
                     <i class="pi pi-lock-open mr-2" style="color: white;"></i>
                     <span class="font-medium" style="color: white;">{{ getUsername() }}</span>
@@ -56,10 +69,7 @@
             <!-- If is not shows that -->
             <ng-template #notLoggedIn>
                 <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
-                    style="color: rgb(49, 48, 48); text-decoration: none;" 
-                    routerLink="/login2" 
-                    routerLinkActive="active" 
-                    aria-current="page">
+                    style="color: rgb(49, 48, 48); width: 100%; box-sizing: border-box; display: flex; text-decoration: none;">
                     <i class="pi pi-lock mr-2" style="color: white;"></i>
                     <span class="font-medium" style="color: white;">Log in</span>
                 </a>

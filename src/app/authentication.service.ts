@@ -22,6 +22,7 @@ export class AuthenticationService {
     return this.isLoggedIn;
   }
 
+
   getCurrentUser(): string | null {
     return this.currentUser;
   }

@@ -1,172 +1,163 @@
-<div *ngIf="isLoggedIn(); else notLoggedInContent">
-    <h1>Events</h1>
-    <div style="margin-bottom: 1.5rem;">
-        <p-table [value]="event" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th style="width:12.5%">Title</th>
-                    <th style="width:12.5%">Description</th>
-                    <th style="width:12.5%">Date</th>
-                    <th style="width:12.5%">Coordinates</th>
-                    <th style="width:12.5%">Cover</th>
-                    <th style="width:12.5%">Tickets</th>
-                    <th style="width:12.5%">Price</th>
-                    <th style="width:12.5%"></th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-event let-editing="editing" let-ri="rowIndex">
-                <tr [pEditableRow]="event">
-                    <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.code">
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{event.code}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.name" required>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{event.name}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <p-dropdown [options]="statuses" appendTo="body" [(ngModel)]="event.inventoryStatus" [style]="{'width':'100%'}"></p-dropdown>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{event.inventoryStatus}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.price">
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{event.price | currency: 'USD'}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td>
-                        <div class="flex align-items-center justify-content-center gap-2">
-                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(event)" class="p-button-rounded p-button-text"></button>
-                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(event)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(event)" class="p-button-rounded p-button-text p-button-danger"></button>
-                        </div>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
-    <div [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
-        <p-panel header="Add event" [toggleable]="true"  [collapsed]="!isPanelOpen">
-            <div class="centered">
-                <div class="container">
-                    <div class="column-left">
-                        <div style="margin-bottom: 0.5rem;">
-                            <h5>Title</h5>
-                            <input type="text" pInputText [(ngModel)]="title" />        
-                        </div>
-                        <div style="margin-bottom: 0.5rem;">
-                            <h5>Description</h5>
-                            <textarea 
-                                rows="5" 
-                                cols="30" 
-                                pInputTextarea 
-                                [autoResize]="true" 
-                                [(ngModel)]="description" >
-                            </textarea>
-                        </div> 
-                        <div style="margin-bottom: 0.5rem;">
-                            <h5>Category</h5>
-                            <p-cascadeSelect 
-                                [(ngModel)]="selectedCategory" 
-                                [options]="categories" 
-                                optionLabel="title" 
-                                optionGroupLabel="name" 
-                                [optionGroupChildren]="['categories']" 
-                                [style]="{ minWidth: '14rem' }" 
-                                placeholder="Select category">
-                            </p-cascadeSelect>
-                        </div> 
+<h1>Events</h1>
+ <div style="margin-bottom: 1.5rem;">
+    <p-table [value]="event" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:12.5%">Title</th>
+                <th style="width:12.5%">Description</th>
+                <th style="width:12.5%">Date</th>
+                <th style="width:12.5%">Coordinates</th>
+                <th style="width:12.5%">Cover</th>
+                <th style="width:12.5%">Tickets</th>
+                <th style="width:12.5%">Price</th>
+                <th style="width:12.5%"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-event let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="event">
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="event.code">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{event.code}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="event.name" required>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{event.name}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <p-dropdown [options]="statuses" appendTo="body" [(ngModel)]="event.inventoryStatus" [style]="{'width':'100%'}"></p-dropdown>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{event.inventoryStatus}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="event.price">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{event.price | currency: 'USD'}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <div class="flex align-items-center justify-content-center gap-2">
+                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(event)" class="p-button-rounded p-button-text"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(event)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(event)" class="p-button-rounded p-button-text p-button-danger"></button>
                     </div>
-        
-                    <div class="column-right">
-                        <div style="margin-bottom: 0.5rem;">
-                            <h5>Date</h5>
-                            <p-calendar 
-                                [(ngModel)]="rangeDates" 
-                                selectionMode="range" 
-                                [readonlyInput]="true">
-                            </p-calendar>
-                        </div>
-                        <div style="margin-bottom: 0.5rem;">
-                            <h5>Coordinates</h5>
-                            <input 
-                                type="text" 
-                                pInputText 
-                                [(ngModel)]="coordinates" 
-                            />        
-                        </div>
-                        <div style="margin-bottom: 0.5rem;">
-                            <h5>Tickets</h5>
-                            <input 
-                                type="text" 
-                                pInputText 
-                                [(ngModel)]="tickets" 
-                            />
-                        </div>
-                        <div style="margin-bottom: 0.5rem;">
-                            <h5>Price</h5>
-                            <input 
-                                type="text" 
-                                pInputText 
-                                [(ngModel)]="price" 
-                            />
-                        </div>
-                        <div>
-                            <h5>Cover</h5>
-                            <p-fileUpload 
-                                mode="basic" 
-                                chooseLabel="Choose" 
-                                name="demo[]" 
-                                url="https://www.primefaces.org/cdn/api/upload.php" 
-                                accept="image/*" 
-                                [maxFileSize]="10000000" 
-                                (onUpload)="onUpload($event)">
-                            </p-fileUpload>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="centered">
-                <div class="button-container">
-                    <button type="button" class="btn btn-dark" (click)="onClear()" >Clear</button>
-                    <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
-                </div>
-            </div>
-        </p-panel>
-    </div>  
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>
+<div [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
+    <p-panel header="Add event" [toggleable]="true"  [collapsed]="!isPanelOpen">
+        <div class="centered">
+            <div class="container">
+                <div class="column-left">
+                    <div style="margin-bottom: 0.5rem;">
+                        <h5>Title</h5>
+                        <input type="text" pInputText [(ngModel)]="title" />        
+                    </div>
+                    <div style="margin-bottom: 0.5rem;">
+                        <h5>Description</h5>
+                        <textarea 
+                            rows="5" 
+                            cols="30" 
+                            pInputTextarea 
+                            [autoResize]="true" 
+                            [(ngModel)]="description" >
+                        </textarea>
+                    </div> 
+                    <div style="margin-bottom: 0.5rem;">
+                        <h5>Category</h5>
+                        <p-cascadeSelect 
+                            [(ngModel)]="selectedCategory" 
+                            [options]="categories" 
+                            optionLabel="title" 
+                            optionGroupLabel="name" 
+                            [optionGroupChildren]="['categories']" 
+                            [style]="{ minWidth: '14rem' }" 
+                            placeholder="Select category">
+                        </p-cascadeSelect>
+                    </div> 
+                </div>
+    
+                <div class="column-right">
+                    <div style="margin-bottom: 0.5rem;">
+                        <h5>Date</h5>
+                        <p-calendar 
+                            [(ngModel)]="rangeDates" 
+                            selectionMode="range" 
+                            [readonlyInput]="true">
+                        </p-calendar>
+                    </div>
+                    <div style="margin-bottom: 0.5rem;">
+                        <h5>Coordinates</h5>
+                        <input 
+                            type="text" 
+                            pInputText 
+                            [(ngModel)]="coordinates" 
+                        />        
+                    </div>
+                    <div style="margin-bottom: 0.5rem;">
+                        <h5>Tickets</h5>
+                        <input 
+                            type="text" 
+                            pInputText 
+                            [(ngModel)]="tickets" 
+                        />
+                    </div>
+                    <div style="margin-bottom: 0.5rem;">
+                        <h5>Price</h5>
+                        <input 
+                            type="text" 
+                            pInputText 
+                            [(ngModel)]="price" 
+                        />
+                    </div>
+                    <div>
+                        <h5>Cover</h5>
+                        <p-fileUpload 
+                            mode="basic" 
+                            chooseLabel="Choose" 
+                            name="demo[]" 
+                            url="https://www.primefaces.org/cdn/api/upload.php" 
+                            accept="image/*" 
+                            [maxFileSize]="10000000" 
+                            (onUpload)="onUpload($event)">
+                        </p-fileUpload>
+                    </div>
+                </div>
+            </div> 
 
-<ng-template #notLoggedInContent>
-    <!-- Message to display when not logged in -->
-    <div class="loggin-message">
-        <div class="massage-box">
-            <h2>Please log in to have access.</h2>
-        </div>    
-    </div>
-</ng-template>
+        </div>
+        <div class="centered">
+            <div class="button-container">
+                <button type="button" class="btn btn-dark" (click)="onClear()" >Clear</button>
+                <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+            </div>
+        </div>
+    </p-panel>
+</div>  
+
+
 
 
 

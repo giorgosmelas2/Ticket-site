@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from '../authentication.service';
+import { AuthenticationService } from '../../authentication.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  selector: 'app-sidebar2',
+  templateUrl: './sidebar2.component.html',
+  styleUrl: './sidebar2.component.css'
 })
-export class SidebarComponent {
+export class Sidebar2Component {
   constructor(private authService: AuthenticationService) {}
 
+  
   getText(text: string){
     return text;
   }
@@ -25,5 +27,4 @@ export class SidebarComponent {
     return this.authService.getCurrentUser();
   }
 
- 
 }
