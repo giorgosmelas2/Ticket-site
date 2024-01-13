@@ -1,6 +1,6 @@
 <h1>Admins</h1>
 <div style="margin-bottom: 1.5rem;">
-    <p-table [value]="products" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+    <p-table [value]="admin" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
         <ng-template pTemplate="header">
             <tr>
                 <th style="width:25%">User ID</th>
@@ -9,43 +9,43 @@
                 <th style="width:25%"></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-            <tr [pEditableRow]="product">
+        <ng-template pTemplate="body" let-admin let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="admin">
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="product.id">
+                            <input pInputText type="text" [(ngModel)]="admin.id">
                         </ng-template>
                         <ng-template pTemplate="output">
-                            {{product.id}}
+                            {{admin.id}}
                         </ng-template>
                     </p-cellEditor>
                 </td>
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="product.username" required>
+                            <input pInputText type="text" [(ngModel)]="admin.username" required>
                         </ng-template>
                         <ng-template pTemplate="output">
-                            {{product.username}}
+                            {{admin.username}}
                         </ng-template>
                     </p-cellEditor>
                 </td>
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="product.password" required>
+                            <input pInputText type="text" [(ngModel)]="admin.password" required>
                         </ng-template>
                         <ng-template pTemplate="output">
-                            {{product.password}}
+                            {{admin.password}}
                         </ng-template>
                     </p-cellEditor>
                 </td>
                 <td>
                     <div class="flex align-items-center justify-content-center gap-2">
-                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product)" class="p-button-rounded p-button-text p-button-danger"></button>
+                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(admin)" class="p-button-rounded p-button-text"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(admin)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(admin)" class="p-button-rounded p-button-text p-button-danger"></button>
                     </div>
                 </td>
             </tr>
@@ -53,36 +53,73 @@
     </p-table>
 </div>
 
-<div [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
-    <p-panel header="Add Admin" [toggleable]="true"  [collapsed]="!isPanelOpen">
-        <div class="centered">
-            <div class="container">
-                <div class="column-left">
-                    <div style="margin-bottom: 0.5rem;">
-                        <h5>Admin Id</h5>
-                        <input type="text" pInputText [(ngModel)]="adminID" />        
+<div class="container" [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
+    <div class="outside-box-left">
+        <p-panel header="Add Admin" [toggleable]="true"  [collapsed]="!isPanelOpen">
+            <div class="centered">
+                <div class="container">
+                    <div class="insidebox-left">
+                        <div style="margin-bottom: 0.5rem;">
+                            <h5>Admin Id</h5>
+                            <input type="text" pInputText [(ngModel)]="adminID" />        
+                        </div>
+        
+                        <div style="margin-bottom: 0.5rem;">
+                            <h5>Username</h5>
+                            <input type="text" pInputText [(ngModel)]="username" />        
+                        </div>  
                     </div>
-    
-                    <div style="margin-bottom: 0.5rem;">
-                        <h5>Username</h5>
-                        <input type="text" pInputText [(ngModel)]="username" />        
-                    </div>  
+        
+                    <div class="insidebox-right">
+                        <div style="margin-bottom: 0.5rem;">
+                            <h5>Password</h5>
+                            <input type="text" pInputText [(ngModel)]="password" />
+                        </div>
+                    </div>
                 </div>
     
-                <div class="column-right">
-                    <div style="margin-bottom: 0.5rem;">
-                        <h5>Password</h5>
-                        <input type="text" pInputText [(ngModel)]="password" />
-                    </div>
+            </div>
+            <div class="centered">
+                <div class="button-container">
+                    <button type="button" class="btn btn-dark" (click)="onClear()" >Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
                 </div>
             </div>
-
-        </div>
-        <div class="centered">
-            <div class="button-container">
-                <button type="button" class="btn btn-dark" (click)="onClear()" >Clear</button>
-                <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+        </p-panel>
+    </div>
+    
+    <div class="outside-box-right">
+        <p-panel header="Add Admin" [toggleable]="true"  [collapsed]="!isPanelOpen">
+            <div class="centered">
+                <div class="container">
+                    <div class="insidebox-left">
+                        <div style="margin-bottom: 0.5rem;">
+                            <h5>Admin Id</h5>
+                            <input type="text" pInputText [(ngModel)]="adminID" />        
+                        </div>
+        
+                        <div style="margin-bottom: 0.5rem;">
+                            <h5>Username</h5>
+                            <input type="text" pInputText [(ngModel)]="username" />        
+                        </div>  
+                    </div>
+        
+                    <div class="insidebox-right">
+                        <div style="margin-bottom: 0.5rem;">
+                            <h5>Password</h5>
+                            <input type="text" pInputText [(ngModel)]="password" />
+                        </div>
+                    </div>
+                </div>
+    
             </div>
-        </div>
-    </p-panel>
+            <div class="centered">
+                <div class="button-container">
+                    <button type="button" class="btn btn-dark" (click)="onClear()" >Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+                </div>
+            </div>
+        </p-panel>
+    </div>
+    
 </div>  

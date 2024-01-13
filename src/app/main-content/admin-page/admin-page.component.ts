@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { AuthenticationService } from '../../authentication.service';
+import { DataService } from '../../data.service';
 
 
 @Component({
@@ -10,7 +11,7 @@ import { AuthenticationService } from '../../authentication.service';
 })
 
 export class AdminPageComponent {
-  constructor(private authService: AuthenticationService) {}
+  constructor(private authService: AuthenticationService,  private dataService: DataService) {}
  
   isFullScreen: boolean = true;
   isPanelOpen =  false;
@@ -18,21 +19,16 @@ export class AdminPageComponent {
   adminID: string = '';
   username:string = '';
   password: string = '';
-
   
-  products: any[] = [
-    { id: 1, username: 'admin1', password: 'password1' },
-    { id: 2, username: 'admin2', password: 'password2' },
-    { id: 3, username: 'admin3', password: 'password3' },
-  ];
+  admin: any[] = [];
 
-  statuses: { label: string, value: any }[] = [
-    { label: 'Option 1', value: 'value1' },
-    { label: 'Option 2', value: 'value2' },
-  ];
+  editingAdmin: any;
+
   
   //This method is called when the component initializes
   ngOnInit(): void {
+    const storedAdmins = localStorage.getItem('admins_add');
+    this.admin = this.dataService.getAdmins();
     this.checkLayout();
   }
 
@@ -52,6 +48,12 @@ export class AdminPageComponent {
   onSubmit(): void {
     if(!this.adminID || !this.username || !this.password){
       alert('Please fill all flieds before submit');
+      return
+    }else{
+      const newAdmin = {id: this.adminID, username: this.username, password: this.password};
+      this.admin.push(newAdmin);
+      this.dataService.setAdmins(this.admin);
+      this.onClear();
     }
   }
 
@@ -66,18 +68,43 @@ export class AdminPageComponent {
     return this.authService.isAuthenticated();
   }
 
-  onRowEditInit(product: any): void {
-    console.log('Editing initiated for product:', product);
-    // Rest of the implementation
+  //Determines which admin will be edited
+  onRowEditInit(admin: any): void {
+    this.editingAdmin = { ...admin };
   }
 
-  onRowEditSave(product: any): void {
-    console.log('Editing initiated for product:', product);
-    // Rest of the implementation
+  //Saves the changes
+  onRowEditSave(admin: any): void {
+    // Find the index of the edited product in the products array
+    const index = this.admin.findIndex(a => a.id === admin.id);
+
+    if (index !== -1) {
+      // Update the product in the array with the edited values
+      this.admin[index] = { ...admin };
+      
+      // Save the updated data to local storage
+      this.dataService.setAdmins(this.admin);
+    }
+
+    // Reset the editingAdmin
+    this.editingAdmin = null;
   }
 
-  onRowEditCancel(product: any): void {
-    console.log('Editing initiated for product:', product);
-    // Rest of the implementation
+  //Discards the changes
+  onRowEditCancel(admin: any): void {
+    if (this.editingAdmin) {
+      const originalAdminIndex = this.admin.findIndex(a => a.id === this.editingAdmin.id);
+
+      if (originalAdminIndex !== -1) {
+        // Reset the editingAdmin to its original state
+        this.admin[originalAdminIndex] = { ...this.editingAdmin };
+      } else {
+        // Handle the case where the original admin is not found (e.g., it was deleted)
+        console.error('Original admin not found. Handle this case appropriately.');
+      }
+    }
+
+    // Reset the editingAdmin
+    this.editingAdmin = null;
   }
 }

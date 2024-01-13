@@ -92,21 +92,33 @@ h4{
     justify-content: space-between;
 }
 
-.column-left {
+.outside-box-left{
+    flex: 1;
+    margin-right: 3.7rem; 
+}
+
+.outside-box-right{
     flex: 1; 
-    margin-right: 3rem;   
+    margin-left: 3.7rem;
+}
+
+.insidebox-left{
+    flex: 1; 
+    margin-right: 2.5rem;   
     margin-top: 1rem;
 }
 
-.column-right {
+.insidebox-right {
     flex: 1; 
-    margin-left: 3em;   
+    margin-left: 2.5rem;   
     margin-top: 1rem;
 }
 
 .horizontal-layout {
     flex-direction: row;
-    width: 46%;
+    justify-content: space-between;
+
+    
 }
 
 .vertical-layout {

@@ -5,27 +5,27 @@ import { Injectable } from '@angular/core';
 })
 export class DataService {
 
-  private localStorageKey = 'categories_entries';
-  private localStorageKeyCategories = 'categories';
+  private localStorageKeyCategories = 'categories_entries';
+  private localStoragekeyAdmins = 'admins_add'
+
+
 
 
   getEntries(): any[] {
-    const storedEntries = localStorage.getItem(this.localStorageKey);
+    const storedEntries = localStorage.getItem(this.localStorageKeyCategories);
     return storedEntries ? JSON.parse(storedEntries) : [];
   }
 
   setEntries(data: any[]): void {
-    localStorage.setItem(this.localStorageKey, JSON.stringify(data));
+    localStorage.setItem(this.localStorageKeyCategories, JSON.stringify(data));
   }
 
-  getCategories(): any[] {
-    const storedCategories = localStorage.getItem(this.localStorageKeyCategories);
-    return storedCategories ? JSON.parse(storedCategories) : [];
+  setAdmins(data: any[]): void{
+    localStorage.setItem(this.localStoragekeyAdmins, JSON.stringify(data));
   }
 
-  setCategories(categories: any[]): void {
-    localStorage.setItem(this.localStorageKeyCategories, JSON.stringify(categories));
+  getAdmins(): any[]{
+    const storedAdmins = localStorage.getItem(this.localStoragekeyAdmins);
+    return storedAdmins ? JSON.parse(storedAdmins) : [];
   }
-
-
 }
