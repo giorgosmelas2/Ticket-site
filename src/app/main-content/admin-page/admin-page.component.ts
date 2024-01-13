@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HostListener } from '@angular/core';
-import { AuthenticationService } from '../../authentication.service';
-import { DataService } from '../../data.service';
+import { AuthenticationService } from '../../authentication-service/authentication.service';
+import { DataService } from '../../data-services/data.service';
 
 
 @Component({
@@ -11,7 +11,7 @@ import { DataService } from '../../data.service';
 })
 
 export class AdminPageComponent {
-  constructor(private authService: AuthenticationService,  private dataService: DataService) {}
+  constructor(private authService: AuthenticationService, private dataService: DataService) {}
  
   isFullScreen: boolean = true;
   isPanelOpen =  false;
@@ -22,6 +22,7 @@ export class AdminPageComponent {
   
   admin: any[] = [];
 
+  deleteAdminID: string = '';
   editingAdmin: any;
 
   
@@ -49,23 +50,58 @@ export class AdminPageComponent {
     if(!this.adminID || !this.username || !this.password){
       alert('Please fill all flieds before submit');
       return
-    }else{
-      const newAdmin = {id: this.adminID, username: this.username, password: this.password};
-      this.admin.push(newAdmin);
-      this.dataService.setAdmins(this.admin);
-      this.onClear();
     }
+
+    const isDuplicateID = this.admin.find(a => a.id === this.adminID);
+    if (isDuplicateID) {
+      alert('An admin with the same ID already exists. Please use a different ID.');
+      return;
+    }
+
+    if(this.adminID < '1'){
+      alert('Invalid ID.');
+      return;
+    }
+
+
+    const newAdmin = {id: this.adminID, username: this.username, password: this.password};
+    this.admin.push(newAdmin);
+    this.dataService.setAdmins(this.admin);
+    this.onClearAdd();
   }
 
+  onDelete(): void {
+    if (!this.deleteAdminID) {
+      alert('Please enter the Admin ID to delete.');
+      return;
+    }
+
+    const index = this.admin.findIndex(admin => admin.id === this.deleteAdminID);
+
+    if (index !== -1) {
+      // Remove the admin from the array
+      this.admin.splice(index, 1);
+
+      // Save the updated data to local storage
+      this.dataService.setAdmins(this.admin);
+
+      // Clear the deleteAdminID field
+      this.deleteAdminID = '';
+    } else {
+      alert('Admin not found with the specified ID.');
+    }
+  }
+  
+
   //Method called when user clicks the clear button to clear the fields
-  onClear(): void {
+  onClearAdd(): void {
     this.adminID = '';
     this.username = '';
     this.password = '';
   }
 
-  isLoggedIn(): boolean {
-    return this.authService.isAuthenticated();
+  onClearDelete(){
+    this.deleteAdminID = '';
   }
 
   //Determines which admin will be edited
@@ -75,11 +111,11 @@ export class AdminPageComponent {
 
   //Saves the changes
   onRowEditSave(admin: any): void {
-    // Find the index of the edited product in the products array
+    // Find the index of the edited admin in the admin array
     const index = this.admin.findIndex(a => a.id === admin.id);
 
     if (index !== -1) {
-      // Update the product in the array with the edited values
+      // Update the admin in the array with the edited values
       this.admin[index] = { ...admin };
       
       // Save the updated data to local storage

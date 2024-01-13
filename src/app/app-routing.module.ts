@@ -15,7 +15,7 @@ const routes: Routes = [
     path: 'main-content',
     component: MainContentComponent,
     children: [
-      { path: '', redirectTo: 'categories', pathMatch: 'full' }, // Default child route
+      { path: '', redirectTo: 'admin-page', pathMatch: 'full' }, // Default child route
       { path: 'categories', component: CategoriesComponent },
       { path: 'admin-page', component: AdminPageComponent },
       { path: 'events-page', component: EventsPageComponent },

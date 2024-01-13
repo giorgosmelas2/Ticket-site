@@ -55,7 +55,7 @@
 
 <div class="container" [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
     <div class="outside-box-left">
-        <p-panel header="Add Admin" [toggleable]="true"  [collapsed]="!isPanelOpen">
+        <p-panel header="Add admin" [toggleable]="true"  [collapsed]="!isPanelOpen">
             <div class="centered">
                 <div class="container">
                     <div class="insidebox-left">
@@ -81,7 +81,7 @@
             </div>
             <div class="centered">
                 <div class="button-container">
-                    <button type="button" class="btn btn-dark" (click)="onClear()" >Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onClearAdd()" >Clear</button>
                     <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
                 </div>
             </div>
@@ -89,37 +89,19 @@
     </div>
     
     <div class="outside-box-right">
-        <p-panel header="Add Admin" [toggleable]="true"  [collapsed]="!isPanelOpen">
+        <p-panel header="Delete admin" [toggleable]="true"  [collapsed]="!isPanelOpen">
             <div class="centered">
-                <div class="container">
-                    <div class="insidebox-left">
-                        <div style="margin-bottom: 0.5rem;">
-                            <h5>Admin Id</h5>
-                            <input type="text" pInputText [(ngModel)]="adminID" />        
-                        </div>
-        
-                        <div style="margin-bottom: 0.5rem;">
-                            <h5>Username</h5>
-                            <input type="text" pInputText [(ngModel)]="username" />        
-                        </div>  
-                    </div>
-        
-                    <div class="insidebox-right">
-                        <div style="margin-bottom: 0.5rem;">
-                            <h5>Password</h5>
-                            <input type="text" pInputText [(ngModel)]="password" />
-                        </div>
-                    </div>
+                <div style="margin-bottom: 0.5rem;">
+                    <h5>Delete Admin by ID</h5>
+                    <input type="text" pInputText [(ngModel)]="deleteAdminID" />        
                 </div>
-    
             </div>
-            <div class="centered">
+            <div class="centered">  
                 <div class="button-container">
-                    <button type="button" class="btn btn-dark" (click)="onClear()" >Clear</button>
-                    <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+                    <button type="button" class="btn btn-dark" (click)="onClearDelete()" >Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onDelete()">Delete</button>
                 </div>
             </div>
         </p-panel>
-    </div>
-    
+    </div>  
 </div>  

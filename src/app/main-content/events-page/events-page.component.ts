@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HostListener } from '@angular/core';
-import { AuthenticationService } from '../../authentication.service';
-import { DataService } from '../../data.service';
+import { AuthenticationService } from '../../authentication-service/authentication.service';
+import { DataService } from '../../data-services/data.service';
 
 
 @Component({
@@ -15,16 +15,24 @@ export class EventsPageComponent {
 
   isFullScreen: boolean = true;
   isPanelOpen =  false;
-  rangeDates: any;
+
+  
+
   title: string = '';
+  date: any;
+  categories: any[] = [];
   description: string = '';
   coordinates: string = '';
+  cover: File | null = null;
   tickets: string = '';
   price: string = '';
   selectedCategory: any = '';
-  categories: any[] = [];
+
   event: any[] = [];
-  value: number = 1;
+
+  deleteEventID: string = '';
+  editingEvent: any;
+  
   
   statuses: { label: string, value: any }[] = [
     { label: 'Option 1', value: 'value1' },
@@ -35,6 +43,7 @@ export class EventsPageComponent {
   ngOnInit(): void {
     const storedEntries = localStorage.getItem('categories_entries');
     this.categories = this.dataService.getEntries();
+    this.event = this.dataService.getEvents();
     
     this.checkLayout();
   }
@@ -52,7 +61,10 @@ export class EventsPageComponent {
 
   // Uploads the photo
   onUpload(event: any) {
-    console.log('File uploaded!', event);
+    if (event.files.length > 0) {
+      this.cover = event.files[0];
+      console.log('File uploaded:', this.cover);
+    }
   }
 
   isLoggedIn(): boolean {
@@ -61,9 +73,34 @@ export class EventsPageComponent {
 
   //Method called when user clicks submit button
   onSubmit(): void {
-    if(!this.title || !this.description || !this.selectedCategory || !this.coordinates || !this.price || !this.tickets || !this.rangeDates){
-      alert('Please fill all flieds before submit');
+    if (
+      !this.title ||
+      !this.description ||
+      !this.selectedCategory ||
+      !this.coordinates ||
+      !this.price ||
+      !this.tickets ||
+      !this.date
+    ) {
+      alert('Please fill all fields before submitting.');
+      return;
     }
+
+    const newEvent = {
+      title: this.title,
+      date: this.date,
+      coordinates: this.coordinates,
+      description: this.description,
+      category: this.selectedCategory,
+      cover: this.cover,
+      tickets: this.tickets,
+      price: this.price,
+
+    };
+
+    this.event.push(newEvent);
+    this.dataService.setEvents(this.event);
+    this.onClear();
   }
 
   //Method called when user clicks the clear button to clear the fields
@@ -74,7 +111,7 @@ export class EventsPageComponent {
     this.coordinates = '';
     this.price = '';
     this.tickets = '';
-    this.rangeDates = '';
+    this.date = '';
   }
 
 
@@ -93,6 +130,4 @@ export class EventsPageComponent {
     // Rest of the implementation
   }
 
-
-  
 }

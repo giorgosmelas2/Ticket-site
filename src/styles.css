@@ -90,16 +90,15 @@ h4{
 .container{
     display: flex;
     justify-content: space-between;
+    gap: 1rem;
 }
 
 .outside-box-left{
     flex: 1;
-    margin-right: 3.7rem; 
 }
 
 .outside-box-right{
     flex: 1; 
-    margin-left: 3.7rem;
 }
 
 .insidebox-left{
@@ -124,6 +123,7 @@ h4{
 .vertical-layout {
     flex-direction: column; 
 }
+
 
 .centered{
     display: flex;

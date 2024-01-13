@@ -71,25 +71,49 @@
 
         </div>
         
-        <div class="centered">
-            <button type="button" class="btn btn-dark" (click)="onDelete(i)">Delete</button>
-        </div>
     </div>
 </div>
 
-<div [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
-    <p-panel header="Add category" [toggleable]="true"  [collapsed]="!isPanelOpen">
-        <div class="centered">
-            <div style="margin-bottom: 0.5rem;">
-                <h5>Title</h5>
-                <input type="text" pInputText [(ngModel)]="input" />        
+<div class="container" [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
+    <div class="outside-box-left">
+        <p-panel header="Add category" [toggleable]="true"  [collapsed]="!isPanelOpen">
+            <div class="centered">
+                <div style="margin-bottom: 0.5rem;">
+                    <h5>Title</h5>
+                    <input type="text" pInputText [(ngModel)]="input" />        
+                </div>
             </div>
-        </div>
-        <div class="centered">
-            <div class="button-container">
-                <button type="button" class="btn btn-dark" (click)="onClear()" >Clear</button>
-                <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+            <div class="centered">
+                <div class="button-container">
+                    <button type="button" class="btn btn-dark" (click)="onClearAdd()" >Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+                </div>
             </div>
-        </div>
-    </p-panel>
+        </p-panel>
+    </div>
+
+    <div class="outside-box-right">
+        <p-panel header="Delete category" [toggleable]="true"  [collapsed]="!isPanelOpen">
+            <div class="centered">
+                <div style="margin-bottom: 0.5rem;">
+                    <h5>Select category by title</h5>
+                    <p-cascadeSelect 
+                            [(ngModel)]="selectedCategory" 
+                            [options]="categories" 
+                            optionLabel="title" 
+                            optionGroupLabel="name" 
+                            [optionGroupChildren]="['categories']" 
+                            [style]="{ minWidth: '14rem' }" 
+                            placeholder="Select category">
+                        </p-cascadeSelect>       
+                </div>
+            </div>
+            <div class="centered">
+                <div class="button-container">
+                    <button type="button" class="btn btn-dark" (click)="onClearDelete()" >Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onDelete()">Delete</button>
+                </div>
+            </div>
+        </p-panel>
+    </div>
 </div>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from '../../authentication.service';
+import { AuthenticationService } from '../../authentication-service/authentication.service';
 import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
@@ -10,9 +10,14 @@ import { Router, NavigationEnd } from '@angular/router';
 export class Sidebar2Component {
   constructor(private authService: AuthenticationService) {}
 
+  buttonText: string = '';
   
   getText(text: string){
     return text;
+  }
+
+  changeText(newText: string): void {
+    this.buttonText = newText;
   }
 
   isLoggedIn(): boolean {

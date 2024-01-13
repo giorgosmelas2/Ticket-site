@@ -1,6 +1,6 @@
 <h1>Users</h1>
 <div style="margin-bottom: 1.5rem;">
-    <p-table [value]="products" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+    <p-table [value]="user" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
         <ng-template pTemplate="header">
             <tr>
                 <th style="width:16.6">User ID</th>
@@ -11,98 +11,127 @@
                 <th style="width:16.6"></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-            <tr [pEditableRow]="product">
+        <ng-template pTemplate="body" let-user let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="user">
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="product.code">
+                            <input pInputText type="text" [(ngModel)]="user.id">
                         </ng-template>
                         <ng-template pTemplate="output">
-                            {{product.code}}
+                            {{user.id}}
                         </ng-template>
                     </p-cellEditor>
                 </td>
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="product.name" required>
+                            <input pInputText type="text" [(ngModel)]="user.username" required>
                         </ng-template>
                         <ng-template pTemplate="output">
-                            {{product.name}}
+                            {{user.username}}
                         </ng-template>
                     </p-cellEditor>
                 </td>
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <p-dropdown [options]="statuses" appendTo="body" [(ngModel)]="product.inventoryStatus" [style]="{'width':'100%'}"></p-dropdown>
+                            <input pInputText type="text" [(ngModel)]="user.password">
                         </ng-template>
                         <ng-template pTemplate="output">
-                            {{product.inventoryStatus}}
+                            {{user.password}}
                         </ng-template>
                     </p-cellEditor>
                 </td>
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="product.price">
+                            <input pInputText type="text" [(ngModel)]="user.totalMoneySpend">
                         </ng-template>
                         <ng-template pTemplate="output">
-                            {{product.price | currency: 'USD'}}
+                            {{user.totalMoneySpend | currency: 'USD'}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="user.totalTicketsBuyed">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{user.totalTicketsBuyed}}
                         </ng-template>
                     </p-cellEditor>
                 </td>
                 <td>
                     <div class="flex align-items-center justify-content-center gap-2">
-                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product)" class="p-button-rounded p-button-text p-button-danger"></button>
+                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(user)" class="p-button-rounded p-button-text"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(user)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(user)" class="p-button-rounded p-button-text p-button-danger"></button>
                     </div>
                 </td>
             </tr>
         </ng-template>
     </p-table>
 </div>
-<div [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
-    <p-panel header="Add user" [toggleable]="true"  [collapsed]="!isPanelOpen">
-        <div class="centered">
-            <div class="container">
-                <div class="column-left">
-                    <div style="margin-bottom: 0.5rem;">
-                        <h5>User ID</h5>
-                        <input type="text" pInputText [(ngModel)]="userID" />        
-                    </div>
+<div class="container" [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
+    <div class="outside-box-left">
+        <p-panel header="Add user" [toggleable]="true"  [collapsed]="!isPanelOpen">
+            <div class="centered">
+                <div class="container">
+                    <div class="insidebox-left">
+                        <div style="margin-bottom: 0.5rem;">
+                            <h5>User ID</h5>
+                            <input type="text" pInputText [(ngModel)]="userID" />        
+                        </div>
+        
+                        <div style="margin-bottom: 0.5rem;">
+                            <h5>Username</h5>
+                            <input type="text" pInputText [(ngModel)]="username" />        
+                        </div>  
     
-                    <div style="margin-bottom: 0.5rem;">
-                        <h5>Username</h5>
-                        <input type="text" pInputText [(ngModel)]="username" />        
-                    </div>  
-
-                    <div style="margin-bottom: 0.5rem;">
-                        <h5>Password</h5>
-                        <input type="text" pInputText [(ngModel)]="password" />        
+                        <div style="margin-bottom: 0.5rem;">
+                            <h5>Password</h5>
+                            <input type="text" pInputText [(ngModel)]="password" />        
+                        </div>
                     </div>
-                </div>
-    
-                <div class="column-right">
-                    <div style="margin-bottom: 0.5rem;">
-                        <h5>Total money spend</h5>
-                        <input type="text" pInputText [(ngModel)]="totalMoneySpend" />
-                    </div>
-                    <div style="margin-bottom: 0.5rem;">
-                        <h5>Total tickets buyed</h5>
-                        <input type="text" pInputText [(ngModel)]="totalTicketsBuyed" />
+        
+                    <div class="insidebox-right">
+                        <div style="margin-bottom: 0.5rem;">
+                            <h5>Total money spend</h5>
+                            <input type="text" pInputText [(ngModel)]="totalMoneySpend" />
+                        </div>
+                        <div style="margin-bottom: 0.5rem;">
+                            <h5>Total tickets buyed</h5>
+                            <input type="text" pInputText [(ngModel)]="totalTicketsBuyed" />
+                        </div>
                     </div>
                 </div>
             </div>
-
-        </div>
-        <div class="centered">
-            <div class="button-container">
-                <button type="button" class="btn btn-dark" (click)="onClear()" >Clear</button>
-                <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+            <div class="centered">
+                <div class="button-container">
+                    <button type="button" class="btn btn-dark" (click)="onClearAdd()" >Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+                </div>
             </div>
-        </div>
-    </p-panel>
+        </p-panel>
+    </div>
+
+    <div class="outside-box-right">
+        <p-panel header="Delete user" [toggleable]="true"  [collapsed]="!isPanelOpen">
+            <div class="centered">
+                <div style="margin-bottom: 0.5rem;">
+                    <h5>Delete User by ID</h5>
+                    <input type="text" pInputText [(ngModel)]="deleteUserID" />        
+                </div>
+            </div>
+            <div class="centered">
+                <div class="button-container">
+                    <button type="button" class="btn btn-dark" (click)="onClearDelete()" >Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onDelete()">Delete</button>
+                </div>
+            </div>
+        </p-panel>
+    </div>
+    
 </div>  

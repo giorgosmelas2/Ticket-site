@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { DataService } from '../../data.service';
-import { AuthenticationService } from '../../authentication.service';
+import { DataService } from '../../data-services/data.service';
+import { AuthenticationService } from '../../authentication-service/authentication.service';
 
 @Component({
   selector: 'app-categories',
@@ -23,6 +23,9 @@ export class CategoriesComponent {
   entries: any[] = [];
   event: any[] = [];
 
+  selectedCategory: any = '';
+  categories: any[] = [];
+
   statuses: { label: string, value: any }[] = [
     { label: 'Option 1', value: 'value1' },
     { label: 'Option 2', value: 'value2' },
@@ -32,6 +35,7 @@ export class CategoriesComponent {
   ngOnInit(): void {
     const storedEntries = localStorage.getItem('categories_entries');
     this.entries = this.dataService.getEntries();
+    this.categories = this.dataService.getEntries();
     this.formSubmitted = true;
     
     this.checkLayout();
@@ -73,17 +77,33 @@ export class CategoriesComponent {
   }
 
   //Method called when user clicks the clear button to clear the fields
-  onClear(): void {
+  onClearAdd(): void {
     this.input = '';
-    
   }
 
-  onDelete(index: number) {
-    // Remove the entry at the specified index
-    this.entries.splice(index, 1);
+  onClearDelete(){
+    this.selectedCategory = '';
+  }
 
-    // Save updated data to the service after deleting the specific entry
-    this.dataService.setEntries(this.entries);
+  onDelete() {
+
+    if (!this.selectedCategory) {
+      alert('Please select a category before deleting.');
+      return;
+    }
+
+    const index = this.entries.findIndex(entry => entry.title === this.selectedCategory.title);
+
+    if (index !== -1) {
+      // Remove the selected category from the entries array
+      this.entries.splice(index, 1);
+
+      // Save updated data to the service after deleting the specific category
+      this.dataService.setEntries(this.entries);
+
+      // Clear the selected category after deletion
+      this.selectedCategory = '';
+    }
   }
   
   onRowEditInit(product: any): void {
