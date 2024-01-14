@@ -76,7 +76,7 @@ export class AdminPageComponent {
       return;
     }
 
-    const index = this.admin.findIndex(admin => admin.id === this.deleteAdminID);
+    const index = this.admin.findIndex(a => a.id === this.deleteAdminID);
 
     if (index !== -1) {
       // Remove the admin from the array
@@ -111,18 +111,13 @@ export class AdminPageComponent {
 
   //Saves the changes
   onRowEditSave(admin: any): void {
-    // Find the index of the edited admin in the admin array
     const index = this.admin.findIndex(a => a.id === admin.id);
 
     if (index !== -1) {
-      // Update the admin in the array with the edited values
       this.admin[index] = { ...admin };
-      
-      // Save the updated data to local storage
       this.dataService.setAdmins(this.admin);
     }
-
-    // Reset the editingAdmin
+    
     this.editingAdmin = null;
   }
 
@@ -139,8 +134,7 @@ export class AdminPageComponent {
         console.error('Original admin not found. Handle this case appropriately.');
       }
     }
-
-    // Reset the editingAdmin
+    
     this.editingAdmin = null;
   }
 }

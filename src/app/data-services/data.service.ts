@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ export class DataService {
   private localStorageKeyAdmins = 'admins_add';
   private localStorageKeyUsers = 'users_add';
   private localStorageKeyEvens = 'events'
+  private uploadCoverUrl = 'cover';
 
 
 
@@ -48,6 +50,18 @@ export class DataService {
     localStorage.setItem(this.localStorageKeyEvens, JSON.stringify(data));
   }
   
+  uploadEventCoverLocally(file: File): Observable<string> {
+    // Simulate saving the file locally and returning its path
+    const reader = new FileReader();
 
+    return new Observable<string>((observer) => {
+      reader.onloadend = () => {
+        observer.next(reader.result as string);
+        observer.complete();
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
 
 }
