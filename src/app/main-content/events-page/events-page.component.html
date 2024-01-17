@@ -88,7 +88,11 @@
                             </p-fileUpload>
                         </ng-template>
                         <ng-template pTemplate="output">
-                            <img *ngIf="event.cover" [src]="event.cover" alt="Event Cover" style="max-width: 100px; max-height: 100px;">
+                            <img 
+                                *ngIf="event.cover" 
+                                src="{{event.cover}}" 
+                                alt="Event Cover"  
+                                style="max-width: 100px; max-height: 100px;">
                         </ng-template>
                     </p-cellEditor>
                 </td>
@@ -162,8 +166,8 @@
                             <h5>Date</h5>
                             <p-calendar 
                                 [(ngModel)]="date" 
-                                selectionMode="range" 
-                                [readonlyInput]="true">
+                                [showTime]="true" 
+                                [showSeconds]="true">
                             </p-calendar>
                         </div>
                         <div style="margin-bottom: 0.5rem;">

@@ -1,47 +1,55 @@
 <h1>Orders</h1>
     <div style="margin-bottom: 1.5rem;">
-        <p-table [value]="orders" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+        <p-table [value]="order" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width:12.5%">Title</th>
-                    <th style="width:12.5%">Description</th>
-                    <th style="width:12.5%">Date</th>
-                    <th style="width:12.5%">Coordinates</th>
-                    <th style="width:12.5%">Cover</th>
-                    <th style="width:12.5%">Tickets</th>
-                    <th style="width:12.5%">Price</th>
-                    <th style="width:12.5%"></th>
+                    <th style="width:18%">User</th>
+                    <th style="width:18%">Title</th>
+                    <th style="width:18%">Date</th>
+                    <th style="width:18%">Tickets</th>
+                    <th style="width:18%">Price</th>
+                    <th style="width:10%"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-event let-editing="editing" let-ri="rowIndex">
-                <tr [pEditableRow]="event">
+                <tr [pEditableRow]="order">
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.code">
+                                <input pInputText type="text" [(ngModel)]="order">
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.code}}
+                                {{order}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.name" required>
+                                <input pInputText type="text" [(ngModel)]="order" required>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.name}}
+                                {{order}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <p-dropdown [options]="statuses" appendTo="body" [(ngModel)]="event.inventoryStatus" [style]="{'width':'100%'}"></p-dropdown>
+                                <input pInputText type="text" [(ngModel)]="order" required>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.inventoryStatus}}
+                                {{order}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="order" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{order}}
                             </ng-template>
                         </p-cellEditor>
                     </td>

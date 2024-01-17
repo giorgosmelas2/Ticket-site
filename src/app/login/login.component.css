@@ -2,6 +2,11 @@ h1{
     margin-bottom: 1.6rem;
 }
 
+.image-background{
+    background: url('../../assets/images/login.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
 .container {
     display: flex;
     align-items: center;
@@ -10,9 +15,10 @@ h1{
 }
 
 .rounded-box {
+    background-color: white;
     border-radius: 10px; /* Adjust the value to change the roundness */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    padding: 0.8rem;
+    box-shadow: 0 0 10px rgba(7, 93, 197, 0.896);
+    padding: 1.8rem;
 }
 
 .centered-box {

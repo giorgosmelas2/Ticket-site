@@ -7,11 +7,7 @@ import { Component } from '@angular/core';
 })
 export class OrdersComponent {
 
-  orders: any[] = [];
-  statuses: { label: string, value: any }[] = [
-    { label: 'Option 1', value: 'value1' },
-    { label: 'Option 2', value: 'value2' },
-  ];
+  order: any[] = [];
 
   onRowEditInit(product: any): void {
     console.log('Editing initiated for product:', product);

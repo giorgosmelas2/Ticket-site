@@ -13,24 +13,52 @@ export class LoginTestComponent {
   username: string = ''; 
   password: string = '';
 
+  showForgotPasswordInput: boolean = false;
+  forgotPasswordEmail: string = '';
+
   
-  onLogin() {
-    const predefinedUsername = 'admin';
-    const predefinedPassword = 'password';
+  async onLogin() {
 
-    if(!this.username || !this.password){
-      alert('Please fill the fields.');
-      return;
-    }
+    // if(!this.username || !this.password){
+    //   alert('Please fill the fields.');
+    //   return;
+    // }
 
-    if(this.username == predefinedUsername && this.password == predefinedPassword){
-      this.authService.login(predefinedUsername);
+    // try{
+    //   const response = await fetch('http://localhost:3500/auth', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     credentials: 'include',
+    //     body: JSON.stringify({
+    //         "usernameOrEmail": this.username, "pwd": this.password
+    //     }),
+    //   });
+
+    //   if(response.ok){
+    //     this.authService.login(this.username);
+    //     this.router.navigate(['/main-content'])
+    //   }
+
+    //   }catch(err){
+    //     console.log(err);
+    //   }
+
+      this.authService.login(this.username);
       this.router.navigate(['/main-content'])
-    }else{
-      alert('wrong')
     }
-    
-   }
 
-   
+    sendForgotPasswordEmail() {
+      if(this.showForgotPasswordInput && this.forgotPasswordEmail){
+        alert('check your emails.')
+        this.showForgotPasswordInput = false;
+        this.forgotPasswordEmail = '';
+      }else{
+        alert('Fill the email field.');
+        return;
+      }
+    }
+
+    
 }

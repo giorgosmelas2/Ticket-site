@@ -23,7 +23,7 @@ export class EventsPageComponent {
   
   description: string = '';
   coordinates: string = '';
-  uploadedCoverUrl: string| null = null;
+  cover: string| null = null;
   tickets: string = '';
   price: string = '';
   selectedCategory: any = '';
@@ -62,10 +62,6 @@ export class EventsPageComponent {
     this.isFullScreen = window.innerWidth > 768; 
   }
 
-  // Uploads the photo
-  onUpload(event: any) {
-  }
-
   //Method called when user clicks submit button
   onSubmit(): void {
     if (
@@ -87,22 +83,22 @@ export class EventsPageComponent {
       return;
     }
 
+
     const newEvent = {
       title: this.title,
       date: this.date,
       coordinates: this.coordinates,
       description: this.description,
       category: this.selectedCategory,
-      cover: this.uploadedCoverUrl,
+      cover: this.uploadedCoverPath,
       tickets: this.tickets,
-      price: this.price,
-
+      price: this.price, 
     };
-    console.log(this.selectedCategory);
 
     this.event.push(newEvent);
     this.dataService.setEvents(this.event);
     this.onClearAdd();
+
   }
 
   onDelete(){
@@ -140,7 +136,16 @@ export class EventsPageComponent {
   }
 
 
+  onUpload(event: any) {
+    const response = JSON.parse(event.xhr.response);
 
+    if (response && response.files && response.files.length > 0) {
+      this.uploadedCoverPath = response.files[0].path; // Save the uploaded image path
+    }
+    
+  }
+
+  //Determines which admin will be edited
   onRowEditInit(event: any): void {
     this.editingEvent= { ...event };
   }
@@ -164,11 +169,11 @@ export class EventsPageComponent {
       if (originalEventIndex !== -1) {
         this.event[originalEventIndex] = { ...this.editingEvent };
       } else {
-        console.error('Original admin not found. Handle this case appropriately.');
+        console.error('Original event not found. Handle this case appropriately.');
       }
     }
     this.editingEvent = null;
   }
-  
+
 
 }

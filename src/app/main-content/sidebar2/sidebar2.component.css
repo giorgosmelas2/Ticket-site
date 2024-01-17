@@ -1,0 +1,12 @@
+.fixed-width {
+    width:133px;
+}
+
+.sidebar-color{
+    background-color: var(--primary-color);
+    color: var(--primary-color-text);
+    width: auto; 
+    position: 
+    fixed; 
+    left: 0;
+}

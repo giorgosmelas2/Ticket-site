@@ -1,80 +1,85 @@
-<div class="flex h-full" style="background-color: black; color: white; width: auto; position: fixed; left: 0;">
-    <div class="overflow-y-auto">
-        <ul class="list-none p-0 m-0 overflow-hidden">
-            <li>
-                <a pRipple class=" flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
-                    style="color:  rgb(49, 48, 48); text-decoration: none;" 
-                    routerLink="/main-content/admin-page" 
-                    routerLinkActive="active" 
-                    aria-current="page">
-                    <i class="pi pi-user mr-2" style="color: white;"></i>
-                    <span  class="font-medium" style="color: white;">Admins</span>
-                </a>
-            </li>
-            <li>
-                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
-                    style="color:  rgb(49, 48, 48); text-decoration: none;" 
-                    routerLink="/main-content/user-page" 
-                    routerLinkActive="active" 
-                    aria-current="page">
-                    <i class="pi pi-users mr-2" style="color: white;"></i>
-                    <span class="font-medium" style="color: white;">Users</span>
-                </a>
-            </li>
-            <li>
-                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
-                    style="color:  rgb(49, 48, 48); text-decoration: none;" 
-                    routerLink="/main-content/categories" 
-                    routerLinkActive="active" 
-                    aria-current="page">
-                    <i class="pi pi-list mr-2" style="color: white;"></i>
-                    <span class="font-medium" style="color: white;">Categories</span>
-                </a>
-            </li>
-            <li>
-                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
-                    style="color: rgb(49, 48, 48); text-decoration: none;" 
-                    routerLink="/main-content/events-page" 
-                    routerLinkActive="active" 
-                    aria-current="page">
-                    <i class="pi pi-search mr-2" style="color: white;"></i>
-                    <span class="font-medium" style="color: white;">Events</span>
-                </a>
-            </li>
-            <li>
-                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
-                    style="color: rgb(49, 48, 48); text-decoration: none;" 
-                    routerLink="/main-content/orders" 
-                    routerLinkActive="active" 
-                    aria-current="page">
-                    <i class="pi pi-euro mr-2" style="color: white;"></i>
-                    <span class="font-medium" style="color: white;">Orders</span>
-                </a>
-            </li>
-        </ul>
-        <div class="mt-auto" style="position: fixed; bottom: 0; width: auto;">
-            <!-- If the user is logged in shows that -->
-            <hr class="mb-3 mx-3 border-top-1 border-none surface-border" />
-            <ng-container *ngIf="isLoggedIn(); else notLoggedIn">
-                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
-                    style="color: rgb(49, 48, 48); text-decoration: none;"  
-                    routerLink="/login" 
-                    routerLinkActive="active" 
-                    aria-current="page"
-                    (click)="onLogout()">
-                    <i class="pi pi-lock-open mr-2" style="color: white;"></i>
-                    <span class="font-medium" style="color: white;">{{ getUsername() }}</span>
-                </a>
-            </ng-container>
-            <!-- If is not shows that -->
-            <ng-template #notLoggedIn>
-                <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-700 transition-duration-150 transition-colors p-ripple"
-                    style="color: rgb(49, 48, 48); width: 100%; box-sizing: border-box; display: flex; text-decoration: none;">
-                    <i class="pi pi-lock mr-2" style="color: white;"></i>
-                    <span class="font-medium" style="color: white;">Log in</span>
-                </a>
-            </ng-template>
+
+    <div class="flex h-full sidebar-color">
+        <div class="overflow-y-auto">
+            <ul class="list-none p-0 m-0 overflow-hidden">
+                <li>
+                    <a pRipple class=" flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
+                        style="text-decoration: none;" 
+                        routerLink="/main-content/admin-page" 
+                        routerLinkActive="active" 
+                        aria-current="page">
+                        <i class="pi pi-user mr-2" style="color: white;"></i>
+                        <span  class="font-medium" style="color: white;">Admins</span>
+                    </a>
+                </li>
+                <li>
+                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
+                        style="text-decoration: none;" 
+                        routerLink="/main-content/user-page" 
+                        routerLinkActive="active" 
+                        aria-current="page">
+                        <i class="pi pi-users mr-2" style="color: white;"></i>
+                        <span class="font-medium" style="color: white;">Users</span>
+                    </a>
+                </li>
+                <li>
+                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
+                        style="text-decoration: none;" 
+                        routerLink="/main-content/categories" 
+                        routerLinkActive="active" 
+                        aria-current="page">
+                        <i class="pi pi-list mr-2" style="color: white;"></i>
+                        <span class="font-medium" style="color: white;">Categories</span>
+                    </a>
+                </li>
+                <li>
+                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
+                        style="text-decoration: none;" 
+                        routerLink="/main-content/events-page" 
+                        routerLinkActive="active" 
+                        aria-current="page">
+                        <i class="pi pi-search mr-2" style="color: white;"></i>
+                        <span class="font-medium" style="color: white;">Events</span>
+                    </a>
+                </li>
+                <li>
+                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
+                        style="text-decoration: none;" 
+                        routerLink="/main-content/orders" 
+                        routerLinkActive="active" 
+                        aria-current="page">
+                        <i class="pi pi-euro mr-2" style="color: white;"></i>
+                        <span class="font-medium" style="color: white;">Orders</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="mt-auto" style="position: fixed; bottom: 0; width: auto;">
+                <!-- If the user is logged in shows that -->
+                <hr class="mb-3 mx-3 border-top-1 border-none surface-border" />
+                <div *ngIf="!isLoggedIn()" class="fixed-width">
+                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
+                        style=" box-sizing: border-box; display: flex; text-decoration: none;">
+                        <i class="pi pi-lock mr-2" style="color: white;"></i>
+                        <span class="font-medium" style="color: white;">Log in</span>
+                    </a>
+                </div>
+    
+                <!-- If is not shows that -->
+                <div *ngIf="isLoggedIn()" class="fixed-width">
+                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
+                        style="text-decoration: none;"  
+                        routerLink="/login" 
+                        routerLinkActive="active" 
+                        aria-current="page"
+                        (click)="onLogout()">
+                        <i class="pi pi-lock-open mr-2" style="color: white;"></i>
+                        <span class="font-medium" style="color: white;">{{ getUsername() }}</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+
+
+
 

@@ -49,19 +49,12 @@ export class DataService {
   setEvents(data: any[]): void{
     localStorage.setItem(this.localStorageKeyEvens, JSON.stringify(data));
   }
-  
-  uploadEventCoverLocally(file: File): Observable<string> {
-    // Simulate saving the file locally and returning its path
-    const reader = new FileReader();
 
-    return new Observable<string>((observer) => {
-      reader.onloadend = () => {
-        observer.next(reader.result as string);
-        observer.complete();
-      };
-
-      reader.readAsDataURL(file);
+  associateEventsWithCategories(categories: any[], events: any[]): any[] {
+    return events.map(event => {
+      const associatedCategory = categories.find(category => category.title === event.category);
+      return { ...event, category: associatedCategory };
     });
   }
-
+  
 }

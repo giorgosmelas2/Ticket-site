@@ -4,26 +4,23 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private isLoggedIn = false;
+  private readonly USER_KEY = 'currentUser';
   private currentUser: string | null = null;
 
+
   login(username: string) {
-    this.currentUser = username; // This variable is used for print the username in the down button in sidebar 
-    this.isLoggedIn = true;
+    localStorage.setItem(this.USER_KEY, username); // This variable is used for print the username in the down button in sidebar 
   }
 
   logout() {
-    this.currentUser = null; //when the user is logged out the log in text appears again
-    this.isLoggedIn = false;
+    localStorage.removeItem(this.USER_KEY);//when the user is logged out the log in text appears again
   }
 
-  //With this methods componets can check if user is logged in to show their content
   isAuthenticated(): boolean {
-    return this.isLoggedIn;
+    return !!localStorage.getItem(this.USER_KEY);
   }
-
 
   getCurrentUser(): string | null {
-    return this.currentUser;
+    return localStorage.getItem(this.USER_KEY);
   }
 }

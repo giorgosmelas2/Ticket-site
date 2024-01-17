@@ -31,11 +31,13 @@ export class CategoriesComponent {
     { label: 'Option 2', value: 'value2' },
   ];
 
-  // //This method is called when the component initializes
+  //This method is called when the component initializes
   ngOnInit(): void {
     const storedEntries = localStorage.getItem('categories_entries');
     this.entries = this.dataService.getEntries();
     this.categories = this.dataService.getEntries();
+    const events = this.dataService.getEvents();
+
     this.formSubmitted = true;
     
     this.checkLayout();
@@ -52,10 +54,6 @@ export class CategoriesComponent {
     this.isFullScreen = window.innerWidth > 768; 
   }
 
-  //Checks if user has logged in
-  isLoggedIn(): boolean {
-    return this.authService.isAuthenticated();
-  }
 
   //When the submit button is clicked a new table is added
   onSubmit(): void {
@@ -104,21 +102,6 @@ export class CategoriesComponent {
       // Clear the selected category after deletion
       this.selectedCategory = '';
     }
-  }
-  
-  onRowEditInit(product: any): void {
-    console.log('Editing initiated for product:', product);
-    // Rest of the implementation
-  }
-
-  onRowEditSave(product: any): void {
-    console.log('Editing initiated for product:', product);
-    // Rest of the implementation
-  }
-
-  onRowEditCancel(product: any): void {
-    console.log('Editing initiated for product:', product);
-    // Rest of the implementation
   }
 
 }

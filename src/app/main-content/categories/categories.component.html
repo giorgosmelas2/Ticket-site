@@ -1,5 +1,5 @@
 <h1>Categories</h1>
-<div *ngIf="formSubmitted">
+<!-- <div *ngIf="formSubmitted">
     <div *ngFor="let entry of entries; let i = index" style="margin-bottom: 1.5rem;">
         <h3>{{ entry.title }}</h3>
         <div style="margin-bottom: 0.5rem;">
@@ -21,20 +21,20 @@
                         <td>
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="event.code">
+                                    <input pInputText type="text" [(ngModel)]="event.title">
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{event.code}}
+                                    {{event.title}}
                                 </ng-template>
                             </p-cellEditor>
                         </td>
                         <td>
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="event.name" required>
+                                    <input pInputText type="text" [(ngModel)]="event.de" required>
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{event.name}}
+                                    {{event.description}}
                                 </ng-template>
                             </p-cellEditor>
                         </td>
@@ -72,11 +72,11 @@
         </div>
         
     </div>
-</div>
+</div> -->
 
 <div class="container" [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
     <div class="outside-box-left">
-        <p-panel header="Add category" [toggleable]="true"  [collapsed]="!isPanelOpen">
+        <p-panel header="Add category" [toggleable]="false"  >
             <div class="centered">
                 <div style="margin-bottom: 0.5rem;">
                     <h5>Title</h5>
@@ -93,7 +93,7 @@
     </div>
 
     <div class="outside-box-right">
-        <p-panel header="Delete category" [toggleable]="true"  [collapsed]="!isPanelOpen">
+        <p-panel header="Delete category" [toggleable]="false">
             <div class="centered">
                 <div style="margin-bottom: 0.5rem;">
                     <h5>Select category by title</h5>
