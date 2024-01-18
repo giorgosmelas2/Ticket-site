@@ -29,17 +29,17 @@ export class LoginTestComponent {
     //     method: 'POST',
     //     headers: {
     //         'Content-Type': 'application/json',
-    //     },
+    //       },
     //     credentials: 'include',
-    //     body: JSON.stringify({
+    //     body: JSON.stringify({  
     //         "usernameOrEmail": this.username, "pwd": this.password
-    //     }),
-    //   });
+    //       }),
+    //     });
 
-    //   if(response.ok){
-    //     this.authService.login(this.username);
-    //     this.router.navigate(['/main-content'])
-    //   }
+    //     if(response.ok){
+    //       this.authService.login(this.username);
+    //       this.router.navigate(['/main-content'])
+    //     }
 
     //   }catch(err){
     //     console.log(err);

@@ -3,8 +3,8 @@ h1{
 }
 
 .image-background{
-    background: url('../../assets/images/login.jpg') no-repeat center center fixed;
-    background-size: cover;
+    background: url('/assets/login.jpg') no-repeat center center fixed; 
+    background-size: cover; 
 }
 
 .container {

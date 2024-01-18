@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import {Routes} from '@angular/router';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { CalendarModule } from 'primeng/calendar';
@@ -21,9 +19,9 @@ import { ButtonModule} from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { SidebarModule } from 'primeng/sidebar';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminPageComponent } from './main-content/admin-page/admin-page.component';
 import { UserPageComponent } from './main-content/user-page/user-page.component';
 import { MainContentComponent } from './main-content/main-content.component';

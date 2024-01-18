@@ -14,7 +14,7 @@
 body {
     position: relative;
     font-family: 'Roboto', sans-serif;
-    background-color: white; 
+    background-color: #eeeeee; 
 }
 
 .card {
@@ -35,6 +35,10 @@ body {
     .card-body {
         padding: 1rem 1.5rem; 
     }
+}
+
+h1{
+    margin-bottom: 0.8rem;
 }
 
 h4{
@@ -120,4 +124,34 @@ h4{
 .btn-dark:hover {
     background-color: var(--primary-color); 
 }
+
+.p-panel-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem;
+}
+
+.p-panel{
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+}
+
+.p-panel-header-icon{
+    color: white;
+}
+
+
+
+table{
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+}
+
+th{
+    background-color: var(--primary-color) ;
+    color: white;
+    padding: 0.5rem;
+}
+
+
 

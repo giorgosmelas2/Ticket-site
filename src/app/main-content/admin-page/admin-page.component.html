@@ -1,9 +1,9 @@
 <h1>Admins</h1>
 <div style="margin-bottom: 1.5rem;">
     <p-table [value]="admin" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-        <ng-template pTemplate="header">
+        <ng-template pTemplate="header" >
             <tr>
-                <th style="width:25%">User ID</th>
+                <th style="width:25%">Admin ID</th>
                 <th style="width:25%">Username</th>
                 <th style="width:25%">Password</th>
                 <th style="width:25%"></th>
@@ -55,7 +55,7 @@
 
 <div class="container" [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
     <div class="outside-box-left">
-        <p-panel class="blue-panel" header="Add admin" [toggleable]="true"  [collapsed]="!isPanelOpen">
+        <p-panel header="Add admin" [toggleable]="true"  [collapsed]="!isPanelOpen">
             <div class="centered">
                 <div class="container">
                     <div class="insidebox-left">
@@ -89,7 +89,7 @@
     </div>
     
     <div class="outside-box-right">
-        <p-panel header="Delete admin" [toggleable]="true"  [collapsed]="!isPanelOpen">
+        <p-panel header="Delete admin" [toggleable]="true"  [collapsed]="!isPanelOpen" >
             <div class="centered">
                 <div style="margin-bottom: 0.5rem;">
                     <h5>Delete Admin by ID</h5>
