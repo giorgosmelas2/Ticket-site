@@ -19,34 +19,36 @@ export class LoginTestComponent {
   
   async onLogin() {
 
-    // if(!this.username || !this.password){
-    //   alert('Please fill the fields.');
-    //   return;
-    // }
+    if(!this.username || !this.password){
+      alert('Please fill the fields.');
+      return;
+    }
 
-    // try{
-    //   const response = await fetch('http://localhost:3500/auth', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     credentials: 'include',
-    //     body: JSON.stringify({  
-    //         "usernameOrEmail": this.username, "pwd": this.password
-    //       }),
-    //     });
+    try{
+      const response = await fetch('http://localhost:3500/auth', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+          },
+        credentials: 'include',
+        body: JSON.stringify({  
+            "usernameOrEmail": this.username, "pwd": this.password
+          }),
+        });
 
-    //     if(response.ok){
-    //       this.authService.login(this.username);
-    //       this.router.navigate(['/main-content'])
-    //     }
+        if(response.ok){
+          this.authService.login(this.username);
+          this.router.navigate(['/main-content'])
+        }else{
+          alert('Wrong username or password.')
+        }
 
-    //   }catch(err){
-    //     console.log(err);
-    //   }
+      }catch(err){
+        console.log(err);
+      }
 
-      this.authService.login(this.username);
-      this.router.navigate(['/main-content'])
+      // this.authService.login(this.username);
+      // this.router.navigate(['/main-content'])
     }
 
     sendForgotPasswordEmail() {

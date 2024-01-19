@@ -3,7 +3,7 @@
         <div class="overflow-y-auto">
             <ul class="list-none p-0 m-0 overflow-hidden">
                 <li>
-                    <a pRipple class=" flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
+                    <a pRipple class=" flex align-items-center cursor-pointer p-3 border-round text-700 hover-color transition-duration-150 transition-colors p-ripple"
                         style="text-decoration: none;" 
                         routerLink="/main-content/admin-page" 
                         routerLinkActive="active" 
@@ -13,8 +13,8 @@
                     </a>
                 </li>
                 <li>
-                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
-                        style="text-decoration: none;" 
+                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover-color transition-duration-150 transition-colors p-ripple"
+                    style="text-decoration: none;" 
                         routerLink="/main-content/user-page" 
                         routerLinkActive="active" 
                         aria-current="page">
@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li>
-                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
+                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover-color transition-duration-150 transition-colors p-ripple"
                         style="text-decoration: none;" 
                         routerLink="/main-content/categories" 
                         routerLinkActive="active" 
@@ -33,7 +33,7 @@
                     </a>
                 </li>
                 <li>
-                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
+                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover-color transition-duration-150 transition-colors p-ripple"
                         style="text-decoration: none;" 
                         routerLink="/main-content/events-page" 
                         routerLinkActive="active" 
@@ -43,7 +43,7 @@
                     </a>
                 </li>
                 <li>
-                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
+                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover-color transition-duration-150 transition-colors p-ripple"
                         style="text-decoration: none;" 
                         routerLink="/main-content/orders" 
                         routerLinkActive="active" 
@@ -54,19 +54,9 @@
                 </li>
             </ul>
             <div class="mt-auto" style="position: fixed; bottom: 0; width: auto;">
-                <!-- If the user is logged in shows that -->
                 <hr class="mb-3 mx-3 border-top-1 border-none surface-border" />
-                <div *ngIf="!isLoggedIn()" class="fixed-width">
-                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
-                        style=" box-sizing: border-box; display: flex; text-decoration: none;">
-                        <i class="pi pi-lock mr-2" style="color: white;"></i>
-                        <span class="font-medium" style="color: white;">Log in</span>
-                    </a>
-                </div>
-    
-                <!-- If is not shows that -->
-                <div *ngIf="isLoggedIn()" class="fixed-width">
-                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-400 transition-duration-150 transition-colors p-ripple"
+                <div class="fixed-width">
+                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 logout-button transition-duration-150 transition-colors p-ripple"
                         style="text-decoration: none;"  
                         routerLink="/login" 
                         routerLinkActive="active" 

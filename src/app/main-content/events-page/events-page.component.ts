@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { AuthenticationService } from '../../authentication-service/authentication.service';
 import { DataService } from '../../data-services/data.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-events-page',
@@ -10,7 +11,7 @@ import { DataService } from '../../data-services/data.service';
 })
 
 export class EventsPageComponent {
-  constructor(private authService: AuthenticationService, private dataService: DataService) {}
+  constructor(private authService: AuthenticationService, private dataService: DataService, private messageService: MessageService) {}
 
   isFullScreen: boolean = true;
   isPanelOpen =  false;
@@ -41,6 +42,11 @@ export class EventsPageComponent {
     { label: 'Option 1', value: 'value1' },
     { label: 'Option 2', value: 'value2' },
   ];
+
+  //Method for toast messages
+  private showToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
+  }
 
   //This method is called when the component initializes
   ngOnInit(): void {
@@ -73,13 +79,13 @@ export class EventsPageComponent {
       !this.tickets ||
       !this.date
     ) {
-      alert('Please fill all fields before submitting.');
+      this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
       return;
     }
 
     const isDublicateTitle = this.event.find(e => e.title === this.title);
     if(isDublicateTitle){
-      alert('An event has the same title, please select another title.');
+      this.showToast('warn', 'Warning', 'An event has the same title, please select another title.');
       return;
     }
 
@@ -98,12 +104,12 @@ export class EventsPageComponent {
     this.event.push(newEvent);
     this.dataService.setEvents(this.event);
     this.onClearAdd();
-
+    this.showToast('success', 'Success', 'Event added successfully.');
   }
 
   onDelete(){
     if (!this.deleteEventTitle) {
-      alert('Please enter the Admin ID to delete.');
+      this.showToast('warn', 'Warning', 'Please enter the Event title to delete.');
       return;
     }
 
@@ -164,7 +170,7 @@ export class EventsPageComponent {
   //Discards the changes
   onRowEditCancel(event: any): void {
     if (this.editingEvent) {
-      const originalEventIndex = this.event.findIndex(e => e.id === this.editingEvent.title);
+      const originalEventIndex = this.event.findIndex(e => e.title === this.editingEvent.title);
 
       if (originalEventIndex !== -1) {
         this.event[originalEventIndex] = { ...this.editingEvent };

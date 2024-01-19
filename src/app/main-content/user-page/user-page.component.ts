@@ -3,6 +3,7 @@ import { HostListener } from '@angular/core';
 import { AuthenticationService } from '../../authentication-service/authentication.service';
 import { DataService } from '../../data-services/data.service';
 import { HttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-user-page',
@@ -10,10 +11,11 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './user-page.component.css'
 })
 export class UserPageComponent {
-  constructor(private authService: AuthenticationService, private dataService: DataService) {}
+  constructor(private authService: AuthenticationService, private dataService: DataService, private http: HttpClient, private messageService: MessageService) {}
 
   isPanelOpen =  false;
   isFullScreen: boolean = true;
+  isLoading = true; 
 
   userID: string = '';
   username: string = '';
@@ -25,11 +27,31 @@ export class UserPageComponent {
   deleteUserID: string = '';
   editingUser: any;
 
+
+  //Method for toast messages
+  private showToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
+  }
+
   //This method is called when the component initializes
   ngOnInit(): void {
-    const storedAdmins = localStorage.getItem('users_add');
-    this.user = this.dataService.getUsers();
     this.checkLayout();
+
+    this.http.get<any[]>('http://localhost:3500/users')
+      .subscribe(
+        (data) => {
+          this.user = data;
+          this.isLoading = false;
+          
+          console.log(this.user);
+        },
+        (error) => {
+          console.error('Error fetching users from API:', error);
+          this.isLoading = false;
+        }
+      );
+
+    
   }
 
   //Checks any change in the window
@@ -51,29 +73,29 @@ export class UserPageComponent {
   //Method called when user clicks submit button
   onSubmit(): void {
     if(!this.userID || !this.username || !this.password || !this.totalMoneySpend || !this.totalTicketsBuyed){
-      alert('Please fill all flieds before submit');
+      this.showToast('warn', 'Warning', 'Please fill all flieds before submit');
+      return;
     }
 
     const isDuplicateID = this.user.find(u => u.id === this.userID);
     if (isDuplicateID) {
-      alert('An admin with the same ID already exists. Please use a different ID.');
+      this.showToast('warn', 'Warning', 'An admin with the same ID already exists. Please use a different ID.');
       return;
     }
 
     if(this.userID < '1'){
-      alert('Invalid ID.');
+      this.showToast('warn', 'Warning', 'Invalid ID.');
       return;
     }
 
-    const newUser = {id: this.userID, username: this.username, password: this.password, totalMoneySpend: this.totalMoneySpend, totalTicketsBuyed: this.totalTicketsBuyed};
-    this.user.push(newUser);
-    this.dataService.setUsers(this.user);
+    const newUser = {uid: this.userID, email: '', username: this.username, role: 5150, total_tickets: this.totalTicketsBuyed, total_money_spend:this.totalMoneySpend, password: this.password};
     this.onClearAdd();
+    this.showToast('success', 'Success', 'User added successfully.');
   }
 
   onDelete(): void {
     if (!this.deleteUserID) {
-      alert('Please enter the Admin ID to delete.');
+      this.showToast('warn', 'Warning', 'Please enter the User ID to delete.');
       return;
     }
 
@@ -91,6 +113,17 @@ export class UserPageComponent {
     } else {
       alert('Admin not found with the specified ID.');
     }
+  }
+
+  getFirst12Characters(inputString: string): string {
+    const maxLength = 12;
+
+    if (inputString.length <= maxLength) {
+      return inputString;
+    } else {
+      return inputString.substring(0, maxLength) + '...';
+    }
+  
   }
 
   //Method called when user clicks the clear button to clear the fields
@@ -111,19 +144,28 @@ export class UserPageComponent {
   }
 
   onRowEditSave(user: any): void {
-    // Find the index of the edited admin in the admin array
-    const index = this.user.findIndex(u => u.id === user.id);
+    console.log('onRowEditSave called with user:', user);
+    const index = this.user.findIndex(u => u.uid === user.uid);
 
+    console.log('Index found:', index);
     if (index !== -1) {
-      // Update the admin in the array with the edited values
-      this.user[index] = { ...user };
-      
-      // Save the updated data to local storage
-      this.dataService.setUsers(this.user);
-    }
+      this.http.put(`http://localhost:3500/users/${user.uid}`, user)
+        .subscribe(
+          (updatedUser) => {
+            // The API may return the updated user; use it if needed
+            console.log('User updated successfully:', updatedUser);
 
-    // Reset the editingAdmin
-    this.editingUser = null
+            // You may choose to update the local array or perform additional actions
+            // For example, you can update the local array if you still need it:
+            this.user[index] = { ...user };
+            this.editingUser = null; // Reset the editingUser
+          },
+          (error) => {
+            console.error('Error updating user:', error);
+            // Handle the error as needed
+          }
+        );
+    }
   }
 
   onRowEditCancel(user: any): void {

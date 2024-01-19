@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { DataService } from '../../data-services/data.service';
 import { AuthenticationService } from '../../authentication-service/authentication.service';
 
+
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
@@ -13,7 +14,7 @@ import { AuthenticationService } from '../../authentication-service/authenticati
 
 export class CategoriesComponent {
 
-  constructor(private authService: AuthenticationService, private dataService: DataService) {}
+  constructor(private authService: AuthenticationService, private dataService: DataService, private messageService: MessageService) {}
 
   isFullScreen: boolean = true;
   isPanelOpen =  false;
@@ -26,10 +27,10 @@ export class CategoriesComponent {
   selectedCategory: any = '';
   categories: any[] = [];
 
-  statuses: { label: string, value: any }[] = [
-    { label: 'Option 1', value: 'value1' },
-    { label: 'Option 2', value: 'value2' },
-  ];
+  //Method for toast messages
+  private showToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
+  }
 
   //This method is called when the component initializes
   ngOnInit(): void {
@@ -58,7 +59,7 @@ export class CategoriesComponent {
   //When the submit button is clicked a new table is added
   onSubmit(): void {
     if (!this.input) {
-      alert('Please fill in the field before submitting.');
+      this.showToast('warn', 'Warning', 'Please fill the title field before submitting.');
       return;
     }else{
       const newEntry = { 
@@ -86,7 +87,7 @@ export class CategoriesComponent {
   onDelete() {
 
     if (!this.selectedCategory) {
-      alert('Please select a category before deleting.');
+      this.showToast('warn', 'Warning', 'Please select a category before deleting.');
       return;
     }
 

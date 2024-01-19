@@ -1,79 +1,87 @@
 <h1>Users</h1>
-<div style="margin-bottom: 1.5rem;">
-    <p-table [value]="user" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width:16.6">User ID</th>
-                <th style="width:16.6">Username</th>
-                <th style="width:16.6">Password</th>
-                <th style="width:16.6">Total money spend</th>
-                <th style="width:16.6">Total tickets buyed</th>
-                <th style="width:16.6"></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-user let-editing="editing" let-ri="rowIndex">
-            <tr [pEditableRow]="user">
-                <td>
-                    <p-cellEditor>
-                        <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="user.id">
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                            {{user.id}}
-                        </ng-template>
-                    </p-cellEditor>
-                </td>
-                <td>
-                    <p-cellEditor>
-                        <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="user.username" required>
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                            {{user.username}}
-                        </ng-template>
-                    </p-cellEditor>
-                </td>
-                <td>
-                    <p-cellEditor>
-                        <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="user.password">
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                            {{user.password}}
-                        </ng-template>
-                    </p-cellEditor>
-                </td>
-                <td>
-                    <p-cellEditor>
-                        <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="user.totalMoneySpend">
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                            {{user.totalMoneySpend | currency: 'USD'}}
-                        </ng-template>
-                    </p-cellEditor>
-                </td>
-                <td>
-                    <p-cellEditor>
-                        <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="user.totalTicketsBuyed">
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                            {{user.totalTicketsBuyed}}
-                        </ng-template>
-                    </p-cellEditor>
-                </td>
-                <td>
-                    <div class="flex align-items-center justify-content-center gap-2">
-                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(user)" class="p-button-rounded p-button-text"></button>
-                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(user)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(user)" class="p-button-rounded p-button-text p-button-danger"></button>
-                    </div>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+<div *ngIf="isLoading; else usersTable">
+    <!-- Display a loading indicator while data is being fetched -->
+    <p-progressSpinner></p-progressSpinner>
 </div>
+
+<ng-template #usersTable>
+    <div style="margin-bottom: 1.5rem;">
+        <p-table [value]="user" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:16.6">User ID</th>
+                    <th style="width:16.6">Username</th>
+                    <th style="width:16.6">Password</th>
+                    <th style="width:16.6">Total tickets buyed</th>
+                    <th style="width:16.6">Total money spend</th>
+                    <th style="width:16.6"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-user let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="user">
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="user.uid">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{getFirst12Characters(user.uid)}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="user.username" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{user.username}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="user.password">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{getFirst12Characters(user.password)}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="user.total_money_spend">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{user.total_money_spend}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="user.total_tickets">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{user.total_tickets | currency: 'USD'}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <div class="flex align-items-center justify-content-center gap-2">
+                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(user)" class="p-button-rounded p-button-text"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(user)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(user)" class="p-button-rounded p-button-text p-button-danger"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</ng-template>
+
 <div class="container" [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
     <div class="outside-box-left">
         <p-panel header="Add user" [toggleable]="true"  [collapsed]="!isPanelOpen">
@@ -133,5 +141,5 @@
             </div>
         </p-panel>
     </div>
-    
 </div>  
+<p-toast position="bottom-center" key="bottomCenter"></p-toast>

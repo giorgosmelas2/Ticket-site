@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap'); 
 @import 'primeng/resources/themes/saga-blue/theme.css';
- @import 'primeng/resources/primeng.min.css';
+@import 'primeng/resources/primeng.min.css';
 @import 'primeicons/primeicons.css';
 /* @import 'primeng/resources/themes/viva-dark/theme.css'; */
 
@@ -44,6 +44,7 @@ h1{
 h4{
     font-size: 1.3rem;
 }
+
 
 .container{
     display: flex;
@@ -138,8 +139,16 @@ h4{
 
 .p-panel-header-icon{
     color: white;
+    
 }
 
+.p-panel-header-icon:hover{
+    background-color: var(--blue-600)
+}
+
+.p-progress-spinner-circle{
+    color: var(--primary-color);
+}
 
 
 table{
@@ -151,6 +160,19 @@ th{
     background-color: var(--primary-color) ;
     color: white;
     padding: 0.5rem;
+}
+
+.hover-color:hover {
+    background-color: var(--blue-600);
+}
+
+.logout-button:hover {
+    background-color: var(--blue-600);
+}
+
+.logout-button:hover::after {
+    content: "Log out";
+    color: white;
 }
 
 

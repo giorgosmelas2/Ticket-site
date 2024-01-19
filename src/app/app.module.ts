@@ -20,6 +20,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { SidebarModule } from 'primeng/sidebar';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { AppComponent } from './app.component';
 import { AdminPageComponent } from './main-content/admin-page/admin-page.component';
@@ -32,6 +33,7 @@ import { OrdersComponent } from './main-content/orders/orders.component';
 import { LoginTestComponent } from './login/login.component';
 import { Sidebar2Component } from './main-content/sidebar2/sidebar2.component';
 
+import { MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -73,9 +75,11 @@ import { Sidebar2Component } from './main-content/sidebar2/sidebar2.component';
     CardModule,
     SidebarModule,
     CascadeSelectModule,
+    ProgressSpinnerModule
   ],
 
   providers: [
+    MessageService,
     provideClientHydration()
   ],
 

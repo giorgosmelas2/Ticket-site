@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { AuthenticationService } from '../../authentication-service/authentication.service';
 import { DataService } from '../../data-services/data.service';
-
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-page',
@@ -12,7 +12,7 @@ import { DataService } from '../../data-services/data.service';
 })
 
 export class AdminPageComponent {
-  constructor(private authService: AuthenticationService, private dataService: DataService) {}
+  constructor(private authService: AuthenticationService, private dataService: DataService, private messageService: MessageService) {}
  
   isFullScreen: boolean = true;
   isPanelOpen =  false;
@@ -23,10 +23,15 @@ export class AdminPageComponent {
   
   admin: any[] = [];
 
+
   deleteAdminID: string = '';
   editingAdmin: any;
 
-  
+  //Method for toast messages
+  private showToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
+  }
+
   //This method is called when the component initializes
   ngOnInit(): void {
     const storedAdmins = localStorage.getItem('admins_add');
@@ -49,18 +54,18 @@ export class AdminPageComponent {
   //Method called when user clicks submit button
   onSubmit(): void {
     if(!this.adminID || !this.username || !this.password){
-      alert('Please fill all flieds before submit');
-      return
+      this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
+      return;
     }
 
     const isDuplicateID = this.admin.find(a => a.id === this.adminID);
     if (isDuplicateID) {
-      alert('An admin with the same ID already exists. Please use a different ID.');
+      this.showToast('warn', 'Warning', 'An admin with the same ID already exists. Please use a different ID.');
       return;
     }
 
     if(this.adminID < '1'){
-      alert('Invalid ID.');
+      this.showToast('warn', 'Warning', 'Invalid ID.');
       return;
     }
 
@@ -69,11 +74,13 @@ export class AdminPageComponent {
     this.admin.push(newAdmin);
     this.dataService.setAdmins(this.admin);
     this.onClearAdd();
+
+    this.showToast('success', 'Success', 'Admin added successfully.');
   }
 
   onDelete(): void {
     if (!this.deleteAdminID) {
-      alert('Please enter the Admin ID to delete.');
+      this.showToast('warn', 'Warning', 'Please enter the Admin ID to delete.');
       return;
     }
 

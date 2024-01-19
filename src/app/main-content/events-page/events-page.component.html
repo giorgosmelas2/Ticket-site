@@ -1,6 +1,6 @@
 <h1>Events</h1>
  <div style="margin-bottom: 1.5rem;">
-    <p-table [value]="event" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+    <p-table [value]="event" dataKey="title" editMode="row" [tableStyle]="{'min-width': '50rem'}">
         <ng-template pTemplate="header">
             <tr>
                 <th style="width:10%">Title</th>
@@ -218,23 +218,24 @@
         </p-panel>
    </div>
    <div class="outside-box-right">
-    <p-panel header="Delete event" [toggleable]="true"  [collapsed]="!isPanelOpen">
-        <div class="centered">
-            <div style="margin-bottom: 0.5rem;">
-                <h5>Delete event by title</h5>
-                <input type="text" pInputText [(ngModel)]="deleteEventTitle" />        
+        <p-panel header="Delete event" [toggleable]="true"  [collapsed]="!isPanelOpen">
+            <div class="centered">
+                <div style="margin-bottom: 0.5rem;">
+                    <h5>Delete event by title</h5>
+                    <input type="text" pInputText [(ngModel)]="deleteEventTitle" />        
+                </div>
             </div>
-        </div>
-        <div class="centered">  
-            <div class="button-container">
-                <button type="button" class="btn btn-dark" (click)="onClearDelete()">Clear</button>
-                <button type="button" class="btn btn-dark" (click)="onDelete()">Delete</button>
+            <div class="centered">  
+                <div class="button-container">
+                    <button type="button" class="btn btn-dark" (click)="onClearDelete()">Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onDelete()">Delete</button>
+                </div>
             </div>
-        </div>
-    </p-panel>
-</div>  
+        </p-panel>
+    </div>  
     
 </div>  
+<p-toast position="bottom-center" key="bottomCenter"></p-toast>
 
 
 
