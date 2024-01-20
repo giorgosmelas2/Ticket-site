@@ -11,14 +11,6 @@ export class Sidebar2Component {
   constructor(private authService: AuthenticationService) {}
 
   buttonText: string = '';
-  
-  getText(text: string){
-    return text;
-  }
-
-  changeText(newText: string): void {
-    this.buttonText = newText;
-  }
 
   isLoggedIn(): boolean {
     return this.authService.isAuthenticated();
@@ -30,6 +22,16 @@ export class Sidebar2Component {
 
   getUsername(): string | null {
     return this.authService.getCurrentUser();
+  }
+
+  //Changes text on hover
+  onMouseEnter() {
+    this.buttonText = 'Logout';
+  }
+
+  //Resets the username
+  onMouseLeave() {
+    this.buttonText = this.getUsername() || '';
   }
 
 }

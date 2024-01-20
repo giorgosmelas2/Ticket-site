@@ -3,6 +3,7 @@ import { HostListener } from '@angular/core';
 import { AuthenticationService } from '../../authentication-service/authentication.service';
 import { DataService } from '../../data-services/data.service';
 import { MessageService } from 'primeng/api';
+import { EventsServiceService } from '../../api-services/events-service/events-service.service';
 
 @Component({
   selector: 'app-events-page',
@@ -11,10 +12,15 @@ import { MessageService } from 'primeng/api';
 })
 
 export class EventsPageComponent {
-  constructor(private authService: AuthenticationService, private dataService: DataService, private messageService: MessageService) {}
+
+  constructor(private authService: AuthenticationService, 
+    private dataService: DataService, 
+    private messageService: MessageService,
+    private eventService: EventsServiceService) {}
 
   isFullScreen: boolean = true;
   isPanelOpen =  false;
+  isLoading = true; 
 
   uploadedCoverPath: string | null = null;
   
@@ -49,12 +55,20 @@ export class EventsPageComponent {
   }
 
   //This method is called when the component initializes
-  ngOnInit(): void {
-    const storedEntries = localStorage.getItem('categories_entries');
-    this.categories = this.dataService.getEntries();
-    this.event = this.dataService.getEvents();
-    
+  ngOnInit(): void {  
     this.checkLayout();
+    this.eventService.getAllEvents()
+      .subscribe(
+        (data) => {
+          this.event = data;
+          this.isLoading = false;
+        },
+        (error) => {
+          this.showToast('error', 'Error', 'Error loading users.');
+          this.isLoading = false;
+        }
+      );
+      console.log(this.event);
   }
 
   //Checks any change in the window

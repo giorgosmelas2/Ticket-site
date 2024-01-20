@@ -4,6 +4,7 @@ import { AuthenticationService } from '../../authentication-service/authenticati
 import { DataService } from '../../data-services/data.service';
 import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
+import { UserServiceService } from '../../api-services/user-services/user-service.service';
 
 @Component({
   selector: 'app-user-page',
@@ -11,7 +12,12 @@ import { MessageService } from 'primeng/api';
   styleUrl: './user-page.component.css'
 })
 export class UserPageComponent {
-  constructor(private authService: AuthenticationService, private dataService: DataService, private http: HttpClient, private messageService: MessageService) {}
+  
+  constructor(private authService: AuthenticationService, 
+    private dataService: DataService, 
+    private http: HttpClient, 
+    private messageService: MessageService,
+    private userService: UserServiceService) {}
 
   isPanelOpen =  false;
   isFullScreen: boolean = true;
@@ -37,21 +43,17 @@ export class UserPageComponent {
   ngOnInit(): void {
     this.checkLayout();
 
-    this.http.get<any[]>('http://localhost:3500/users')
+    this.userService.getAllUsers()
       .subscribe(
         (data) => {
           this.user = data;
           this.isLoading = false;
-          
-          console.log(this.user);
         },
         (error) => {
-          console.error('Error fetching users from API:', error);
+          this.showToast('error', 'Error', 'Error loading users.');
           this.isLoading = false;
         }
       );
-
-    
   }
 
   //Checks any change in the window
@@ -115,6 +117,7 @@ export class UserPageComponent {
     }
   }
 
+  //Shows only 12 chars in the matrix's cells
   getFirst12Characters(inputString: string): string {
     const maxLength = 12;
 
@@ -126,7 +129,7 @@ export class UserPageComponent {
   
   }
 
-  //Method called when user clicks the clear button to clear the fields
+  //Method called when user clicks the clear button to clear the fields 
   onClearAdd(): void {
     this.userID = '';
     this.username = '';
@@ -135,6 +138,7 @@ export class UserPageComponent {
     this.totalTicketsBuyed = '';
   }
 
+  //Method called when user clicks the clear button to clear the fields
   onClearDelete(){
     this.deleteUserID = '';
   }
@@ -144,28 +148,18 @@ export class UserPageComponent {
   }
 
   onRowEditSave(user: any): void {
-    console.log('onRowEditSave called with user:', user);
-    const index = this.user.findIndex(u => u.uid === user.uid);
-
-    console.log('Index found:', index);
-    if (index !== -1) {
-      this.http.put(`http://localhost:3500/users/${user.uid}`, user)
-        .subscribe(
-          (updatedUser) => {
-            // The API may return the updated user; use it if needed
-            console.log('User updated successfully:', updatedUser);
-
-            // You may choose to update the local array or perform additional actions
-            // For example, you can update the local array if you still need it:
-            this.user[index] = { ...user };
-            this.editingUser = null; // Reset the editingUser
-          },
-          (error) => {
-            console.error('Error updating user:', error);
-            // Handle the error as needed
-          }
-        );
-    }
+    this.http.put(`http://localhost:3500/users/http://localhost:3500/users/5fe2f3a8-e777-458b-aef4-c70127f43a4e/${user.uid}.json`, user)
+      .subscribe(
+        (updatedUser) => {
+          // The API may return the updated user; use it if needed
+          console.log('User updated successfully:', updatedUser);
+        },
+        (error) => {
+          console.error('Error updating user:', error);
+          // Handle the error as needed
+        }
+      );
+    
   }
 
   onRowEditCancel(user: any): void {
@@ -184,6 +178,4 @@ export class UserPageComponent {
     // Reset the editingAdmin
     this.editingUser = null;
   }
-  
-
 }

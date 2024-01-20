@@ -56,14 +56,16 @@
             <div class="mt-auto" style="position: fixed; bottom: 0; width: auto;">
                 <hr class="mb-3 mx-3 border-top-1 border-none surface-border" />
                 <div class="fixed-width">
-                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 logout-button transition-duration-150 transition-colors p-ripple"
+                    <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover-color transition-duration-150 transition-colors p-ripple"
                         style="text-decoration: none;"  
                         routerLink="/login" 
                         routerLinkActive="active" 
                         aria-current="page"
-                        (click)="onLogout()">
+                        (click)="onLogout()"
+                        (mouseenter)="onMouseEnter()"
+                        (mouseleave)="onMouseLeave()">
                         <i class="pi pi-lock-open mr-2" style="color: white;"></i>
-                        <span class="font-medium" style="color: white;">{{ getUsername() }}</span>
+                        <span class="font-medium" style="color: white;">{{  buttonText || getUsername() }}</span>
                     </a>
                 </div>
             </div>

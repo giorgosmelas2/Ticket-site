@@ -163,16 +163,7 @@ th{
 }
 
 .hover-color:hover {
-    background-color: var(--blue-600);
-}
-
-.logout-button:hover {
-    background-color: var(--blue-600);
-}
-
-.logout-button:hover::after {
-    content: "Log out";
-    color: white;
+    background-color: var(--blue-600) !important;
 }
 
 
