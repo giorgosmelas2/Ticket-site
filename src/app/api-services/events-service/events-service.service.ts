@@ -11,4 +11,10 @@ export class EventsServiceService {
   getAllEvents(){
     return this.http.get<any[]>('http://localhost:3500/events');
   }
+ 
+  updateEvent(){
+    return
+  }
 }
+
+

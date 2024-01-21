@@ -52,20 +52,20 @@
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="user.total_money_spend">
+                                <input pInputText type="text" [(ngModel)]="user.total_tickets">
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{user.total_money_spend}}
+                                {{user.total_tickets}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="user.total_tickets">
+                                <input pInputText type="text" [(ngModel)]="user.total_money_spend">
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{user.total_tickets | currency: 'USD'}}
+                                {{user.total_money_spend | currency: 'USD'}}
                             </ng-template>
                         </p-cellEditor>
                     </td>

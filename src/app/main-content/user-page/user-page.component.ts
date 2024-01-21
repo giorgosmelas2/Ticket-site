@@ -13,11 +13,13 @@ import { UserServiceService } from '../../api-services/user-services/user-servic
 })
 export class UserPageComponent {
   
-  constructor(private authService: AuthenticationService, 
+  constructor(
+    private authService: AuthenticationService, 
     private dataService: DataService, 
     private http: HttpClient, 
     private messageService: MessageService,
-    private userService: UserServiceService) {}
+    private userService: UserServiceService
+    ) {}
 
   isPanelOpen =  false;
   isFullScreen: boolean = true;
@@ -90,7 +92,15 @@ export class UserPageComponent {
       return;
     }
 
-    const newUser = {uid: this.userID, email: '', username: this.username, role: 5150, total_tickets: this.totalTicketsBuyed, total_money_spend:this.totalMoneySpend, password: this.password};
+    const newUser = {
+      uid: this.userID,
+      email: '',
+      username: this.username,
+      role: 5150,
+      total_tickets: this.totalTicketsBuyed, 
+      total_money_spend:this.totalMoneySpend, 
+      password: this.password};
+
     this.onClearAdd();
     this.showToast('success', 'Success', 'User added successfully.');
   }
@@ -145,18 +155,23 @@ export class UserPageComponent {
 
   onRowEditInit(user: any): void {
     this.editingUser = { ...user };
+
+    console.log("onRowEditInit" , this.editingUser)
   }
 
   onRowEditSave(user: any): void {
-    this.http.put(`http://localhost:3500/users/http://localhost:3500/users/5fe2f3a8-e777-458b-aef4-c70127f43a4e/${user.uid}.json`, user)
+
+    console.log("onEditSave" , user);
+
+    this.userService.updateUser(user)
       .subscribe(
         (updatedUser) => {
-          // The API may return the updated user; use it if needed
-          console.log('User updated successfully:', updatedUser);
+          this.showToast('success', 'Success', 'User updated successfully.');
+          console.log(updatedUser);
         },
         (error) => {
+          this.showToast('error', 'Error', 'An error has occured.');
           console.error('Error updating user:', error);
-          // Handle the error as needed
         }
       );
     
