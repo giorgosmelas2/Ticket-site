@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class DataService {
 
   private localStorageKeyCategories = 'categories_entries';
@@ -11,8 +12,6 @@ export class DataService {
   private localStorageKeyUsers = 'users_add';
   private localStorageKeyEvens = 'events'
   private uploadCoverUrl = 'cover';
-
-
 
   getEntries(): any[] {
     const storedEntries = localStorage.getItem(this.localStorageKeyCategories);
@@ -56,5 +55,4 @@ export class DataService {
       return { ...event, category: associatedCategory };
     });
   }
-  
 }

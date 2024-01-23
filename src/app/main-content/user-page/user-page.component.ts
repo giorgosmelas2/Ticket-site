@@ -5,6 +5,7 @@ import { DataService } from '../../data-services/data.service';
 import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { UserServiceService } from '../../api-services/user-services/user-service.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-user-page',
@@ -25,7 +26,7 @@ export class UserPageComponent {
   isFullScreen: boolean = true;
   isLoading = true; 
 
-  userID: string = '';
+  email: string = '';
   username: string = '';
   password: string = '';
   totalMoneySpend: string = '';
@@ -76,33 +77,43 @@ export class UserPageComponent {
 
   //Method called when user clicks submit button
   onSubmit(): void {
-    if(!this.userID || !this.username || !this.password || !this.totalMoneySpend || !this.totalTicketsBuyed){
+    if(!this.email || !this.username || !this.password || !this.totalMoneySpend || !this.totalTicketsBuyed){
       this.showToast('warn', 'Warning', 'Please fill all flieds before submit');
       return;
     }
 
-    const isDuplicateID = this.user.find(u => u.id === this.userID);
+    const isDuplicateID = this.user.find(u => u.id === this.email);
     if (isDuplicateID) {
       this.showToast('warn', 'Warning', 'An admin with the same ID already exists. Please use a different ID.');
       return;
     }
 
-    if(this.userID < '1'){
+    if(this.email < '1'){
       this.showToast('warn', 'Warning', 'Invalid ID.');
       return;
     }
 
     const newUser = {
-      uid: this.userID,
-      email: '',
+      email: this.email,
       username: this.username,
       role: 5150,
-      total_tickets: this.totalTicketsBuyed, 
-      total_money_spend:this.totalMoneySpend, 
-      password: this.password};
+      total_tickets: parseInt(this.totalTicketsBuyed), 
+      total_money_spend: parseFloat(this.totalMoneySpend), 
+      password: this.password
+    };
+
+    this.userService.registerUser(newUser)
+      .subscribe(
+        (response) => {
+          this.showToast('success', 'Success', 'User added successfully.');
+        },
+        (error) => {
+          this.showToast('error', 'Error', 'Error adding user.');
+          console.log("Error in adding:",error);
+        }
+      )
 
     this.onClearAdd();
-    this.showToast('success', 'Success', 'User added successfully.');
   }
 
   onDelete(): void {
@@ -129,19 +140,17 @@ export class UserPageComponent {
 
   //Shows only 12 chars in the matrix's cells
   getFirst12Characters(inputString: string): string {
-    const maxLength = 12;
-
-    if (inputString.length <= maxLength) {
+    if (inputString.length <= 12) {
       return inputString;
     } else {
-      return inputString.substring(0, maxLength) + '...';
+      return inputString.substring(0, 12) + '...';
     }
   
   }
 
   //Method called when user clicks the clear button to clear the fields 
   onClearAdd(): void {
-    this.userID = '';
+    this.email = '';
     this.username = '';
     this.password = '';
     this.totalMoneySpend = '';
@@ -153,16 +162,13 @@ export class UserPageComponent {
     this.deleteUserID = '';
   }
 
+  //Saves the user before changes
   onRowEditInit(user: any): void {
     this.editingUser = { ...user };
-
-    console.log("onRowEditInit" , this.editingUser)
   }
 
+  //Saves the changes into database
   onRowEditSave(user: any): void {
-
-    console.log("onEditSave" , user);
-
     this.userService.updateUser(user)
       .subscribe(
         (updatedUser) => {
@@ -177,20 +183,17 @@ export class UserPageComponent {
     
   }
 
+  //Discards changes
   onRowEditCancel(user: any): void {
     if (this.editingUser) {
       const originalUserIndex = this.user.findIndex(u => u.id === this.editingUser.id);
 
       if (originalUserIndex !== -1) {
-        // Reset the editingAdmin to its original state
         this.user[originalUserIndex] = { ...this.editingUser };
       } else {
-        // Handle the case where the original admin is not found (e.g., it was deleted)
-        console.error('Original admin not found. Handle this case appropriately.');
+        console.error('Original User not found. Handle this case appropriately.');
       }
     }
-
-    // Reset the editingAdmin
     this.editingUser = null;
   }
 }

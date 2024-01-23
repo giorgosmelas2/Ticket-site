@@ -24,44 +24,44 @@
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.title">
+                                <input pInputText type="text" [(ngModel)]="event.event_name">
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.title}}
+                                {{event.event_name}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.date" required>
+                                <input pInputText type="text" [(ngModel)]="event.event_date" required>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.date}}   
+                                {{event.event_date}}   
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.coordinates" required>
+                                <input pInputText type="text" [(ngModel)]="event.event_coordinates" required>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.coordinates}}
+                                {{event.event_coordinates}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.description" required>
+                                <input pInputText type="text" [(ngModel)]="event.event_description" required>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.description}}
+                                {{event.event_description}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
-                    <td>
+                    <!-- <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
                                  <p-cascadeSelect 
@@ -78,7 +78,7 @@
                                 {{event.category.title}}
                             </ng-template>
                         </p-cellEditor>
-                    </td>
+                    </td> -->
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
@@ -93,11 +93,7 @@
                                 </p-fileUpload>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                <img 
-                                    *ngIf="event.cover" 
-                                    src="{{event.cover}}" 
-                                    alt="Event Cover"  
-                                    style="max-width: 100px; max-height: 100px;">
+                                {{event.event_images}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -114,10 +110,10 @@
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.price">
+                                <input pInputText type="text" [(ngModel)]="event.event_ticket_price">
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.price | currency: 'USD'}}
+                                {{event.event_ticket_price | currency: 'USD'}}
                             </ng-template>
                         </p-cellEditor>
                     </td>

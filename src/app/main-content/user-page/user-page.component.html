@@ -9,7 +9,7 @@
         <p-table [value]="user" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width:16.6">User ID</th>
+                    <th style="width:16.6">E-mail</th>
                     <th style="width:16.6">Username</th>
                     <th style="width:16.6">Password</th>
                     <th style="width:16.6">Total tickets buyed</th>
@@ -22,10 +22,10 @@
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="user.uid">
+                                <input pInputText type="text" [(ngModel)]="user.email">
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{getFirst12Characters(user.uid)}}
+                                {{getFirst12Characters(user.email)}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -89,8 +89,8 @@
                 <div class="container">
                     <div class="insidebox-left">
                         <div style="margin-bottom: 0.5rem;">
-                            <h5>User ID</h5>
-                            <input type="text" pInputText [(ngModel)]="userID" />        
+                            <h5>E-mail</h5>
+                            <input type="text" pInputText [(ngModel)]="email" />        
                         </div>
         
                         <div style="margin-bottom: 0.5rem;">
