@@ -27,7 +27,7 @@
                                 <input pInputText type="text" [(ngModel)]="event.event_name">
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.event_name}}
+                                {{ getFirst12Characters(event.event_name)}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -57,7 +57,7 @@
                                 <input pInputText type="text" [(ngModel)]="event.event_description" required>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.event_description}}
+                                {{ getFirst12Characters(event.event_description)}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -93,7 +93,7 @@
                                 </p-fileUpload>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.event_images}}
+                                {{ getFirst12Characters(event.event_images)}}
                             </ng-template>
                         </p-cellEditor>
                     </td>

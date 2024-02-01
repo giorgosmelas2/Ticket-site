@@ -139,6 +139,16 @@ export class EventsPageComponent {
 
     this.onClearDelete();
   }
+
+  //Shows only 12 chars in the matrix's cells
+  getFirst12Characters(inputString: string): string {
+    if (inputString.length <= 12) {
+      return inputString;
+    } else {
+      return inputString.substring(0, 12) + '...';
+    }
+  
+  }
   
   //Method called when user clicks the clear button to clear the fields
   onClearAdd(): void {

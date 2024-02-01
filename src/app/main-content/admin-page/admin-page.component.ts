@@ -3,6 +3,8 @@ import { HostListener } from '@angular/core';
 import { AuthenticationService } from '../../authentication-service/authentication.service';
 import { DataService } from '../../data-services/data.service';
 import { MessageService } from 'primeng/api';
+import { AdminServiceService } from '../../api-services/admin-service/admin-service.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-admin-page',
@@ -12,15 +14,20 @@ import { MessageService } from 'primeng/api';
 })
 
 export class AdminPageComponent {
-  constructor(private authService: AuthenticationService, private dataService: DataService, private messageService: MessageService) {}
+  constructor(private authService: AuthenticationService, 
+    private dataService: DataService, 
+    private messageService: MessageService,
+    private adminService: AdminServiceService) {}
  
   isFullScreen: boolean = true;
   isPanelOpen =  false;
+  isLoading = true;
 
-  adminID: string = '';
+  adminEmail: string = '';
   username:string = '';
   password: string = '';
   
+  users: any[] = [];
   admin: any[] = [];
 
 
@@ -34,9 +41,20 @@ export class AdminPageComponent {
 
   //This method is called when the component initializes
   ngOnInit(): void {
-    const storedAdmins = localStorage.getItem('admins_add');
-    this.admin = this.dataService.getAdmins();
     this.checkLayout();
+    this.adminService.getAllUsers()
+      .subscribe(
+        (data) => {
+          this.admin = data.filter(admin => admin.role === 5150);
+          this.isLoading = false;
+        },
+        (error) => {
+          this.showToast('error', 'Error', 'Error loading users.');
+          this.isLoading = false;
+        }
+      );
+
+      
   }
 
   //Checks any change in the window
@@ -53,29 +71,44 @@ export class AdminPageComponent {
   
   //Method called when user clicks submit button
   onSubmit(): void {
-    if(!this.adminID || !this.username || !this.password){
+    if(!this.adminEmail || !this.username || !this.password){
       this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
       return;
     }
 
-    const isDuplicateID = this.admin.find(a => a.id === this.adminID);
+    const isDuplicateID = this.admin.find(a => a.id === this.adminEmail);
     if (isDuplicateID) {
       this.showToast('warn', 'Warning', 'An admin with the same ID already exists. Please use a different ID.');
       return;
     }
 
-    if(this.adminID < '1'){
+    if(this.adminEmail < '1'){
       this.showToast('warn', 'Warning', 'Invalid ID.');
       return;
     }
 
 
-    const newAdmin = {id: this.adminID, username: this.username, password: this.password};
-    this.admin.push(newAdmin);
-    this.dataService.setAdmins(this.admin);
+    const newAdmin = {
+      userEmail: this.adminEmail, 
+      user: this.username, 
+      pwd: this.password,
+      role: 5150
+    };
+    
+    this.adminService.registerAdmin(newAdmin)
+      .subscribe(
+        (response) => {
+          this.showToast('success', 'Success', 'Admin added successfully.');
+        },
+        (error) =>{
+          this.showToast('error', 'Error', 'Error adding admin.');
+          console.log("Error in adding:",error);
+        }
+      )
+
+
     this.onClearAdd();
 
-    this.showToast('success', 'Success', 'Admin added successfully.');
   }
 
   onDelete(): void {
@@ -99,11 +132,21 @@ export class AdminPageComponent {
       alert('Admin not found with the specified ID.');
     }
   }
+
+  //Shows only 12 chars in the matrix's cells
+  getFirst12Characters(inputString: string): string {
+    if (inputString.length <= 12) {
+      return inputString;
+    } else {
+      return inputString.substring(0, 12) + '...';
+    }
+  
+  }
   
 
   //Method called when user clicks the clear button to clear the fields
   onClearAdd(): void {
-    this.adminID = '';
+    this.adminEmail = '';
     this.username = '';
     this.password = '';
   }

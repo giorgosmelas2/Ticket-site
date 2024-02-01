@@ -1,58 +1,64 @@
 <h1>Admins</h1>
-
-<div style="margin-bottom: 1.5rem;">
-    <p-table [value]="admin" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-        <ng-template pTemplate="header" >
-            <tr>
-                <th style="width:25%">Admin ID</th>
-                <th style="width:25%">Username</th>
-                <th style="width:25%">Password</th>
-                <th style="width:25%"></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-admin let-editing="editing" let-ri="rowIndex">
-            <tr [pEditableRow]="admin">
-                <td>
-                    <p-cellEditor>
-                        <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="admin.id">
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                            {{admin.id}}
-                        </ng-template>
-                    </p-cellEditor>
-                </td>
-                <td>
-                    <p-cellEditor>
-                        <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="admin.username" required>
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                            {{admin.username}}
-                        </ng-template>
-                    </p-cellEditor>
-                </td>
-                <td>
-                    <p-cellEditor>
-                        <ng-template pTemplate="input">
-                            <input pInputText type="text" [(ngModel)]="admin.password" required>
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                            {{admin.password}}
-                        </ng-template>
-                    </p-cellEditor>
-                </td>
-                <td>
-                    <div class="flex align-items-center justify-content-center gap-2">
-                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(admin)" class="p-button-rounded p-button-text"></button>
-                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(admin)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(admin)" class="p-button-rounded p-button-text p-button-danger"></button>
-                    </div>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+<div *ngIf="isLoading; else usersTable">
+    <!-- Display a loading indicator while data is being fetched -->
+    <p-progressSpinner></p-progressSpinner>
 </div>
+<ng-template #usersTable>
+    <div style="margin-bottom: 1.5rem;">
+        <p-table [value]="admin" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="header" >
+                <tr>
+                    <th style="width:25%">Admin ID</th>
+                    <th style="width:25%">Username</th>
+                    <th style="width:25%">Password</th>
+                    <th style="width:25%"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-admin let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="admin">
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="admin.email">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{getFirst12Characters(admin.email)}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="admin.username" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{admin.username}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="admin.password" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{getFirst12Characters(admin.password)}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <div class="flex align-items-center justify-content-center gap-2">
+                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(admin)" class="p-button-rounded p-button-text"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(admin)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(admin)" class="p-button-rounded p-button-text p-button-danger"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    
+</ng-template>
 
 <div class="container" [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
     <div class="outside-box-left">
@@ -61,8 +67,8 @@
                 <div class="container">
                     <div class="insidebox-left">
                         <div style="margin-bottom: 0.5rem;">
-                            <h5>Admin Id</h5>
-                            <input type="text" pInputText [(ngModel)]="adminID" />        
+                            <h5>Admin Email</h5>
+                            <input type="text" pInputText [(ngModel)]="adminEmail" />        
                         </div>
         
                         <div style="margin-bottom: 0.5rem;">

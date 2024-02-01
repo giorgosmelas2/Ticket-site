@@ -5,7 +5,7 @@ import { DataService } from '../../data-services/data.service';
 import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { UserServiceService } from '../../api-services/user-services/user-service.service';
-import { response } from 'express';
+
 
 @Component({
   selector: 'app-user-page',
@@ -33,7 +33,8 @@ export class UserPageComponent {
   totalTicketsBuyed: string = '';
   user: any[] = [];
 
-  deleteUserID: string = '';
+  deleteEmail: string = '';
+  userDropdownOptions: any[] = [];
   editingUser: any;
 
 
@@ -45,11 +46,11 @@ export class UserPageComponent {
   //This method is called when the component initializes
   ngOnInit(): void {
     this.checkLayout();
-
     this.userService.getAllUsers()
       .subscribe(
         (data) => {
-          this.user = data;
+          this.user = data.filter(user => user.role === 2001);
+      
           this.isLoading = false;
         },
         (error) => {
@@ -77,7 +78,7 @@ export class UserPageComponent {
 
   //Method called when user clicks submit button
   onSubmit(): void {
-    if(!this.email || !this.username || !this.password || !this.totalMoneySpend || !this.totalTicketsBuyed){
+    if(!this.email || !this.username || !this.password){
       this.showToast('warn', 'Warning', 'Please fill all flieds before submit');
       return;
     }
@@ -94,12 +95,10 @@ export class UserPageComponent {
     }
 
     const newUser = {
-      email: this.email,
-      username: this.username,
-      role: 5150,
-      total_tickets: parseInt(this.totalTicketsBuyed), 
-      total_money_spend: parseFloat(this.totalMoneySpend), 
-      password: this.password
+      userEmail: this.email,
+      user: this.username,
+      pwd: this.password,
+      role: 2001
     };
 
     this.userService.registerUser(newUser)
@@ -116,26 +115,13 @@ export class UserPageComponent {
     this.onClearAdd();
   }
 
+  //This method called when we try to delete a user
   onDelete(): void {
-    if (!this.deleteUserID) {
+    if (!this.deleteEmail) {
       this.showToast('warn', 'Warning', 'Please enter the User ID to delete.');
       return;
     }
 
-    const index = this.user.findIndex(u => u.id === this.deleteUserID);
-
-    if (index !== -1) {
-      // Remove the admin from the array
-      this.user.splice(index, 1);
-
-      // Save the updated data to local storage
-      this.dataService.setUsers(this.user);
-
-      // Clear the deleteAdminID field
-      this.deleteUserID = '';
-    } else {
-      alert('Admin not found with the specified ID.');
-    }
   }
 
   //Shows only 12 chars in the matrix's cells
@@ -159,7 +145,7 @@ export class UserPageComponent {
 
   //Method called when user clicks the clear button to clear the fields
   onClearDelete(){
-    this.deleteUserID = '';
+    this.deleteEmail = '';
   }
 
   //Saves the user before changes

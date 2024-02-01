@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-
 @Injectable({
   providedIn: 'root'
 })
-export class UserServiceService {
+export class AdminServiceService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private apiUrl = 'http://localhost:3500';
 
@@ -16,12 +15,7 @@ export class UserServiceService {
     return this.http.get<any[]>(`${this.apiUrl}/users`);
   }
 
-  updateUser(user: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/users/${user.uid}`, user);
+  registerAdmin(admin: any): Observable<any>{
+    return this.http.post(`${this.apiUrl}/register`, admin);
   }
-
-  registerUser(user: any): Observable<any>{
-    return this.http.post(`${this.apiUrl}/register`, user);
-  }
-
 }

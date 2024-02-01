@@ -97,28 +97,19 @@
                             <h5>Username</h5>
                             <input type="text" pInputText [(ngModel)]="username" />        
                         </div>  
-    
-                        <div style="margin-bottom: 0.5rem;">
-                            <h5>Password</h5>
-                            <input type="text" pInputText [(ngModel)]="password" />        
-                        </div>
                     </div>
         
                     <div class="insidebox-right">
                         <div style="margin-bottom: 0.5rem;">
-                            <h5>Total money spend</h5>
-                            <input type="text" pInputText [(ngModel)]="totalMoneySpend" />
-                        </div>
-                        <div style="margin-bottom: 0.5rem;">
-                            <h5>Total tickets buyed</h5>
-                            <input type="text" pInputText [(ngModel)]="totalTicketsBuyed" />
+                            <h5>Password</h5>
+                            <input type="text" pInputText [(ngModel)]="password" />        
                         </div>
                     </div>
                 </div>
             </div>
             <div class="centered">
                 <div class="button-container">
-                    <button type="button" class="btn btn-dark" (click)="onClearAdd()" >Clear</button>
+                    <button type="button" class="btn btn-dark" (click)="onClearAdd()">Clear</button>
                     <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
                 </div>
             </div>
@@ -129,8 +120,16 @@
         <p-panel header="Delete user" [toggleable]="true"  [collapsed]="!isPanelOpen">
             <div class="centered">
                 <div style="margin-bottom: 0.5rem;">
-                    <h5>Delete User by ID</h5>
-                    <input type="text" pInputText [(ngModel)]="deleteUserID" />        
+                    <h5>Delete User by e-mail</h5>
+                    <p-cascadeSelect 
+                                [(ngModel)]="deleteEmail" 
+                                [options]="userDropdownOptions" 
+                                optionLabel="label" 
+                                optionGroupLabel="name" 
+                                [optionGroupChildren]="['categories']" 
+                                [style]="{ minWidth: '14rem' }" 
+                                placeholder="Select category">
+                    </p-cascadeSelect>   
                 </div>
             </div>
             <div class="centered">
