@@ -9,7 +9,11 @@ import { MessageService } from 'primeng/api';
   styleUrl: './login.component.css'
 })
 export class LoginTestComponent {
-  constructor(private router: Router,private authService: AuthenticationService, private messageService: MessageService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthenticationService, 
+    private messageService: MessageService
+    ) {}
 
   username: string = ''; 
   password: string = '';
@@ -52,9 +56,6 @@ export class LoginTestComponent {
       }catch(err){
         console.log(err);
       }
-
-      // this.authService.login(this.username);
-      // this.router.navigate(['/main-content'])
     }
 
     sendForgotPasswordEmail() {

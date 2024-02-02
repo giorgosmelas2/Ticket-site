@@ -8,36 +8,26 @@ import { Observable, of } from 'rxjs';
 export class DataService {
 
   private localStorageKeyCategories = 'categories_entries';
-  private localStorageKeyAdmins = 'admins_add';
-  private localStorageKeyUsers = 'users_add';
   private localStorageKeyEvens = 'events'
-  private uploadCoverUrl = 'cover';
+  private localStorageKeyUserEmails = 'user_emails'
 
-  getEntries(): any[] {
+
+  setCategories(data: any[]): void {
+    localStorage.setItem(this.localStorageKeyCategories, JSON.stringify(data));
+  }
+
+  getCategories(): any[] {
     const storedEntries = localStorage.getItem(this.localStorageKeyCategories);
     return storedEntries ? JSON.parse(storedEntries) : [];
   }
 
-  setEntries(data: any[]): void {
-    localStorage.setItem(this.localStorageKeyCategories, JSON.stringify(data));
+  setUserEmails(data: any[]): void {
+    localStorage.setItem(this.localStorageKeyUserEmails, JSON.stringify(data));
   }
 
-  getAdmins(): any[]{
-    const storedAdmins = localStorage.getItem(this.localStorageKeyAdmins);
-    return storedAdmins ? JSON.parse(storedAdmins) : [];
-  }
-
-  setAdmins(data: any[]): void{
-    localStorage.setItem(this.localStorageKeyAdmins, JSON.stringify(data));
-  }
-
-  getUsers(): any[]{
-    const storedUsers = localStorage.getItem(this.localStorageKeyUsers);
-    return storedUsers ? JSON.parse(storedUsers) : [];
-  }
-  
-  setUsers(data: any[]): void{
-    localStorage.setItem(this.localStorageKeyUsers, JSON.stringify(data));
+  getUserEmails(): any[] {
+    const storedUserEmails = localStorage.getItem(this.localStorageKeyUserEmails);
+    return storedUserEmails ? JSON.parse(storedUserEmails) : []
   }
 
   getEvents(): any[]{
@@ -49,10 +39,4 @@ export class DataService {
     localStorage.setItem(this.localStorageKeyEvens, JSON.stringify(data));
   }
 
-  associateEventsWithCategories(categories: any[], events: any[]): any[] {
-    return events.map(event => {
-      const associatedCategory = categories.find(category => category.title === event.category);
-      return { ...event, category: associatedCategory };
-    });
-  }
 }

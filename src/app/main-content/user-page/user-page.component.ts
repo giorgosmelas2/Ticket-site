@@ -1,11 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { AuthenticationService } from '../../authentication-service/authentication.service';
-import { DataService } from '../../data-services/data.service';
-import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
+import { DataService } from '../../data-services/data.service';
 import { UserServiceService } from '../../api-services/user-services/user-service.service';
-
 
 @Component({
   selector: 'app-user-page',
@@ -16,10 +14,9 @@ export class UserPageComponent {
   
   constructor(
     private authService: AuthenticationService, 
-    private dataService: DataService, 
-    private http: HttpClient, 
     private messageService: MessageService,
-    private userService: UserServiceService
+    private userService: UserServiceService,
+    private dataService: DataService,
     ) {}
 
   isPanelOpen =  false;
@@ -35,6 +32,7 @@ export class UserPageComponent {
 
   deleteEmail: string = '';
   userDropdownOptions: any[] = [];
+  userEmails: any[] = [];
   editingUser: any;
 
 
@@ -44,20 +42,65 @@ export class UserPageComponent {
   }
 
   //This method is called when the component initializes
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.checkLayout();
-    this.userService.getAllUsers()
-      .subscribe(
-        (data) => {
-          this.user = data.filter(user => user.role === 2001);
-      
-          this.isLoading = false;
-        },
-        (error) => {
-          this.showToast('error', 'Error', 'Error loading users.');
-          this.isLoading = false;
-        }
-      );
+    // this.userService.getAllUsers()
+    //   .subscribe(
+    //     (data) => {
+    //       this.user = data.filter(user => user.role === 2001);
+    //       // console.log("user:", this.user);
+    //       for(let i = 0; i< this.user.length; i++){
+    //         const newEmail = {
+    //           userEmail: this.user[i].email,
+    //         };
+
+    //         this.userEmails.push(newEmail);
+    //       }
+
+    //       this.dataService.setUserEmails(this.userEmails);
+    //       this.userDropdownOptions = this.dataService.getUserEmails();
+    
+    //       console.log("userDropdownOptions", this.userDropdownOptions)
+    //       this.isLoading = false;
+    //     },
+    //     (error) => {
+    //       this.showToast('error', 'Error', 'Error loading users.');
+    //       this.isLoading = false;
+    //     }
+    //   );
+
+    try {
+      await this.loadData();
+      this.isLoading = false;
+    } catch (error) {
+      this.showToast('error', 'Error', 'Error loading users.');
+      this.isLoading = false;
+    }
+
+    console.log("User Drop",this.userDropdownOptions)
+  }
+
+  private async loadData(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.userService.getAllUsers()
+        .subscribe(
+          (data) => {
+            this.user = data.filter(user => user.role === 2001);
+            for (let i = 0; i < this.user.length; i++) {
+              const newEmail = {
+                userEmail: this.user[i].email,
+              };
+              this.userEmails.push(newEmail);
+            }
+            this.dataService.setUserEmails(this.userEmails);
+            this.userDropdownOptions = this.dataService.getUserEmails();
+            resolve();
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+    });
   }
 
   //Checks any change in the window
@@ -122,6 +165,19 @@ export class UserPageComponent {
       return;
     }
 
+    const userToDelete = this.user.find(u => u.email === this.deleteEmail);
+
+    this.userService.deleteUser(userToDelete)
+      .subscribe(
+        (response) => {
+          this.showToast('success', 'Success', 'User deleted successfully.');
+        },
+        (error) => {
+          this.showToast('error', 'Error', 'Error deleting user.');
+          console.log("Error in adding:",error);
+        }
+      )
+
   }
 
   //Shows only 12 chars in the matrix's cells
@@ -159,7 +215,6 @@ export class UserPageComponent {
       .subscribe(
         (updatedUser) => {
           this.showToast('success', 'Success', 'User updated successfully.');
-          console.log(updatedUser);
         },
         (error) => {
           this.showToast('error', 'Error', 'An error has occured.');
@@ -172,7 +227,7 @@ export class UserPageComponent {
   //Discards changes
   onRowEditCancel(user: any): void {
     if (this.editingUser) {
-      const originalUserIndex = this.user.findIndex(u => u.id === this.editingUser.id);
+      const originalUserIndex = this.user.findIndex(u => u.uid === this.editingUser.uid);
 
       if (originalUserIndex !== -1) {
         this.user[originalUserIndex] = { ...this.editingUser };

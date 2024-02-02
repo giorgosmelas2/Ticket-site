@@ -1,7 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { AuthenticationService } from '../../authentication-service/authentication.service';
-import { DataService } from '../../data-services/data.service';
 import { MessageService } from 'primeng/api';
 import { AdminServiceService } from '../../api-services/admin-service/admin-service.service';
 import { response } from 'express';
@@ -15,7 +14,6 @@ import { response } from 'express';
 
 export class AdminPageComponent {
   constructor(private authService: AuthenticationService, 
-    private dataService: DataService, 
     private messageService: MessageService,
     private adminService: AdminServiceService) {}
  
@@ -31,7 +29,7 @@ export class AdminPageComponent {
   admin: any[] = [];
 
 
-  deleteAdminID: string = '';
+  deleteEmail: string = '';
   editingAdmin: any;
 
   //Method for toast messages
@@ -92,7 +90,7 @@ export class AdminPageComponent {
       userEmail: this.adminEmail, 
       user: this.username, 
       pwd: this.password,
-      role: 5150
+      isAdmin: true
     };
     
     this.adminService.registerAdmin(newAdmin)
@@ -112,25 +110,26 @@ export class AdminPageComponent {
   }
 
   onDelete(): void {
-    if (!this.deleteAdminID) {
+    if (!this.deleteEmail) {
       this.showToast('warn', 'Warning', 'Please enter the Admin ID to delete.');
       return;
     }
 
-    const index = this.admin.findIndex(a => a.id === this.deleteAdminID);
+    const userToDelete = this.admin.find(u => u.email === this.deleteEmail);
+    console.log(userToDelete.uid);
 
-    if (index !== -1) {
-      // Remove the admin from the array
-      this.admin.splice(index, 1);
+    this.adminService.deleteAdmin(userToDelete)
+      .subscribe(
+        (response) => {
+          this.showToast('success', 'Success', 'Admin deleted successfully.');
+        },
+        (error) => {
+          this.showToast('error', 'Error', 'Error deleting admin.');
+          console.log("Error in adding:",error);
+        }
+      )
 
-      // Save the updated data to local storage
-      this.dataService.setAdmins(this.admin);
-
-      // Clear the deleteAdminID field
-      this.deleteAdminID = '';
-    } else {
-      alert('Admin not found with the specified ID.');
-    }
+    
   }
 
   //Shows only 12 chars in the matrix's cells
@@ -152,7 +151,7 @@ export class AdminPageComponent {
   }
 
   onClearDelete(){
-    this.deleteAdminID = '';
+    this.deleteEmail = '';
   }
 
   //Determines which admin will be edited
@@ -162,26 +161,27 @@ export class AdminPageComponent {
 
   //Saves the changes
   onRowEditSave(admin: any): void {
-    const index = this.admin.findIndex(a => a.id === admin.id);
+    this.adminService.updateAdmin(admin)
+      .subscribe(
+        (updatedAdmin) => {
+          this.showToast('success', 'Success', 'Admin updated successfully.');
 
-    if (index !== -1) {
-      this.admin[index] = { ...admin };
-      this.dataService.setAdmins(this.admin);
-    }
-    
-    this.editingAdmin = null;
+        },
+        (error) => {
+          this.showToast('error', 'Error', 'An error has occured.');
+          console.error('Error updating admin:', error);
+        }
+      )
   }
 
   //Discards the changes
   onRowEditCancel(admin: any): void {
     if (this.editingAdmin) {
-      const originalAdminIndex = this.admin.findIndex(a => a.id === this.editingAdmin.id);
+      const originalAdminIndex = this.admin.findIndex(a => a.uid === this.editingAdmin.uid);
 
       if (originalAdminIndex !== -1) {
-        // Reset the editingAdmin to its original state
         this.admin[originalAdminIndex] = { ...this.editingAdmin };
       } else {
-        // Handle the case where the original admin is not found (e.g., it was deleted)
         console.error('Original admin not found. Handle this case appropriately.');
       }
     }

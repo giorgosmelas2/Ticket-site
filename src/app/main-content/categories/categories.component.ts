@@ -14,7 +14,10 @@ import { AuthenticationService } from '../../authentication-service/authenticati
 
 export class CategoriesComponent {
 
-  constructor(private authService: AuthenticationService, private dataService: DataService, private messageService: MessageService) {}
+  constructor(private authService: AuthenticationService, 
+    private dataService: DataService, 
+    private messageService: MessageService
+    ) {}
 
   isFullScreen: boolean = true;
   isPanelOpen =  false;
@@ -34,10 +37,8 @@ export class CategoriesComponent {
 
   //This method is called when the component initializes
   ngOnInit(): void {
-    const storedEntries = localStorage.getItem('categories_entries');
-    this.entries = this.dataService.getEntries();
-    this.categories = this.dataService.getEntries();
-    const events = this.dataService.getEvents();
+    this.entries = this.dataService.getCategories();
+    this.categories = this.dataService.getCategories();
 
     this.formSubmitted = true;
     
@@ -69,7 +70,7 @@ export class CategoriesComponent {
       this.entries.push(newEntry);
 
       // Save data to localStorage
-      this.dataService.setEntries(this.entries);
+      this.dataService.setCategories(this.entries);
 
       this.formSubmitted = true;
     }
@@ -98,7 +99,7 @@ export class CategoriesComponent {
       this.entries.splice(index, 1);
 
       // Save updated data to the service after deleting the specific category
-      this.dataService.setEntries(this.entries);
+      this.dataService.setCategories(this.entries);
 
       // Clear the selected category after deletion
       this.selectedCategory = '';

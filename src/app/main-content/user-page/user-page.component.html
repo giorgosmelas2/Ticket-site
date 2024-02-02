@@ -6,7 +6,7 @@
 
 <ng-template #usersTable>
     <div style="margin-bottom: 1.5rem;">
-        <p-table [value]="user" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+        <p-table [value]="user" dataKey="email" editMode="row" [tableStyle]="{'min-width': '50rem'}">
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width:16.6">E-mail</th>
@@ -122,14 +122,15 @@
                 <div style="margin-bottom: 0.5rem;">
                     <h5>Delete User by e-mail</h5>
                     <p-cascadeSelect 
-                                [(ngModel)]="deleteEmail" 
-                                [options]="userDropdownOptions" 
-                                optionLabel="label" 
-                                optionGroupLabel="name" 
-                                [optionGroupChildren]="['categories']" 
-                                [style]="{ minWidth: '14rem' }" 
-                                placeholder="Select category">
+                            [(ngModel)]="deleteEmail" 
+                            [options]="userDropdownOptions" 
+                            optionLabel="userEmail" 
+                            optionGroupLabel="email" 
+                            [optionGroupChildren]="['userEmail']" 
+                            [style]="{ minWidth: '14rem' }" 
+                            placeholder="Select email">
                     </p-cascadeSelect>   
+                    <!-- <input type="text" pInputText [(ngModel)]="deleteEmail" /> -->
                 </div>
             </div>
             <div class="centered">

@@ -43,11 +43,6 @@ export class EventsPageComponent {
   deleteEventTitle: string = '';
   editingEvent: any;
   
-  
-  statuses: { label: string, value: any }[] = [
-    { label: 'Option 1', value: 'value1' },
-    { label: 'Option 2', value: 'value2' },
-  ];
 
   //Method for toast messages
   private showToast(severity: string, summary: string, detail: string): void {
@@ -69,6 +64,8 @@ export class EventsPageComponent {
         }
       );
       console.log(this.event);
+
+    this.categories = this.dataService.getCategories();
   }
 
   //Checks any change in the window
