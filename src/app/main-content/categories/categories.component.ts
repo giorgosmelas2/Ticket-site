@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { DataService } from '../../data-services/data.service';
-import { AuthenticationService } from '../../authentication-service/authentication.service';
 
 
 @Component({
@@ -14,7 +13,7 @@ import { AuthenticationService } from '../../authentication-service/authenticati
 
 export class CategoriesComponent {
 
-  constructor(private authService: AuthenticationService, 
+  constructor(
     private dataService: DataService, 
     private messageService: MessageService
     ) {}

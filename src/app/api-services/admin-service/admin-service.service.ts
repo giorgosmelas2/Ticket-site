@@ -15,7 +15,7 @@ export class AdminServiceService {
     return this.http.get<any[]>(`${this.apiUrl}/users`);
   }
 
-  updateAdmin(admin: any): Observable<any> {
+  updateAdmin(admin: any): Observable<any>{
     return this.http.put(`${this.apiUrl}/users/${admin.uid}`, admin);
   }
 

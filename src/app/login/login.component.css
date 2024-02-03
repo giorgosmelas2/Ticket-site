@@ -2,6 +2,10 @@ h1{
     margin-bottom: 1.6rem;
 }
 
+p:hover{
+    cursor: pointer;
+}
+
 .image-background{
     background: url('/assets/login.jpg') no-repeat center center fixed; 
     background-size: cover; 

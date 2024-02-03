@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from '../authentication-service/authentication.service';
+import { AuthenticationService } from '../api-services/authentication-service/authentication.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
@@ -26,7 +26,6 @@ export class LoginTestComponent {
     this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
   }
 
-  
   async onLogin() {
 
     if(!this.username || !this.password){
@@ -58,16 +57,14 @@ export class LoginTestComponent {
       }
     }
 
-    sendForgotPasswordEmail() {
-      if(this.showForgotPasswordInput && this.forgotPasswordEmail){
-        this.showToast('success', 'Success', 'E-mail send! Please check your e-mails.');
-        this.showForgotPasswordInput = false;
-        this.forgotPasswordEmail = '';
-      }else{
-        this.showToast('warn', 'Warning', 'Please fill the email field.');
-        return;
-      }
+  sendForgotPasswordEmail() {
+    if(this.showForgotPasswordInput && this.forgotPasswordEmail){
+      this.showToast('success', 'Success', 'E-mail send! Please check your e-mails.');
+      this.showForgotPasswordInput = false;
+      this.forgotPasswordEmail = '';
+    }else{
+      this.showToast('warn', 'Warning', 'Please fill the email field.');
+      return;
     }
-
-    
+  }
 }

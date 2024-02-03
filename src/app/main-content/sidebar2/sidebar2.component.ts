@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from '../../authentication-service/authentication.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { AuthenticationService } from '../../api-services/authentication-service/authentication.service';
 
 @Component({
   selector: 'app-sidebar2',
@@ -11,10 +10,6 @@ export class Sidebar2Component {
   constructor(private authService: AuthenticationService) {}
 
   buttonText: string = '';
-
-  isLoggedIn(): boolean {
-    return this.authService.isAuthenticated();
-  }
 
   onLogout() {
     this.authService.logout();
@@ -32,6 +27,16 @@ export class Sidebar2Component {
   //Resets the username
   onMouseLeave() {
     this.buttonText = this.getUsername() || '';
+  }
+
+  //Shows only 12 chars in the matrix's cells
+  getFirst12Characters(inputString: string ): string {
+    if (inputString.length <= 12) {
+      return inputString;
+    } else {
+      return inputString.substring(0, 12) + '...';
+    }
+  
   }
 
 }

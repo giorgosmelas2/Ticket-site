@@ -21,6 +21,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { Dropdown } from 'primeng/dropdown';
 
 import { AppComponent } from './app.component';
 import { AdminPageComponent } from './main-content/admin-page/admin-page.component';
@@ -75,7 +76,8 @@ import { MessageService } from 'primeng/api';
     CardModule,
     SidebarModule,
     CascadeSelectModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    DropdownModule
   ],
 
   providers: [

@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class OrdersComponent {
 
   order: any[] = [];
+  isLoading = false;
 
   onRowEditInit(product: any): void {
     console.log('Editing initiated for product:', product);

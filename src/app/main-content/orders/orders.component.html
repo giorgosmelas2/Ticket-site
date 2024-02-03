@@ -1,4 +1,9 @@
 <h1>Orders</h1>
+<div *ngIf="isLoading; else orderssTable">
+    <!-- Display a loading indicator while data is being fetched -->
+    <p-progressSpinner></p-progressSpinner>
+</div>
+<ng-template #orderssTable>
     <div style="margin-bottom: 1.5rem;">
         <p-table [value]="order" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
             <ng-template pTemplate="header">
@@ -73,3 +78,9 @@
                 </tr>
             </ng-template>
         </p-table>
+    </div>
+</ng-template>
+
+
+
+    

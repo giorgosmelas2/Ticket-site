@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { HostListener } from '@angular/core';
-import { AuthenticationService } from '../../authentication-service/authentication.service';
 import { DataService } from '../../data-services/data.service';
 import { MessageService } from 'primeng/api';
 import { EventsServiceService } from '../../api-services/events-service/events-service.service';
@@ -13,10 +12,11 @@ import { EventsServiceService } from '../../api-services/events-service/events-s
 
 export class EventsPageComponent {
 
-  constructor(private authService: AuthenticationService, 
+  constructor(
     private dataService: DataService, 
     private messageService: MessageService,
-    private eventService: EventsServiceService) {}
+    private eventService: EventsServiceService
+    ) {}
 
   isFullScreen: boolean = true;
   isPanelOpen =  false;
@@ -60,11 +60,10 @@ export class EventsPageComponent {
         },
         (error) => {
           this.showToast('error', 'Error', 'Error loading users.');
+          console.log(error);
           this.isLoading = false;
         }
       );
-      console.log(this.event);
-
     this.categories = this.dataService.getCategories();
   }
 

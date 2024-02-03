@@ -1,8 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { HostListener } from '@angular/core';
-import { AuthenticationService } from '../../authentication-service/authentication.service';
 import { MessageService } from 'primeng/api';
-import { DataService } from '../../data-services/data.service';
 import { UserServiceService } from '../../api-services/user-services/user-service.service';
 
 @Component({
@@ -12,11 +10,9 @@ import { UserServiceService } from '../../api-services/user-services/user-servic
 })
 export class UserPageComponent {
   
-  constructor(
-    private authService: AuthenticationService, 
+  constructor( 
     private messageService: MessageService,
     private userService: UserServiceService,
-    private dataService: DataService,
     ) {}
 
   isPanelOpen =  false;
@@ -32,76 +28,37 @@ export class UserPageComponent {
 
   deleteEmail: string = '';
   userDropdownOptions: any[] = [];
-  userEmails: any[] = [];
+
   editingUser: any;
 
 
-  //Method for toast messages
+  //Method for toast messages format
   private showToast(severity: string, summary: string, detail: string): void {
     this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
   }
 
   //This method is called when the component initializes
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.checkLayout();
-    // this.userService.getAllUsers()
-    //   .subscribe(
-    //     (data) => {
-    //       this.user = data.filter(user => user.role === 2001);
-    //       // console.log("user:", this.user);
-    //       for(let i = 0; i< this.user.length; i++){
-    //         const newEmail = {
-    //           userEmail: this.user[i].email,
-    //         };
-
-    //         this.userEmails.push(newEmail);
-    //       }
-
-    //       this.dataService.setUserEmails(this.userEmails);
-    //       this.userDropdownOptions = this.dataService.getUserEmails();
-    
-    //       console.log("userDropdownOptions", this.userDropdownOptions)
-    //       this.isLoading = false;
-    //     },
-    //     (error) => {
-    //       this.showToast('error', 'Error', 'Error loading users.');
-    //       this.isLoading = false;
-    //     }
-    //   );
-
-    try {
-      await this.loadData();
-      this.isLoading = false;
-    } catch (error) {
-      this.showToast('error', 'Error', 'Error loading users.');
-      this.isLoading = false;
-    }
-
-    console.log("User Drop",this.userDropdownOptions)
-  }
-
-  private async loadData(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this.userService.getAllUsers()
+    this.userService.getAllUsers()
         .subscribe(
           (data) => {
             this.user = data.filter(user => user.role === 2001);
-            for (let i = 0; i < this.user.length; i++) {
-              const newEmail = {
-                userEmail: this.user[i].email,
-              };
-              this.userEmails.push(newEmail);
+            for( let i = 0; i<this.user.length; i++ ){
+              this.userDropdownOptions[i] = this.user[i].email;
             }
-            this.dataService.setUserEmails(this.userEmails);
-            this.userDropdownOptions = this.dataService.getUserEmails();
-            resolve();
+            this.isLoading = false;
           },
           (error) => {
-            reject(error);
+            this.showToast('error', 'Error', 'Error loading users.');
+            console.log(error);
+            this.isLoading = false;
           }
         );
-    });
+    
   }
+
+  
 
   //Checks any change in the window
   onResize(event: Event): void {
@@ -112,11 +69,6 @@ export class UserPageComponent {
   @HostListener('window:resize', ['$event'])
   private checkLayout(): void {
     this.isFullScreen = window.innerWidth > 768; 
-  }
-
-  //Checks if user is logged in
-  isLoggedIn(): boolean {
-    return this.authService.isAuthenticated();
   }
 
   //Method called when user clicks submit button
@@ -137,6 +89,7 @@ export class UserPageComponent {
       return;
     }
 
+    //Creating a variable with right format for database
     const newUser = {
       userEmail: this.email,
       user: this.username,
@@ -148,6 +101,7 @@ export class UserPageComponent {
       .subscribe(
         (response) => {
           this.showToast('success', 'Success', 'User added successfully.');
+          console.log(response);
         },
         (error) => {
           this.showToast('error', 'Error', 'Error adding user.');
@@ -158,26 +112,26 @@ export class UserPageComponent {
     this.onClearAdd();
   }
 
-  //This method called when we try to delete a user
   onDelete(): void {
     if (!this.deleteEmail) {
       this.showToast('warn', 'Warning', 'Please enter the User ID to delete.');
       return;
     }
 
+    //Finds the user by maching the choosen email with emails from user array
     const userToDelete = this.user.find(u => u.email === this.deleteEmail);
 
     this.userService.deleteUser(userToDelete)
       .subscribe(
         (response) => {
           this.showToast('success', 'Success', 'User deleted successfully.');
+          console.log(response);
         },
         (error) => {
           this.showToast('error', 'Error', 'Error deleting user.');
           console.log("Error in adding:",error);
         }
       )
-
   }
 
   //Shows only 12 chars in the matrix's cells
@@ -190,7 +144,7 @@ export class UserPageComponent {
   
   }
 
-  //Method called when user clicks the clear button to clear the fields 
+  //Clears fields in add panel
   onClearAdd(): void {
     this.email = '';
     this.username = '';
@@ -199,17 +153,17 @@ export class UserPageComponent {
     this.totalTicketsBuyed = '';
   }
 
-  //Method called when user clicks the clear button to clear the fields
+  //Clears field in delete panel
   onClearDelete(){
     this.deleteEmail = '';
   }
 
-  //Saves the user before changes
+  //Makes a copy from the admin object before editing if user discards changes 
   onRowEditInit(user: any): void {
     this.editingUser = { ...user };
   }
 
-  //Saves the changes into database
+  //Saves the changes
   onRowEditSave(user: any): void {
     this.userService.updateUser(user)
       .subscribe(
@@ -221,15 +175,13 @@ export class UserPageComponent {
           console.error('Error updating user:', error);
         }
       );
-    
   }
 
   //Discards changes
   onRowEditCancel(user: any): void {
     if (this.editingUser) {
       const originalUserIndex = this.user.findIndex(u => u.uid === this.editingUser.uid);
-
-      if (originalUserIndex !== -1) {
+      if (originalUserIndex) {
         this.user[originalUserIndex] = { ...this.editingUser };
       } else {
         console.error('Original User not found. Handle this case appropriately.');

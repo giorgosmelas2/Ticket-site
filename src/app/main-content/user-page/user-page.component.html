@@ -119,19 +119,15 @@
     <div class="outside-box-right">
         <p-panel header="Delete user" [toggleable]="true"  [collapsed]="!isPanelOpen">
             <div class="centered">
-                <div style="margin-bottom: 0.5rem;">
-                    <h5>Delete User by e-mail</h5>
-                    <p-cascadeSelect 
-                            [(ngModel)]="deleteEmail" 
+                    <div class="delete-button">
+                        <h5>Delete User by e-mail</h5>
+                        <p-dropdown  
+                            [(ngModel)]="deleteEmail"
                             [options]="userDropdownOptions" 
-                            optionLabel="userEmail" 
-                            optionGroupLabel="email" 
-                            [optionGroupChildren]="['userEmail']" 
-                            [style]="{ minWidth: '14rem' }" 
-                            placeholder="Select email">
-                    </p-cascadeSelect>   
-                    <!-- <input type="text" pInputText [(ngModel)]="deleteEmail" /> -->
-                </div>
+                            [style]="{ minWidth: '10rem' }"
+                            placeholder="Select e-mail">
+                        </p-dropdown>
+                    </div>             
             </div>
             <div class="centered">
                 <div class="button-container">

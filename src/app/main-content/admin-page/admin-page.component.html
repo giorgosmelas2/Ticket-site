@@ -1,9 +1,9 @@
 <h1>Admins</h1>
-<div *ngIf="isLoading; else usersTable">
+<div *ngIf="isLoading; else adminsTable">
     <!-- Display a loading indicator while data is being fetched -->
     <p-progressSpinner></p-progressSpinner>
 </div>
-<ng-template #usersTable>
+<ng-template #adminsTable>
     <div style="margin-bottom: 1.5rem;">
         <p-table [value]="admin" dataKey="email" editMode="row" [tableStyle]="{'min-width': '50rem'}">
             <ng-template pTemplate="header" >
@@ -97,10 +97,15 @@
     
     <div class="outside-box-right">
         <p-panel header="Delete admin" [toggleable]="true"  [collapsed]="!isPanelOpen">
-            <div class="centered">
-                <div style="margin-bottom: 0.5rem;">
-                    <h5>Delete Admin by ID</h5>
-                    <input type="text" pInputText [(ngModel)]="deleteEmail" />        
+            <div class="centered"> 
+                <div class="delete-button">
+                    <h5>Delete Admin by e-mail</h5>
+                    <p-dropdown  
+                        [(ngModel)]="deleteEmail"
+                        [options]="adminDropdownOptions" 
+                        [style]="{ minWidth: '14rem' }"
+                        placeholder="Select e-mail">
+                    </p-dropdown>                
                 </div>
             </div>
             <div class="centered">  

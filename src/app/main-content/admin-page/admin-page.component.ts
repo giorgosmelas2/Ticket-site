@@ -1,21 +1,20 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { HostListener } from '@angular/core';
-import { AuthenticationService } from '../../authentication-service/authentication.service';
 import { MessageService } from 'primeng/api';
 import { AdminServiceService } from '../../api-services/admin-service/admin-service.service';
-import { response } from 'express';
+
 
 @Component({
   selector: 'app-admin-page',
   templateUrl: './admin-page.component.html',
   styleUrls: ['./admin-page.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 
 export class AdminPageComponent {
-  constructor(private authService: AuthenticationService, 
+  constructor( 
     private messageService: MessageService,
-    private adminService: AdminServiceService) {}
+    private adminService: AdminServiceService
+    ) {}
  
   isFullScreen: boolean = true;
   isPanelOpen =  false;
@@ -28,11 +27,12 @@ export class AdminPageComponent {
   users: any[] = [];
   admin: any[] = [];
 
-
   deleteEmail: string = '';
+  adminDropdownOptions: any[] = [];
+
   editingAdmin: any;
 
-  //Method for toast messages
+  //Method for toast messages format
   private showToast(severity: string, summary: string, detail: string): void {
     this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
   }
@@ -44,15 +44,17 @@ export class AdminPageComponent {
       .subscribe(
         (data) => {
           this.admin = data.filter(admin => admin.role === 5150);
+          for( let i = 0; i<this.admin.length; i++){
+            this.adminDropdownOptions[i] = this.admin[i].email; 
+          }
           this.isLoading = false;
         },
         (error) => {
-          this.showToast('error', 'Error', 'Error loading users.');
+          this.showToast('error', 'Error', 'Error loading admins.');
+          console.log(error);
           this.isLoading = false;
         }
       );
-
-      
   }
 
   //Checks any change in the window
@@ -66,8 +68,6 @@ export class AdminPageComponent {
     this.isFullScreen = window.innerWidth > 768; 
   }
 
-  
-  //Method called when user clicks submit button
   onSubmit(): void {
     if(!this.adminEmail || !this.username || !this.password){
       this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
@@ -75,6 +75,7 @@ export class AdminPageComponent {
     }
 
     const isDuplicateID = this.admin.find(a => a.id === this.adminEmail);
+
     if (isDuplicateID) {
       this.showToast('warn', 'Warning', 'An admin with the same ID already exists. Please use a different ID.');
       return;
@@ -85,7 +86,7 @@ export class AdminPageComponent {
       return;
     }
 
-
+    //Creating a variable with right format for database
     const newAdmin = {
       userEmail: this.adminEmail, 
       user: this.username, 
@@ -97,6 +98,7 @@ export class AdminPageComponent {
       .subscribe(
         (response) => {
           this.showToast('success', 'Success', 'Admin added successfully.');
+          console.log(response);
         },
         (error) =>{
           this.showToast('error', 'Error', 'Error adding admin.');
@@ -104,32 +106,29 @@ export class AdminPageComponent {
         }
       )
 
-
     this.onClearAdd();
-
   }
 
-  onDelete(): void {
+  onDelete(): void {    
     if (!this.deleteEmail) {
       this.showToast('warn', 'Warning', 'Please enter the Admin ID to delete.');
       return;
     }
 
+    //Finds the user by maching the choosen email with emails from admin array
     const userToDelete = this.admin.find(u => u.email === this.deleteEmail);
-    console.log(userToDelete.uid);
 
     this.adminService.deleteAdmin(userToDelete)
       .subscribe(
         (response) => {
           this.showToast('success', 'Success', 'Admin deleted successfully.');
+          console.log(response);
         },
         (error) => {
           this.showToast('error', 'Error', 'Error deleting admin.');
           console.log("Error in adding:",error);
         }
       )
-
-    
   }
 
   //Shows only 12 chars in the matrix's cells
@@ -139,24 +138,23 @@ export class AdminPageComponent {
     } else {
       return inputString.substring(0, 12) + '...';
     }
-  
   }
   
-
-  //Method called when user clicks the clear button to clear the fields
+  //Clears fields in add panel
   onClearAdd(): void {
     this.adminEmail = '';
     this.username = '';
     this.password = '';
   }
 
+  //Clears field in delete panel
   onClearDelete(){
     this.deleteEmail = '';
   }
 
-  //Determines which admin will be edited
+  //Makes a copy from the admin object before editing if user discards changes 
   onRowEditInit(admin: any): void {
-    this.editingAdmin = { ...admin };
+    this.editingAdmin = { ...admin }; 
   }
 
   //Saves the changes
@@ -165,7 +163,7 @@ export class AdminPageComponent {
       .subscribe(
         (updatedAdmin) => {
           this.showToast('success', 'Success', 'Admin updated successfully.');
-
+          console.log(updatedAdmin);
         },
         (error) => {
           this.showToast('error', 'Error', 'An error has occured.');
@@ -178,14 +176,12 @@ export class AdminPageComponent {
   onRowEditCancel(admin: any): void {
     if (this.editingAdmin) {
       const originalAdminIndex = this.admin.findIndex(a => a.uid === this.editingAdmin.uid);
-
-      if (originalAdminIndex !== -1) {
+      if (originalAdminIndex) {
         this.admin[originalAdminIndex] = { ...this.editingAdmin };
       } else {
         console.error('Original admin not found. Handle this case appropriately.');
       }
     }
-    
     this.editingAdmin = null;
   }
 }
