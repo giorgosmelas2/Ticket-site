@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { HostListener } from '@angular/core';
+import { MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-orders',
@@ -7,8 +10,33 @@ import { Component } from '@angular/core';
 })
 export class OrdersComponent {
 
+  constructor( 
+    private messageService: MessageService,
+    ){}
+
+  isFullScreen: boolean = true;
+  isPanelOpen =  false;
+  isLoading = true; 
+
   order: any[] = [];
-  isLoading = false;
+
+  deleteOrder: string ='';
+
+  //Method for toast messages
+  private showToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
+  }
+
+  //Checks any change in the window
+  @HostListener('window:resize', ['$event']) 
+  onResize(event: Event): void {
+      this.checkLayout();
+    }
+
+  //Checks for fullscreen or halfscreen
+  private checkLayout(): void {
+    this.isFullScreen = window.innerWidth > 768; 
+  }
 
   onRowEditInit(product: any): void {
     console.log('Editing initiated for product:', product);

@@ -8,10 +8,12 @@
         <p-table [value]="admin" dataKey="email" editMode="row" [tableStyle]="{'min-width': '50rem'}">
             <ng-template pTemplate="header" >
                 <tr>
-                    <th style="width:25%">Admin ID</th>
-                    <th style="width:25%">Username</th>
-                    <th style="width:25%">Password</th>
-                    <th style="width:25%"></th>
+                    <th style="width:16.6%">E-mail</th>
+                    <th style="width:16.6%">Username</th>
+                    <th style="width:16.6%">Password</th>
+                    <th style="width:16.6">Total tickets buyed</th>
+                    <th style="width:16.6">Total money spend</th>
+                    <th style="width:16.6%"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-admin let-editing="editing" let-ri="rowIndex">
@@ -43,6 +45,26 @@
                             </ng-template>
                             <ng-template pTemplate="output">
                                 {{getFirst12Characters(admin.password)}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="admin.total_tickets">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{admin.total_tickets}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="admin.total_money_spend">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{admin.total_money_spend | currency: 'USD'}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -88,8 +110,8 @@
             </div>
             <div class="centered">
                 <div class="button-container">
-                    <button type="button" class="btn btn-dark" (click)="onClearAdd()" >Clear</button>
-                    <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+                    <button type="button" class="btn btn-blue" (click)="onClearAdd()" >Clear</button>
+                    <button type="button" class="btn btn-blue" (click)="onSubmit()">Submit</button>
                 </div>
             </div>
         </p-panel>
@@ -110,8 +132,8 @@
             </div>
             <div class="centered">  
                 <div class="button-container">
-                    <button type="button" class="btn btn-dark" (click)="onClearDelete()" >Clear</button>
-                    <button type="button" class="btn btn-dark" (click)="onDelete()">Delete</button>
+                    <button type="button" class="btn btn-blue" (click)="onClearDelete()" >Clear</button>
+                    <button type="button" class="btn btn-blue" (click)="onDelete()">Delete</button>
                 </div>
             </div>
         </p-panel>

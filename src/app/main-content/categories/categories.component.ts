@@ -22,7 +22,6 @@ export class CategoriesComponent {
   isPanelOpen =  false;
 
   input: string = '';
-  formSubmitted = false;
   entries: any[] = [];
   event: any[] = [];
 
@@ -33,15 +32,13 @@ export class CategoriesComponent {
   private showToast(severity: string, summary: string, detail: string): void {
     this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
   }
-
+  
   //This method is called when the component initializes
   ngOnInit(): void {
     this.entries = this.dataService.getCategories();
     this.categories = this.dataService.getCategories();
-
-    this.formSubmitted = true;
-    
     this.checkLayout();
+
   }
 
   //Checks any change in the window
@@ -62,46 +59,42 @@ export class CategoriesComponent {
       this.showToast('warn', 'Warning', 'Please fill the title field before submitting.');
       return;
     }else{
-      const newEntry = { 
-        title: this.input,
-       };
-
-      this.entries.push(newEntry);
+      
+      this.entries.push(this.input);
 
       // Save data to localStorage
       this.dataService.setCategories(this.entries);
 
-      this.formSubmitted = true;
+      this.showToast('success', 'Success', 'Category created successfully.');
+
     }
   }
 
-  //Method called when user clicks the clear button to clear the fields
+  //Clears fields in add panel
   onClearAdd(): void {
     this.input = '';
   }
-
+  
+  //Clears field in delete panel
   onClearDelete(){
     this.selectedCategory = '';
   }
 
   onDelete() {
-
     if (!this.selectedCategory) {
       this.showToast('warn', 'Warning', 'Please select a category before deleting.');
       return;
     }
 
     const index = this.entries.findIndex(entry => entry.title === this.selectedCategory.title);
-
-    if (index !== -1) {
+    if (index) {
       // Remove the selected category from the entries array
       this.entries.splice(index, 1);
 
       // Save updated data to the service after deleting the specific category
       this.dataService.setCategories(this.entries);
-
-      // Clear the selected category after deletion
       this.selectedCategory = '';
+      this.showToast('success', 'Success', 'Category deleted successfully.');
     }
   }
 

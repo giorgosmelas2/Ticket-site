@@ -1,79 +1,4 @@
 <h1>Categories</h1>
-<!-- <div *ngIf="formSubmitted">
-    <div *ngFor="let entry of entries; let i = index" style="margin-bottom: 1.5rem;">
-        <h3>{{ entry.title }}</h3>
-        <div style="margin-bottom: 0.5rem;">
-            <p-table [value]="event" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width:12.5%">Title</th>
-                        <th style="width:12.5%">Description</th>
-                        <th style="width:12.5%">Date</th>
-                        <th style="width:12.5%">Coordinates</th>
-                        <th style="width:12.5%">Cover</th>
-                        <th style="width:12.5%">Tickets</th>
-                        <th style="width:12.5%">Price</th>
-                        <th style="width:12.5%"></th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-event let-editing="editing" let-ri="rowIndex">
-                    <tr [pEditableRow]="event">
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="event.title">
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{event.title}}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="event.de" required>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{event.description}}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <p-dropdown [options]="statuses" appendTo="body" [(ngModel)]="event.inventoryStatus" [style]="{'width':'100%'}"></p-dropdown>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{event.inventoryStatus}}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="event.price">
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{event.price | currency: 'USD'}}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <div class="flex align-items-center justify-content-center gap-2">
-                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(event)" class="p-button-rounded p-button-text"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(event)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(event)" class="p-button-rounded p-button-text p-button-danger"></button>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-
-        </div>
-        
-    </div>
-</div> -->
-
 <div class="container" [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
     <div class="outside-box-left">
         <p-panel header="Add category" [toggleable]="false"  >
@@ -85,8 +10,8 @@
             </div>
             <div class="centered">
                 <div class="button-container">
-                    <button type="button" class="btn btn-dark" (click)="onClearAdd()" >Clear</button>
-                    <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+                    <button type="button" class="btn btn-blue" (click)="onClearAdd()" >Clear</button>
+                    <button type="button" class="btn btn-blue" (click)="onSubmit()">Submit</button>
                 </div>
             </div>
         </p-panel>
@@ -97,21 +22,18 @@
             <div class="centered">
                 <div style="margin-bottom: 0.5rem;">
                     <h5>Select category by title</h5>
-                    <p-cascadeSelect 
-                            [(ngModel)]="selectedCategory" 
-                            [options]="categories" 
-                            optionLabel="title" 
-                            optionGroupLabel="name" 
-                            [optionGroupChildren]="['categories']" 
-                            [style]="{ minWidth: '14rem' }" 
-                            placeholder="Select category">
-                    </p-cascadeSelect>       
+                    <p-dropdown  
+                        [(ngModel)]="selectedCategory"
+                        [options]="categories" 
+                        [style]="{ minWidth: '14rem' }"
+                        placeholder="Select category">
+                    </p-dropdown>     
                 </div>
             </div>
             <div class="centered">
                 <div class="button-container">
-                    <button type="button" class="btn btn-dark" (click)="onClearDelete()" >Clear</button>
-                    <button type="button" class="btn btn-dark" (click)="onDelete()">Delete</button>
+                    <button type="button" class="btn btn-blue" (click)="onClearDelete()" >Clear</button>
+                    <button type="button" class="btn btn-blue" (click)="onDelete()">Delete</button>
                 </div>
             </div>
         </p-panel>

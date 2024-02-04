@@ -5,14 +5,14 @@
 </div>
 <ng-template #eventsTable>
     <div style="margin-bottom: 1.5rem;">
-        <p-table [value]="event" dataKey="title" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+        <p-table [value]="event" dataKey="event_name" editMode="row" [tableStyle]="{'min-width': '50rem'}">
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width:10%">Title</th>
                     <th style="width:15%">Date</th>
                     <th style="width:13%">Coordinates</th>
                     <th style="width:12%">Description</th>
-                    <!-- <th style="width:12%">Category</th> -->
+                    <th style="width:12%">Category</th>
                     <th style="width:11%">Cover</th>
                     <th style="width:5%">Tickets</th>
                     <th style="width:5%">Price</th>
@@ -61,24 +61,21 @@
                             </ng-template>
                         </p-cellEditor>
                     </td>
-                    <!-- <td>
+                    <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                 <p-cascadeSelect 
-                                    [(ngModel)]="selectedCategory" 
+                                <p-dropdown  
+                                    [(ngModel)]="selectedCategory"
                                     [options]="categories" 
-                                    optionLabel="title" 
-                                    optionGroupLabel="name" 
-                                    [optionGroupChildren]="['categories']" 
-                                    [style]="{ minWidth: '14rem' }" 
+                                    [style]="{ minWidth: '14rem' }"
                                     placeholder="Select category">
-                                </p-cascadeSelect>   
+                                </p-dropdown>  
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.category.title}}
+                                {{event.category}}
                             </ng-template>
                         </p-cellEditor>
-                    </td> -->
+                    </td>
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
@@ -92,8 +89,8 @@
                                     (onUpload)="onUpload($event)">
                                 </p-fileUpload>
                             </ng-template>
-                            <ng-template pTemplate="output">
-                                {{ getFirst12Characters(event.event_images)}}
+                            <ng-template  pTemplate="output">
+                                <img src="{{ event.event_images[1]}}"> 
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -152,15 +149,12 @@
                         </div> 
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Category</h5>
-                            <p-cascadeSelect 
-                                [(ngModel)]="selectedCategory" 
+                            <p-dropdown  
+                                [(ngModel)]="selectedCategory"
                                 [options]="categories" 
-                                optionLabel="title" 
-                                optionGroupLabel="name" 
-                                [optionGroupChildren]="['categories']" 
-                                [style]="{ minWidth: '14rem' }" 
+                                [style]="{ minWidth: '14rem' }"
                                 placeholder="Select category">
-                            </p-cascadeSelect>
+                            </p-dropdown>
                         </div> 
                     </div>
         
@@ -169,8 +163,10 @@
                             <h5>Date</h5>
                             <p-calendar 
                                 [(ngModel)]="date" 
+                                selectionMode="multiple" 
                                 [showTime]="true" 
-                                [showSeconds]="true">
+                                [showSeconds]="true"
+                                >
                             </p-calendar>
                         </div>
                         <div style="margin-bottom: 0.5rem;">
@@ -214,8 +210,8 @@
             </div>
             <div class="centered">
                 <div class="button-container">
-                    <button type="button" class="btn btn-dark" (click)="onClearAdd()" >Clear</button>
-                    <button type="button" class="btn btn-dark" (click)="onSubmit()">Submit</button>
+                    <button type="button" class="btn btn-blue" (click)="onClearAdd()" >Clear</button>
+                    <button type="button" class="btn btn-blue" (click)="onSubmit()">Submit</button>
                 </div>
             </div>
         </p-panel>
@@ -230,8 +226,8 @@
             </div>
             <div class="centered">  
                 <div class="button-container">
-                    <button type="button" class="btn btn-dark" (click)="onClearDelete()">Clear</button>
-                    <button type="button" class="btn btn-dark" (click)="onDelete()">Delete</button>
+                    <button type="button" class="btn btn-blue" (click)="onClearDelete()">Clear</button>
+                    <button type="button" class="btn btn-blue" (click)="onDelete()">Delete</button>
                 </div>
             </div>
         </p-panel>

@@ -82,5 +82,28 @@
 </ng-template>
 
 
+<div [ngClass]="{'horizontal-layout-order-component': isFullScreen, 'vertical-layout-order-component': !isFullScreen}">
+    <div>
+         <p-panel header="Delete order" [toggleable]="true"  [collapsed]="!isPanelOpen">
+             <div class="centered">
+                 <div class="delete-button">
+                     <h5>Delete order by title</h5>
+                     <input type="text" pInputText [(ngModel)]="deleteOrder" />        
+                 </div>
+             </div>
+             <div class="centered">  
+                 <div class="button-container">
+                     <button type="button" class="btn btn-blue" >Clear</button>
+                     <button type="button" class="btn btn-blue" >Delete</button>
+                 </div>
+             </div>
+         </p-panel>
+     </div>  
+     
+</div>  
+<p-toast position="bottom-center" key="bottomCenter"></p-toast>
+ 
+
+
 
     

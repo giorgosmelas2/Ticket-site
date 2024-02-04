@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../../api-services/authentication-service/authentication.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-sidebar2',
@@ -12,7 +13,15 @@ export class Sidebar2Component {
   buttonText: string = '';
 
   onLogout() {
-    this.authService.logout();
+    this.authService.logout()
+      .subscribe(
+        (response) => {
+          this.authService.deleteCurrentUser();
+        },
+        (error) => {
+          console.log(error);
+        } 
+      )
   }
 
   getUsername(): string | null {

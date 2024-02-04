@@ -69,23 +69,7 @@ export class AdminPageComponent {
   }
 
   onSubmit(): void {
-    if(!this.adminEmail || !this.username || !this.password){
-      this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
-      return;
-    }
-
-    const isDuplicateID = this.admin.find(a => a.id === this.adminEmail);
-
-    if (isDuplicateID) {
-      this.showToast('warn', 'Warning', 'An admin with the same ID already exists. Please use a different ID.');
-      return;
-    }
-
-    if(this.adminEmail < '1'){
-      this.showToast('warn', 'Warning', 'Invalid ID.');
-      return;
-    }
-
+    
     //Creating a variable with right format for database
     const newAdmin = {
       userEmail: this.adminEmail, 
@@ -101,23 +85,31 @@ export class AdminPageComponent {
           console.log(response);
         },
         (error) =>{
-          this.showToast('error', 'Error', 'Error adding admin.');
-          console.log("Error in adding:",error);
+          //Checks if fields are filled
+          if(error.status == 400){
+            this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
+            console.log(error);
+          }
+
+          //Checks for duplicate admin
+          if(error.status == 409){
+            this.showToast('error', 'Error', 'Error adding admin.');
+            console.log("Error in adding:",error);
+          }
+          
         }
       )
-
     this.onClearAdd();
   }
 
   onDelete(): void {    
     if (!this.deleteEmail) {
-      this.showToast('warn', 'Warning', 'Please enter the Admin ID to delete.');
+      this.showToast('warn', 'Warning', 'Please select the Admin email to delete.');
       return;
     }
 
     //Finds the user by maching the choosen email with emails from admin array
     const userToDelete = this.admin.find(u => u.email === this.deleteEmail);
-
     this.adminService.deleteAdmin(userToDelete)
       .subscribe(
         (response) => {

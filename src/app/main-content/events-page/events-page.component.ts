@@ -57,6 +57,7 @@ export class EventsPageComponent {
         (data) => {
           this.event = data;
           this.isLoading = false;
+          console.log(this.event[0].event_images[0]);
         },
         (error) => {
           this.showToast('error', 'Error', 'Error loading users.');
@@ -173,10 +174,12 @@ export class EventsPageComponent {
 
   //Determines which admin will be edited
   onRowEditInit(event: any): void {
+
     this.editingEvent= { ...event };
   }
 
   onRowEditSave(event: any): void {
+
     const index = this.event.findIndex(e => e.title === event.title);
 
     if (index !== -1) {
@@ -189,6 +192,7 @@ export class EventsPageComponent {
 
   //Discards the changes
   onRowEditCancel(event: any): void {
+
     if (this.editingEvent) {
       const originalEventIndex = this.event.findIndex(e => e.title === this.editingEvent.title);
 

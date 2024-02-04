@@ -13,6 +13,7 @@ export class DataService {
 
 
   setCategories(data: any[]): void {
+
     localStorage.setItem(this.localStorageKeyCategories, JSON.stringify(data));
   }
 
@@ -37,6 +38,10 @@ export class DataService {
 
   setEvents(data: any[]): void{
     localStorage.setItem(this.localStorageKeyEvens, JSON.stringify(data));
+  }
+
+  clearCategories(): void {
+    localStorage.removeItem(this.localStorageKeyCategories);
   }
 
 }

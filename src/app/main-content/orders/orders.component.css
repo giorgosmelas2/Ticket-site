@@ -1,0 +1,9 @@
+.horizontal-layout-order-component {
+    flex-direction: row;  
+    width: 50%;
+}
+
+.vertical-layout-order-component {
+    flex-direction: column; 
+}
+

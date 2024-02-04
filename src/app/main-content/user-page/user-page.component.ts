@@ -73,21 +73,6 @@ export class UserPageComponent {
 
   //Method called when user clicks submit button
   onSubmit(): void {
-    if(!this.email || !this.username || !this.password){
-      this.showToast('warn', 'Warning', 'Please fill all flieds before submit');
-      return;
-    }
-
-    const isDuplicateID = this.user.find(u => u.id === this.email);
-    if (isDuplicateID) {
-      this.showToast('warn', 'Warning', 'An admin with the same ID already exists. Please use a different ID.');
-      return;
-    }
-
-    if(this.email < '1'){
-      this.showToast('warn', 'Warning', 'Invalid ID.');
-      return;
-    }
 
     //Creating a variable with right format for database
     const newUser = {
@@ -101,11 +86,21 @@ export class UserPageComponent {
       .subscribe(
         (response) => {
           this.showToast('success', 'Success', 'User added successfully.');
-          console.log(response);
+          console.log(response);            
         },
         (error) => {
-          this.showToast('error', 'Error', 'Error adding user.');
-          console.log("Error in adding:",error);
+          //Checks if fields are filled
+          if(error.status == 400){
+            this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
+            console.log(error);
+          }
+
+          //Checks for duplicate user
+          if(error.status == 409){
+            this.showToast('error', 'Error', 'Error adding user.');
+            console.log("Error in adding:",error);
+          }
+          
         }
       )
 

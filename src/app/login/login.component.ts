@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from '../api-services/authentication-service/authentication.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { response } from 'express';
 
 @Component({
   selector: 'app-login-test',
@@ -33,28 +34,26 @@ export class LoginTestComponent {
       return;
     }
 
-    try{
-      const response = await fetch('http://localhost:3500/auth', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-          },
-        credentials: 'include',
-        body: JSON.stringify({  
-            "usernameOrEmail": this.username, "pwd": this.password
-          }),
-        });
-
-        if(response.ok){
-          this.authService.login(this.username);
+    this.authService.login(this.username, this.password)
+      .subscribe(
+        (response) => {
+          this.authService.setCurrentUser(this.username);
           this.router.navigate(['/main-content'])
-        }else{
-          this.showToast('error', 'Error', 'Wrong username or password.');
-        }
+        },
+        (error) => {
+          //Checks if fields are filled
+          if(error.status == 400){
+            this.showToast('warn', 'Warning', 'Please fill all fields.');
+            console.log(error);
+          }
 
-      }catch(err){
-        console.log(err);
-      }
+          //Wrong username or password
+          if(error.status == 401){
+            this.showToast('error', 'Error', 'Wrong username or password.');
+            console.log(error);
+          }
+        }
+      )    
     }
 
   sendForgotPasswordEmail() {
