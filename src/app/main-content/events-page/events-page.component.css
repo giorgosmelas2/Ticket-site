@@ -4,4 +4,13 @@ img{
 }
 
 
+input[type="file"]{
+    display: none;
+}
 
+label{
+    color: white;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    padding: 0.3rem;
+}

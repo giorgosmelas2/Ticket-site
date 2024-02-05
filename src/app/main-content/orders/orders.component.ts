@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { OrderServiceService } from '../../api-services/order-service/order-service.service';
 
 
 @Component({
@@ -12,6 +13,7 @@ export class OrdersComponent {
 
   constructor( 
     private messageService: MessageService,
+    private orderService: OrderServiceService
     ){}
 
   isFullScreen: boolean = true;
@@ -25,6 +27,22 @@ export class OrdersComponent {
   //Method for toast messages
   private showToast(severity: string, summary: string, detail: string): void {
     this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
+  }
+
+  ngOnInit():void {
+    this.checkLayout();
+    this.orderService.getAllOrders()
+      .subscribe(
+        (data) => {
+          this.order = data;
+          this.isLoading = false;
+        },
+        (error) => {
+          this.showToast('error', 'Error', 'Error loading orders.');
+          console.log(error);
+          this.isLoading = false;
+        }
+      )
   }
 
   //Checks any change in the window

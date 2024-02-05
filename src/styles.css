@@ -169,6 +169,10 @@ th{
     padding: 0.5rem;
 }
 
+td{
+    padding: 0.5rem;
+}
+
 .hover-color:hover {
     background-color: var(--blue-600) !important;
 }

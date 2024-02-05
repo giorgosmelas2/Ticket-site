@@ -5,7 +5,7 @@
 </div>
 <ng-template #adminsTable>
     <div style="margin-bottom: 1.5rem;">
-        <p-table [value]="admin" dataKey="email" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+        <p-table [value]="admin" dataKey="uid" editMode="row" [tableStyle]="{'min-width': '50rem'}">
             <ng-template pTemplate="header" >
                 <tr>
                     <th style="width:16.6%">E-mail</th>
@@ -24,7 +24,7 @@
                                 <input pInputText type="text" [(ngModel)]="admin.email">
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{getFirst12Characters(admin.email)}}
+                                {{getFirst20Characters(admin.email)}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -44,7 +44,7 @@
                                 <input pInputText type="text" [(ngModel)]="admin.password" required>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{getFirst12Characters(admin.password)}}
+                                {{getFirst20Characters(admin.password)}}
                             </ng-template>
                         </p-cellEditor>
                     </td>

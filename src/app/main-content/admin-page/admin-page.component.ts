@@ -41,20 +41,20 @@ export class AdminPageComponent {
   ngOnInit(): void {
     this.checkLayout();
     this.adminService.getAllUsers()
-      .subscribe(
-        (data) => {
-          this.admin = data.filter(admin => admin.role === 5150);
-          for( let i = 0; i<this.admin.length; i++){
-            this.adminDropdownOptions[i] = this.admin[i].email; 
-          }
-          this.isLoading = false;
-        },
-        (error) => {
-          this.showToast('error', 'Error', 'Error loading admins.');
-          console.log(error);
-          this.isLoading = false;
+    .subscribe(
+      (data) => {
+        this.admin = data.filter(admin => admin.role === 5150);
+        for( let i = 0; i<this.admin.length; i++){
+          this.adminDropdownOptions[i] = this.admin[i].email; 
         }
-      );
+        this.isLoading = false;
+      },
+      (error) => {
+        this.showToast('error', 'Error', 'Error loading admins.');
+        console.log(error);
+        this.isLoading = false;
+      }
+    );
   }
 
   //Checks any change in the window
@@ -83,6 +83,7 @@ export class AdminPageComponent {
         (response) => {
           this.showToast('success', 'Success', 'Admin added successfully.');
           console.log(response);
+          
         },
         (error) =>{
           //Checks if fields are filled
@@ -100,6 +101,7 @@ export class AdminPageComponent {
         }
       )
     this.onClearAdd();
+    this.ngOnInit();
   }
 
   onDelete(): void {    
@@ -123,12 +125,12 @@ export class AdminPageComponent {
       )
   }
 
-  //Shows only 12 chars in the matrix's cells
-  getFirst12Characters(inputString: string): string {
-    if (inputString.length <= 12) {
+  //Shows only 20 chars in the matrix's cells
+  getFirst20Characters(inputString: string): string {
+    if (inputString.length <= 20) {
       return inputString;
     } else {
-      return inputString.substring(0, 12) + '...';
+      return inputString.substring(0, 20) + '...';
     }
   }
   
@@ -151,7 +153,30 @@ export class AdminPageComponent {
 
   //Saves the changes
   onRowEditSave(admin: any): void {
-    this.adminService.updateAdmin(admin)
+
+    var updatedAdmin;
+    const originalAdminIndex = this.admin.findIndex(a => a.uid === this.editingAdmin.uid);
+
+    if(this.admin[originalAdminIndex].email === admin.email){
+      updatedAdmin = {
+        uid: admin.uid,
+        username: admin.username,
+        pwd: admin.pwd,
+        total_tickets: admin.total_tickets,
+        total_money_spend: admin.total_money_spend
+      }; 
+    }else{
+      updatedAdmin = {
+        uid: admin.uid,
+        email: admin.email,
+        username: admin.username,
+        pwd: admin.pwd,
+        total_tickets: admin.total_tickets,
+        total_money_spend: admin.total_money_spend
+      }; 
+    }
+
+    this.adminService.updateAdmin(updatedAdmin)
       .subscribe(
         (updatedAdmin) => {
           this.showToast('success', 'Success', 'Admin updated successfully.');

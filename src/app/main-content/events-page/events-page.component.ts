@@ -3,6 +3,7 @@ import { HostListener } from '@angular/core';
 import { DataService } from '../../data-services/data.service';
 import { MessageService } from 'primeng/api';
 import { EventsServiceService } from '../../api-services/events-service/events-service.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-events-page',
@@ -23,14 +24,13 @@ export class EventsPageComponent {
   isLoading = true; 
 
   uploadedCoverPath: string | null = null;
-  
 
   title: string = '';
   date: any;
   
   description: string = '';
   coordinates: string = '';
-  cover: string| null = null;
+  cover: File | null = null;
   tickets: string = '';
   price: string = '';
   selectedCategory: any = '';
@@ -40,9 +40,13 @@ export class EventsPageComponent {
   //The categories that are avauliabe in categories page
   categories: any[] = [];
 
-  deleteEventTitle: string = '';
+  deleteEmail: string = '';
+  eventDropdownOptions: any[] = [];
+
+  newDates: any;
+
   editingEvent: any;
-  
+  selectedFileName: string = '';
 
   //Method for toast messages
   private showToast(severity: string, summary: string, detail: string): void {
@@ -56,8 +60,12 @@ export class EventsPageComponent {
       .subscribe(
         (data) => {
           this.event = data;
+          for( let i = 0; i<this.event.length; i++){
+            this.eventDropdownOptions[i] = this.event[i].event_name; 
+          }
+          console.log(this.event)
           this.isLoading = false;
-          console.log(this.event[0].event_images[0]);
+          
         },
         (error) => {
           this.showToast('error', 'Error', 'Error loading users.');
@@ -88,7 +96,8 @@ export class EventsPageComponent {
       !this.coordinates ||
       !this.price ||
       !this.tickets ||
-      !this.date
+      !this.date ||
+      !this.cover
     ) {
       this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
       return;
@@ -102,39 +111,62 @@ export class EventsPageComponent {
 
 
     const newEvent = {
-      title: this.title,
-      date: this.date,
-      coordinates: this.coordinates,
-      description: this.description,
-      category: this.selectedCategory,
-      cover: this.uploadedCoverPath,
-      tickets: this.tickets,
-      price: this.price, 
+      event_name: this.title,
+      event_description: this.description,
+      event_category: this.selectedCategory,
+      event_dates : {
+        date: this.date,
+        max_tickets: this.tickets
+      } ,
+      event_coordinates: this.coordinates,
+      event_ticket_price: this.price, 
+      event_images: this.cover
     };
 
-    this.event.push(newEvent);
-    this.dataService.setEvents(this.event);
+    this.eventService.addEvent(newEvent)
+      .subscribe(
+        (response) => {
+          this.showToast('success', 'Success', 'Admin added successfully.');
+          console.log(response);
+        },
+        (error) => {
+          this.showToast('error', 'Error', 'Error adding event.');
+          console.log(error);
+        }
+      )
+
     this.onClearAdd();
-    this.showToast('success', 'Success', 'Event added successfully.');
   }
 
   onDelete(){
-    if (!this.deleteEventTitle) {
+    if (!this.deleteEmail) {
       this.showToast('warn', 'Warning', 'Please enter the Event title to delete.');
       return;
     }
 
-    const index = this.event.findIndex(e => e.title === this.deleteEventTitle);
+    const index = this.event.findIndex(e => e.title === this.deleteEmail);
 
     if (index !== -1) {
       this.event.splice(index, 1);
       this.dataService.setEvents(this.event);
-      this.deleteEventTitle = '';
+      this.deleteEmail = '';
     } else {
       alert('Admin not found with the specified ID.');
     }
 
     this.onClearDelete();
+  }
+
+  getDates(event: any): string{
+    var dates = event.event_dates[0];
+    if(event.event_dates.length > 1){    
+      for(let i = 1; i<event.event_dates.length; i++){
+        dates += dates  + event.event_dates[i]
+      }
+    }
+    console.log("dates",dates);
+    return dates;
+    
   }
 
   //Shows only 12 chars in the matrix's cells
@@ -156,20 +188,23 @@ export class EventsPageComponent {
     this.price = '';
     this.tickets = '';
     this.date = '';
+    this.cover = null;
+    this.selectedFileName = "";
   }
 
   onClearDelete(){
-    this.deleteEventTitle = '';
+    this.deleteEmail = '';
   }
 
 
-  onUpload(event: any) {
-    const response = JSON.parse(event.xhr.response);
-
-    if (response && response.files && response.files.length > 0) {
-      this.uploadedCoverPath = response.files[0].path; // Save the uploaded image path
+  onChange(event: any) {
+    if(event.target.files.length > 0){
+      const file = event.target.files[0];
+      this.selectedFileName = file.name;
+      console.log(file);
+      this.cover = file;
     }
-    
+    console.log("Cover",this.cover);
   }
 
   //Determines which admin will be edited

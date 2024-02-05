@@ -10,7 +10,7 @@
                     <p-password placeholder="Password" [(ngModel)]="password" [feedback]="false"></p-password>
                 </div>
                 <div style="margin-bottom: 1rem;">
-                    <button type="button" class="btn btn-dark" (click)="onLogin()" >Log in</button>
+                    <button type="button" class="btn btn-blue" (click)="onLogin()" >Log in</button>
                 </div>
                 <div>
                     <p (click)="showForgotPasswordInput = true" *ngIf="!showForgotPasswordInput">Forgot password?</p>
@@ -19,7 +19,7 @@
                             <input pInputText placeholder="Enter your email" [(ngModel)]="forgotPasswordEmail"/>
                         </div>
                         <div>
-                            <button type="button" class="btn btn-dark" (click)="sendForgotPasswordEmail()">Send</button>
+                            <button type="button" class="btn btn-blue" (click)="sendForgotPasswordEmail()">Send</button>
                         </div>
                     </div>
                 </div>

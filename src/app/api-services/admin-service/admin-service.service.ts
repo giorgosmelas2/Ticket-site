@@ -16,13 +16,7 @@ export class AdminServiceService {
   }
 
   updateAdmin(admin: any): Observable<any>{
-    const updatedAdmin = {
-      // username: admin.username,
-      total_tickets: admin.total_tickets,
-      total_money_spend: admin.total_money_spend
-    }; 
-
-    return this.http.put(`${this.apiUrl}/users/${admin.uid}`, updatedAdmin);
+    return this.http.put(`${this.apiUrl}/users/${admin.uid}`, admin);
   }
 
   registerAdmin(admin: any): Observable<any>{
