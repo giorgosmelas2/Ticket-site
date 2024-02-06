@@ -17,11 +17,16 @@ export class EventsServiceService {
  
   addEvent(event: any): Observable<any>{
     return this.http.post(`${this.apiUrl}/events`, event);
+   
   }
 
-  // deleteEvent(event: any): Observable<any>{
-  //   return this.http.delete(`${this.apiUrl}/events/${events.id}`)
-  // }
+  deleteEvent(event: any): Observable<any>{
+    return this.http.delete(`${this.apiUrl}/events/${event.event_name}`);
+  }
+
+  updateEvent(event: any): Observable<any>{
+    return this.http.put(`${this.apiUrl}/events/${event.event_name}`, event);
+  }
 }
 
 

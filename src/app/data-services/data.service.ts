@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +7,11 @@ import { Observable, of } from 'rxjs';
 export class DataService {
 
   private localStorageKeyCategories = 'categories_entries';
-  private localStorageKeyEvens = 'events'
-  private localStorageKeyUserEmails = 'user_emails'
+  private localStorageKeyUserEmails = 'user_emails';
+  private localStorageKeyLogin = 'login';
 
 
   setCategories(data: any[]): void {
-
     localStorage.setItem(this.localStorageKeyCategories, JSON.stringify(data));
   }
 
@@ -31,17 +29,6 @@ export class DataService {
     return storedUserEmails ? JSON.parse(storedUserEmails) : []
   }
 
-  getEvents(): any[]{
-    const storedEvents = localStorage.getItem(this.localStorageKeyEvens);
-    return storedEvents ? JSON.parse(storedEvents) : [];
-  }
 
-  setEvents(data: any[]): void{
-    localStorage.setItem(this.localStorageKeyEvens, JSON.stringify(data));
-  }
-
-  clearCategories(): void {
-    localStorage.removeItem(this.localStorageKeyCategories);
-  }
 
 }

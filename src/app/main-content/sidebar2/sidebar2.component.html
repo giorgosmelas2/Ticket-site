@@ -57,10 +57,10 @@
                 <hr class="mb-3 mx-3 border-top-1 border-none surface-border" />
                 <div class="fixed-width">
                     <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover-color transition-duration-150 transition-colors p-ripple"
-                        style="text-decoration: none;"  
-                        routerLink="/login" 
+                        style="text-decoration: none;"       
                         routerLinkActive="active" 
                         aria-current="page"
+                        (click) = "onLogout()"
                         (mouseenter)="onMouseEnter()"
                         (mouseleave)="onMouseLeave()">
                         <i class="pi pi-lock-open mr-2" style="color: white;"></i>

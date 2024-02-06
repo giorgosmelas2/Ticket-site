@@ -74,6 +74,11 @@ export class UserPageComponent {
   //Method called when user clicks submit button
   onSubmit(): void {
 
+    if(!this.isValidEmail(this.email)){
+      this.showToast('warn', 'Warning', 'Please give a right email.');
+      return;
+    }
+
     //Creating a variable with right format for database
     const newUser = {
       userEmail: this.email,
@@ -105,6 +110,13 @@ export class UserPageComponent {
       )
 
     this.onClearAdd();
+  }
+
+  //Email check.
+  private isValidEmail(email: string): boolean {
+    // Regular expression for a basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 
   onDelete(): void {

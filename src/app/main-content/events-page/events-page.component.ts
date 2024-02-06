@@ -26,7 +26,7 @@ export class EventsPageComponent {
   uploadedCoverPath: string | null = null;
 
   title: string = '';
-  date: any;
+  date: Date[] = [];
   
   description: string = '';
   coordinates: string = '';
@@ -40,7 +40,7 @@ export class EventsPageComponent {
   //The categories that are avauliabe in categories page
   categories: any[] = [];
 
-  deleteEmail: string = '';
+  deleteTitle: string = '';
   eventDropdownOptions: any[] = [];
 
   newDates: any;
@@ -74,7 +74,12 @@ export class EventsPageComponent {
         }
       );
     this.categories = this.dataService.getCategories();
+
   }
+
+  getTicketsRange(event: any): number[] {
+    return Array.from({length: event.max_tickets}, (_, index) => index + 1);
+}
 
   //Checks any change in the window
   @HostListener('window:resize', ['$event']) 
@@ -96,8 +101,7 @@ export class EventsPageComponent {
       !this.coordinates ||
       !this.price ||
       !this.tickets ||
-      !this.date ||
-      !this.cover
+      !this.date 
     ) {
       this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
       return;
@@ -109,24 +113,32 @@ export class EventsPageComponent {
       return;
     }
 
+    
 
+    const eventsDatesandTickets = this.date.map(date => ({
+      date: date.toISOString(),
+      max_tickets: parseInt(this.tickets)
+    }));
+  
+    console.log("Events Dates and Tickets", eventsDatesandTickets);
+
+    console.log("Date",this.date)
     const newEvent = {
-      event_name: this.title,
-      event_description: this.description,
-      event_category: this.selectedCategory,
-      event_dates : {
-        date: this.date,
-        max_tickets: this.tickets
-      } ,
-      event_coordinates: this.coordinates,
-      event_ticket_price: this.price, 
-      event_images: this.cover
+      eventName: this.title,
+      description: this.description,
+      category: this.selectedCategory,
+      dates : eventsDatesandTickets,
+      coordinates: this.coordinates,
+      ticketPrice: parseInt(this.price), 
+      files: this.cover
     };
+    
+    console.log("New Event", newEvent);
 
     this.eventService.addEvent(newEvent)
       .subscribe(
         (response) => {
-          this.showToast('success', 'Success', 'Admin added successfully.');
+          this.showToast('success', 'Success', 'Event added successfully.');
           console.log(response);
         },
         (error) => {
@@ -139,34 +151,27 @@ export class EventsPageComponent {
   }
 
   onDelete(){
-    if (!this.deleteEmail) {
+    if (!this.deleteTitle) {
       this.showToast('warn', 'Warning', 'Please enter the Event title to delete.');
       return;
     }
 
-    const index = this.event.findIndex(e => e.title === this.deleteEmail);
+    console.log("Deletetitle:", this.deleteTitle);
+    const eventToDelete = this.event.find(e => e.event_name === this.deleteTitle);
+    console.log("Event to delete", eventToDelete);
 
-    if (index !== -1) {
-      this.event.splice(index, 1);
-      this.dataService.setEvents(this.event);
-      this.deleteEmail = '';
-    } else {
-      alert('Admin not found with the specified ID.');
-    }
-
+    this.eventService.deleteEvent(eventToDelete)
+      .subscribe(
+        (response) => {
+          this.showToast('success', 'Success', 'Event deleted successfully.');
+          console.log(response);
+        },
+        (error) => {
+          this.showToast('error', 'Error', 'Error deleting event.');
+          console.log("Error in adding:",error);
+        }
+      )
     this.onClearDelete();
-  }
-
-  getDates(event: any): string{
-    var dates = event.event_dates[0];
-    if(event.event_dates.length > 1){    
-      for(let i = 1; i<event.event_dates.length; i++){
-        dates += dates  + event.event_dates[i]
-      }
-    }
-    console.log("dates",dates);
-    return dates;
-    
   }
 
   //Shows only 12 chars in the matrix's cells
@@ -187,13 +192,13 @@ export class EventsPageComponent {
     this.coordinates = '';
     this.price = '';
     this.tickets = '';
-    this.date = '';
+    this.date = [];
     this.cover = null;
     this.selectedFileName = "";
   }
 
   onClearDelete(){
-    this.deleteEmail = '';
+    this.deleteTitle = '';
   }
 
 
@@ -211,6 +216,7 @@ export class EventsPageComponent {
   onRowEditInit(event: any): void {
 
     this.editingEvent= { ...event };
+    event.ticketsArray = Array.from({ length: event.max_tickets }, () => "");
   }
 
   onRowEditSave(event: any): void {
@@ -219,7 +225,6 @@ export class EventsPageComponent {
 
     if (index !== -1) {
       this.event[index] = { ...event };
-      this.dataService.setEvents(this.event);
     }
     
     this.editingEvent = null;

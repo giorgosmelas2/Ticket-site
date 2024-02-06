@@ -20,7 +20,6 @@ export class UserServiceService {
     console.log("update user:", user)
 
     const updatedUser = {
-      email: user.email,
       username: user.username,
       tota_tickets: user.tota_tickets,
       total_money_spend: user.total_money_spend

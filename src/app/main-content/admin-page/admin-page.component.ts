@@ -69,6 +69,11 @@ export class AdminPageComponent {
   }
 
   onSubmit(): void {
+
+    if(!this.isValidEmail(this.adminEmail)){
+      this.showToast('warn', 'Warning', 'Please give a right email.');
+      return;
+    }
     
     //Creating a variable with right format for database
     const newAdmin = {
@@ -104,6 +109,13 @@ export class AdminPageComponent {
     this.ngOnInit();
   }
 
+  //Email check.
+  private isValidEmail(email: string): boolean {
+    // Regular expression for a basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
   onDelete(): void {    
     if (!this.deleteEmail) {
       this.showToast('warn', 'Warning', 'Please select the Admin email to delete.');
@@ -111,7 +123,7 @@ export class AdminPageComponent {
     }
 
     //Finds the user by maching the choosen email with emails from admin array
-    const userToDelete = this.admin.find(u => u.email === this.deleteEmail);
+    const userToDelete = this.admin.find(a => a.email === this.deleteEmail);
     this.adminService.deleteAdmin(userToDelete)
       .subscribe(
         (response) => {
@@ -175,6 +187,10 @@ export class AdminPageComponent {
         total_money_spend: admin.total_money_spend
       }; 
     }
+
+
+    console.log("original:", this.admin[originalAdminIndex]);
+    console.log("Updated:",updatedAdmin)
 
     this.adminService.updateAdmin(updatedAdmin)
       .subscribe(

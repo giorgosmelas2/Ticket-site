@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router, NavigationExtras } from '@angular/router';
 import { AuthenticationService } from '../../api-services/authentication-service/authentication.service';
 import { response } from 'express';
 
@@ -8,11 +9,19 @@ import { response } from 'express';
   styleUrl: './sidebar2.component.css'
 })
 export class Sidebar2Component {
-  constructor(private authService: AuthenticationService) {}
+  constructor(
+    private authService: AuthenticationService,
+    private router: Router) {}
 
   buttonText: string = '';
+  
 
   onLogout() {
+    // Clear navigation history
+    const navigationExtras: NavigationExtras = {
+      replaceUrl: true
+    };
+
     this.authService.logout()
       .subscribe(
         (response) => {
@@ -22,6 +31,7 @@ export class Sidebar2Component {
           console.log(error);
         } 
       )
+      this.router.navigate(['/login'], navigationExtras);
   }
 
   getUsername(): string | null {

@@ -36,6 +36,7 @@ export class OrdersComponent {
         (data) => {
           this.order = data;
           this.isLoading = false;
+          console.log(this.order)
         },
         (error) => {
           this.showToast('error', 'Error', 'Error loading orders.');

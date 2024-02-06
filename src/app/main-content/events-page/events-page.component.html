@@ -34,17 +34,21 @@
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <!-- <input pInputText type="text" [(ngModel)]="event.event_date" required> -->
-                                <p-calendar 
-                                    [(ngModel)]="newDates"
-                                    [style]="{'width': '100%'}" 
-                                    selectionMode="multiple" 
-                                    [showTime]="true" 
-                                    [showSeconds]="true">
-                            </p-calendar>
+                                <div>
+                                    <p-calendar 
+                                        [(ngModel)]="newDates"
+                                        [style]="{'width': '100%'}" 
+                                        selectionMode="multiple" 
+                                        [showTime]="true" 
+                                        [showSeconds]="true">
+                                    </p-calendar>
+                                </div>
+                                
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{getDates(event)}}   
+                                <div *ngFor="let date of event.event_dates">
+                                    {{ date.date | date }}
+                                  </div>
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -106,10 +110,17 @@
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.tickets" >
+                                <div *ngFor="let tickets of event.event_dates">
+                                    <input pInputText type="text" [(ngModel)]="tickets.max_tickets" >
+                                   
+                                </div>
+                                
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.max_tickets}}
+                                <div *ngFor="let tickets of event.event_dates">
+                                    {{ tickets.max_tickets }}
+                                </div>
+
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -175,6 +186,7 @@
                                 selectionMode="multiple" 
                                 [showTime]="true" 
                                 [showSeconds]="true"
+                                dateFormat="yy.mm.dd"
                                 >
                             </p-calendar>
                         </div>
@@ -226,7 +238,7 @@
                 <div class="delete-button">
                     <h5>Delete event by title</h5>
                     <p-dropdown  
-                        [(ngModel)]="deleteEmail"
+                        [(ngModel)]="deleteTitle"
                         [options]="eventDropdownOptions" 
                         [style]="{ minWidth: '14rem' }"
                         placeholder="Select event">
