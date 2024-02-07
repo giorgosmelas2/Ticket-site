@@ -5,75 +5,78 @@
 </div>
 <ng-template #orderssTable>
     <div style="margin-bottom: 1.5rem;">
-        <p-table [value]="order" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+        <p-table [value]="order" dataKey="orderId" editMode="row" [tableStyle]="{'min-width': '50rem'}">
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width:18%">User</th>
-                    <th style="width:18%">Title</th>
-                    <th style="width:18%">Date</th>
-                    <th style="width:18%">Tickets</th>
-                    <th style="width:18%">Price</th>
-                    <th style="width:10%"></th>
+                    <th style="width:15%">Order Id</th>
+                    <th style="width:15%">Date</th>
+                    <th style="width:15%">User e-mail</th>
+                    <th style="width:15%">Event title</th>
+                    <th style="width:15%">Quantity</th>
+                    <th style="width:15%">Total price</th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-event let-editing="editing" let-ri="rowIndex">
+            <ng-template pTemplate="body" let-order let-editing="editing" let-ri="rowIndex">
                 <tr [pEditableRow]="order">
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="order">
+                                <input pInputText type="text" [(ngModel)]="order.orderId">
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{order}}
+                                {{order.orderId}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="order" required>
+                                <input pInputText type="text" [(ngModel)]="order.date_of_event" required>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{order}}
+                                {{order.date_of_event}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="order" required>
+                                <input pInputText type="text" [(ngModel)]="order.user_email" required>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{order}}
+                                {{order.user_email}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="order" required>
+                                <input pInputText type="text" [(ngModel)]="order.event" required>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{order}}
+                                {{order.event}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.price">
+                                <input pInputText type="text" [(ngModel)]="order.quantity" required>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.price | currency: 'USD'}}
+                                {{order.quantity}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
-                        <div class="flex align-items-center justify-content-center gap-2">
-                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(event)" class="p-button-rounded p-button-text"></button>
-                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(event)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(event)" class="p-button-rounded p-button-text p-button-danger"></button>
-                        </div>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="order.total_price">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{order.total_price | currency: 'USD'}}
+                            </ng-template>
+                        </p-cellEditor>
                     </td>
                 </tr>
             </ng-template>
@@ -83,22 +86,25 @@
 
 
 <div [ngClass]="{'horizontal-layout-order-component': isFullScreen, 'vertical-layout-order-component': !isFullScreen}">
-    <div>
-         <p-panel header="Delete order" [toggleable]="true"  [collapsed]="!isPanelOpen">
-             <div class="centered">
-                 <div class="delete-button">
-                     <h5>Delete order by title</h5>
-                     <input type="text" pInputText [(ngModel)]="deleteOrder" />        
-                 </div>
-             </div>
-             <div class="centered">  
-                 <div class="button-container">
-                     <button type="button" class="btn btn-blue" >Clear</button>
-                     <button type="button" class="btn btn-blue" >Delete</button>
-                 </div>
-             </div>
-         </p-panel>
-     </div>  
+        <p-panel header="Delete order" [toggleable]="true"  [collapsed]="!isPanelOpen">
+            <div class="centered">
+                <div class="delete-button">
+                    <h5>Delete order by title</h5>
+                    <p-dropdown  
+                        [(ngModel)]="deleteOrderId"
+                        [options]="orderDropdownOptions" 
+                        [style]="{ minWidth: '18rem' }"
+                        placeholder="Select Id">
+                    </p-dropdown>                  
+                </div>
+            </div>
+            <div class="centered">  
+                <div class="button-container">
+                    <button type="button" class="btn btn-blue" (click)="onClearDelete()">Clear</button>
+                    <button type="button" class="btn btn-blue" (click)="onDelete()">Delete</button>
+                </div>
+            </div>
+        </p-panel>
      
 </div>  
 <p-toast position="bottom-center" key="bottomCenter"></p-toast>

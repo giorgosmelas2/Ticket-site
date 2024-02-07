@@ -22,7 +22,8 @@ export class OrdersComponent {
 
   order: any[] = [];
 
-  deleteOrder: string ='';
+  deleteOrderId: string ='';
+  orderDropdownOptions: any[] =[];
 
   //Method for toast messages
   private showToast(severity: string, summary: string, detail: string): void {
@@ -35,6 +36,9 @@ export class OrdersComponent {
       .subscribe(
         (data) => {
           this.order = data;
+          for( let i = 0; i<this.order.length; i++){
+            this.orderDropdownOptions[i] = this.order[i].orderId; 
+          }
           this.isLoading = false;
           console.log(this.order)
         },
@@ -57,18 +61,30 @@ export class OrdersComponent {
     this.isFullScreen = window.innerWidth > 768; 
   }
 
-  onRowEditInit(product: any): void {
-    console.log('Editing initiated for product:', product);
-    // Rest of the implementation
+  onDelete(): void {    
+    if (!this.deleteOrderId) {
+      this.showToast('warn', 'Warning', 'Please select an order Id.');
+      return;
+    }
+
+    //Finds the user by maching the choosen email with emails from admin array
+    const orderToDelete = this.order.find(o => o.orderId === this.deleteOrderId);
+    this.orderService.deleteOrder(orderToDelete)
+      .subscribe(
+        (response) => {
+          this.showToast('success', 'Success', 'Order deleted successfully.');
+          console.log(response);
+        },
+        (error) => {
+          this.showToast('error', 'Error', 'Error deleting order.');
+          console.log("Error in deleting:",error);
+        }
+      )
   }
 
-  onRowEditSave(product: any): void {
-    console.log('Editing initiated for product:', product);
-    // Rest of the implementation
+  //Clears field in delete panel
+  onClearDelete(){
+    this.deleteOrderId = '';
   }
 
-  onRowEditCancel(product: any): void {
-    console.log('Editing initiated for product:', product);
-    // Rest of the implementation
-  }
 }

@@ -3,7 +3,6 @@ import { HostListener } from '@angular/core';
 import { DataService } from '../../data-services/data.service';
 import { MessageService } from 'primeng/api';
 import { EventsServiceService } from '../../api-services/events-service/events-service.service';
-import { response } from 'express';
 
 @Component({
   selector: 'app-events-page',
@@ -36,14 +35,10 @@ export class EventsPageComponent {
   selectedCategory: any = '';
 
   event: any[] = [];
-
-  //The categories that are avauliabe in categories page
   categories: any[] = [];
 
   deleteTitle: string = '';
   eventDropdownOptions: any[] = [];
-
-  newDates: any;
 
   editingEvent: any;
   selectedFileName: string = '';
@@ -63,9 +58,8 @@ export class EventsPageComponent {
           for( let i = 0; i<this.event.length; i++){
             this.eventDropdownOptions[i] = this.event[i].event_name; 
           }
-          console.log(this.event)
           this.isLoading = false;
-          
+          console.log(this.event)
         },
         (error) => {
           this.showToast('error', 'Error', 'Error loading users.');
@@ -76,10 +70,6 @@ export class EventsPageComponent {
     this.categories = this.dataService.getCategories();
 
   }
-
-  getTicketsRange(event: any): number[] {
-    return Array.from({length: event.max_tickets}, (_, index) => index + 1);
-}
 
   //Checks any change in the window
   @HostListener('window:resize', ['$event']) 
@@ -92,7 +82,6 @@ export class EventsPageComponent {
     this.isFullScreen = window.innerWidth > 768; 
   }
 
-  //Method called when user clicks submit button
   onSubmit(): void {
     if (
       !this.title ||
@@ -106,23 +95,12 @@ export class EventsPageComponent {
       this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
       return;
     }
-
-    const isDublicateTitle = this.event.find(e => e.title === this.title);
-    if(isDublicateTitle){
-      this.showToast('warn', 'Warning', 'An event has the same title, please select another title.');
-      return;
-    }
-
-    
-
+    //Creating a new variable with correct format from database
     const eventsDatesandTickets = this.date.map(date => ({
       date: date.toISOString(),
       max_tickets: parseInt(this.tickets)
     }));
   
-    console.log("Events Dates and Tickets", eventsDatesandTickets);
-
-    console.log("Date",this.date)
     const newEvent = {
       eventName: this.title,
       description: this.description,
@@ -132,8 +110,6 @@ export class EventsPageComponent {
       ticketPrice: parseInt(this.price), 
       files: this.cover
     };
-    
-    console.log("New Event", newEvent);
 
     this.eventService.addEvent(newEvent)
       .subscribe(
@@ -142,8 +118,17 @@ export class EventsPageComponent {
           console.log(response);
         },
         (error) => {
-          this.showToast('error', 'Error', 'Error adding event.');
-          console.log(error);
+          //Checks if fields are filled
+          if(error.status == 400){
+            this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
+            console.log(error);
+          }
+
+          //Checks for duplicate admin
+          if(error.status == 409){
+            this.showToast('error', 'Error', 'This event already exists.');
+            console.log("Error in adding:",error);
+          }
         }
       )
 
@@ -156,7 +141,7 @@ export class EventsPageComponent {
       return;
     }
 
-    console.log("Deletetitle:", this.deleteTitle);
+    //Finds the event by maching the choosen title with title from event array
     const eventToDelete = this.event.find(e => e.event_name === this.deleteTitle);
     console.log("Event to delete", eventToDelete);
 
@@ -175,11 +160,11 @@ export class EventsPageComponent {
   }
 
   //Shows only 12 chars in the matrix's cells
-  getFirst12Characters(inputString: string): string {
+  getFirst20Characters(inputString: string): string {
     if (inputString.length <= 12) {
       return inputString;
     } else {
-      return inputString.substring(0, 12) + '...';
+      return inputString.substring(0, 20) + '...';
     }
   
   }
@@ -212,22 +197,52 @@ export class EventsPageComponent {
     console.log("Cover",this.cover);
   }
 
-  //Determines which admin will be edited
+  //Makes a copy from the admin object before editing if user discards changes 
   onRowEditInit(event: any): void {
-
     this.editingEvent= { ...event };
-    event.ticketsArray = Array.from({ length: event.max_tickets }, () => "");
   }
 
   onRowEditSave(event: any): void {
 
-    const index = this.event.findIndex(e => e.title === event.title);
+    console.log("Event for edit", event);
 
-    if (index !== -1) {
-      this.event[index] = { ...event };
+    console.log("Event date",event.dates);
+
+    var updatedEvent;
+
+   
+    //Checkig is the email is changed. If the email is changed we send it to database. If we send the same email the changes are not suplied
+    if(this.editingEvent.event_name === event.event_name){
+      updatedEvent = {
+        description: event.event_description,
+        category: event.event_category,
+        dates : event.event_dates,
+        coordinates: event.event_coordinates,
+        ticketPrice: parseInt(event.event_ticket_price), 
+      }; 
+    }else{
+      updatedEvent = {
+        eventName: event.event_name,
+        description: event.event_description,
+        category: event.event_category,
+        dates : event.event_dates,
+        coordinates: event.event_coordinates,
+        ticketPrice: parseInt(event.event_ticket_price), 
+      };  
     }
-    
-    this.editingEvent = null;
+
+    console.log("Updated Event", updatedEvent);
+    this.eventService.updateEvent(event)
+      .subscribe(
+        (updatedEvent) => {
+          this.showToast('success', 'Success', 'Event updated successfully.');
+          console.log(updatedEvent);
+        },
+        (error) => {
+          this.showToast('error', 'Error', 'An error has occured.');
+          console.error('Error updating admin:', error);
+        }
+      )
   }
 
   //Discards the changes
@@ -235,7 +250,6 @@ export class EventsPageComponent {
 
     if (this.editingEvent) {
       const originalEventIndex = this.event.findIndex(e => e.title === this.editingEvent.title);
-
       if (originalEventIndex !== -1) {
         this.event[originalEventIndex] = { ...this.editingEvent };
       } else {

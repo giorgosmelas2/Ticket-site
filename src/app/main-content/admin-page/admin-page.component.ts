@@ -99,14 +99,13 @@ export class AdminPageComponent {
 
           //Checks for duplicate admin
           if(error.status == 409){
-            this.showToast('error', 'Error', 'Error adding admin.');
+            this.showToast('error', 'Error', 'This admin already exists.');
             console.log("Error in adding:",error);
           }
           
         }
       )
     this.onClearAdd();
-    this.ngOnInit();
   }
 
   //Email check.
@@ -132,9 +131,11 @@ export class AdminPageComponent {
         },
         (error) => {
           this.showToast('error', 'Error', 'Error deleting admin.');
-          console.log("Error in adding:",error);
+          console.log("Error in deleting:",error);
         }
       )
+
+      this.onClearDelete();
   }
 
   //Shows only 20 chars in the matrix's cells
@@ -167,9 +168,8 @@ export class AdminPageComponent {
   onRowEditSave(admin: any): void {
 
     var updatedAdmin;
-    const originalAdminIndex = this.admin.findIndex(a => a.uid === this.editingAdmin.uid);
-
-    if(this.admin[originalAdminIndex].email === admin.email){
+    //Checkig is the email is changed. If the email is changed we send it to database. If we send the same email the changes are not suplied
+    if(this.editingAdmin.email === admin.email){
       updatedAdmin = {
         uid: admin.uid,
         username: admin.username,
@@ -187,10 +187,6 @@ export class AdminPageComponent {
         total_money_spend: admin.total_money_spend
       }; 
     }
-
-
-    console.log("original:", this.admin[originalAdminIndex]);
-    console.log("Updated:",updatedAdmin)
 
     this.adminService.updateAdmin(updatedAdmin)
       .subscribe(

@@ -5,7 +5,7 @@
 </div>
 <ng-template #eventsTable>
     <div style="margin-bottom: 1.5rem;">
-        <p-table [value]="event" dataKey="event_name" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+        <p-table [value]="event" dataKey="_id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width:10%">Title</th>
@@ -27,7 +27,7 @@
                                 <input pInputText type="text" [(ngModel)]="event.event_name" [style]="{'width': '100%'}">
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{ getFirst12Characters(event.event_name)}}
+                                {{ event.event_name}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -35,15 +35,14 @@
                         <p-cellEditor>
                             <ng-template pTemplate="input">
                                 <div>
-                                    <p-calendar 
-                                        [(ngModel)]="newDates"
-                                        [style]="{'width': '100%'}" 
-                                        selectionMode="multiple" 
-                                        [showTime]="true" 
-                                        [showSeconds]="true">
-                                    </p-calendar>
+                                    <div *ngFor="let date of event.event_dates">
+                                        <p-calendar 
+                                            [(ngModel)]="date.date" 
+                                            [showTime]="true" 
+                                            [showSeconds]="true">
+                                        </p-calendar>
+                                    </div> 
                                 </div>
-                                
                             </ng-template>
                             <ng-template pTemplate="output">
                                 <div *ngFor="let date of event.event_dates">
@@ -75,7 +74,7 @@
                                 </textarea>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{ getFirst12Characters(event.event_description)}}
+                                {{ getFirst20Characters(event.event_description)}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -83,7 +82,7 @@
                         <p-cellEditor>
                             <ng-template pTemplate="input">
                                 <p-dropdown  
-                                    [(ngModel)]="selectedCategory"
+                                    [(ngModel)]="event.event_category"
                                     [options]="categories" 
                                     [style]="{'width': '100%'}"
                                     placeholder="Select category">
@@ -242,7 +241,8 @@
                         [options]="eventDropdownOptions" 
                         [style]="{ minWidth: '14rem' }"
                         placeholder="Select event">
-                </p-dropdown>                 </div>
+                    </p-dropdown>                 
+                </div>
             </div>
             <div class="centered">  
                 <div class="button-container">
@@ -251,8 +251,7 @@
                 </div>
             </div>
         </p-panel>
-    </div>  
-    
+    </div>     
 </div>  
 <p-toast position="bottom-center" key="bottomCenter"></p-toast>
 

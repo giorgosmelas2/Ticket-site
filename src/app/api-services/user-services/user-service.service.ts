@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,15 +20,7 @@ export class UserServiceService {
   }
 
   updateUser(user: any): Observable<any> {
-    console.log("update user:", user)
-
-    const updatedUser = {
-      username: user.username,
-      tota_tickets: user.tota_tickets,
-      total_money_spend: user.total_money_spend
-    }
-
-    return this.http.put(`${this.apiUrl}/users/${user.uid}`, updatedUser);
+    return this.http.put(`${this.apiUrl}/users/${user.uid}`, user);
   }
 
   registerUser(user: any): Observable<any>{

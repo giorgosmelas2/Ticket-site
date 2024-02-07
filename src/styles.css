@@ -50,11 +50,11 @@ h5{
     margin-bottom: 0.3rem;
 }
 
-
 .container{
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 .outside-box-left{
@@ -68,6 +68,7 @@ h5{
 .delete-button{
     margin-bottom: 0.5rem;
     margin-top: 1rem;
+    /* text-align: center; */
 }
 .insidebox-left{
     flex: 1; 
@@ -177,5 +178,11 @@ td{
     background-color: var(--blue-600) !important;
 }
 
+/* .p-dropdown-label {
+    text-align: left;
+}
 
-
+.p-dropdown .p-dropdown-panel .p-dropdown-items-wrapper {
+    text-align: left;
+}
+ */

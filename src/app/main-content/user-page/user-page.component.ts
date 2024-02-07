@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { UserServiceService } from '../../api-services/user-services/user-service.service';
+
 
 @Component({
   selector: 'app-user-page',
@@ -74,6 +75,7 @@ export class UserPageComponent {
   //Method called when user clicks submit button
   onSubmit(): void {
 
+
     if(!this.isValidEmail(this.email)){
       this.showToast('warn', 'Warning', 'Please give a right email.');
       return;
@@ -84,8 +86,8 @@ export class UserPageComponent {
       userEmail: this.email,
       user: this.username,
       pwd: this.password,
-      role: 2001
     };
+
 
     this.userService.registerUser(newUser)
       .subscribe(
@@ -105,12 +107,12 @@ export class UserPageComponent {
             this.showToast('error', 'Error', 'Error adding user.');
             console.log("Error in adding:",error);
           }
-          
         }
       )
 
     this.onClearAdd();
   }
+
 
   //Email check.
   private isValidEmail(email: string): boolean {
@@ -172,7 +174,29 @@ export class UserPageComponent {
 
   //Saves the changes
   onRowEditSave(user: any): void {
-    this.userService.updateUser(user)
+
+    var updatedUser;
+    //Checkig is the email is changed. If the email is changed we send it to database. If we send the same email the changes are not suplied
+    if(this.editingUser.email === user.email){
+      updatedUser = {
+        uid: user.uid,
+        username: user.username,
+        pwd: user.pwd,
+        total_tickets: user.total_tickets,
+        total_money_spend: user.total_money_spend
+      }; 
+    }else{
+      updatedUser = {
+        uid: user.uid,
+        email: user.email,
+        username: user.username,
+        pwd: user.pwd,
+        total_tickets: user.total_tickets,
+        total_money_spend: user.total_money_spend
+      }; 
+    }
+
+    this.userService.updateUser(updatedUser)
       .subscribe(
         (updatedUser) => {
           this.showToast('success', 'Success', 'User updated successfully.');
