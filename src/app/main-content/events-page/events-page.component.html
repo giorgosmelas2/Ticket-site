@@ -24,7 +24,15 @@
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.event_name" [style]="{'width': '100%'}">
+                                <textarea 
+                                    rows="5" 
+                                    cols="30" 
+                                    pInputTextarea 
+                                    [autoResize]="true" 
+                                    [style]="{'width': '100%'}"
+                                    [(ngModel)]="event.event_name" >
+                                </textarea>
+                                <!-- <input pInputText type="text" [(ngModel)]="event.event_name" [style]="{'width': '100%'}"> -->
                             </ng-template>
                             <ng-template pTemplate="output">
                                 {{ event.event_name}}
@@ -54,7 +62,15 @@
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="event.event_coordinates" [style]="{'width': '100%'}">
+                                <textarea 
+                                    rows="5" 
+                                    cols="30" 
+                                    pInputTextarea 
+                                    [autoResize]="true" 
+                                    [style]="{'width': '100%'}"
+                                    [(ngModel)]="event.event_coordinates" >
+                                </textarea>
+                                <!-- <input pInputText type="text" [(ngModel)]="event.event_coordinates" [style]="{'width': '100%'}"> -->
                             </ng-template>
                             <ng-template pTemplate="output">
                                 {{event.event_coordinates}}
@@ -102,7 +118,7 @@
                                 </label>
                             </ng-template>
                             <ng-template  pTemplate="output">
-                                <img src="{{ event.event_images[1]}}"> 
+                                <img src="{{ event.event_images[0]}}"> 
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -137,7 +153,7 @@
                         <div class="flex align-items-center justify-content-center gap-2">
                             <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(event)" class="p-button-rounded p-button-text"></button>
                             <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(event)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(event)" class="p-button-rounded p-button-text p-button-danger"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel()" class="p-button-rounded p-button-text p-button-danger"></button>
                         </div>
                     </td>
                 </tr>
@@ -148,88 +164,59 @@
 
 <div class="container" [ngClass]="{'horizontal-layout': isFullScreen, 'vertical-layout': !isFullScreen}">
    <div class="outside-box-left">
-        <p-panel header="Add event" [toggleable]="true"  [collapsed]="!isPanelOpen">
+    <p-panel header="Add event" [toggleable]="true" [collapsed]="!isPanelOpen">
+        <form>
             <div class="centered">
                 <div class="container">
                     <div class="insidebox-left">
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Title</h5>
-                            <input type="text" pInputText [(ngModel)]="title" />        
+                            <input type="text" pInputText [(ngModel)]="title" name="title" />
                         </div>
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Description</h5>
-                            <textarea 
-                                rows="5" 
-                                cols="30" 
-                                pInputTextarea 
-                                [autoResize]="true" 
-                                [(ngModel)]="description" >
-                            </textarea>
-                        </div> 
+                            <textarea rows="5" cols="30" pInputTextarea [autoResize]="true" [(ngModel)]="description" name="description"></textarea>
+                        </div>
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Category</h5>
-                            <p-dropdown  
-                                [(ngModel)]="selectedCategory"
-                                [options]="categories" 
-                                [style]="{ minWidth: '14rem' }"
-                                placeholder="Select category">
-                            </p-dropdown>
-                        </div> 
+                            <p-dropdown [(ngModel)]="selectedCategory" [options]="categories" [style]="{ minWidth: '14rem' }" placeholder="Select category" name="category"></p-dropdown>
+                        </div>
                     </div>
-        
+    
                     <div class="insidebox-right">
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Date</h5>
-                            <p-calendar 
-                                [(ngModel)]="date" 
-                                selectionMode="multiple" 
-                                [showTime]="true" 
-                                [showSeconds]="true"
-                                dateFormat="yy.mm.dd"
-                                >
-                            </p-calendar>
+                            <p-calendar [(ngModel)]="date" selectionMode="multiple" [showTime]="true" [showSeconds]="true" dateFormat="yy.mm.dd" name="date"></p-calendar>
                         </div>
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Coordinates</h5>
-                            <input 
-                                type="text" 
-                                pInputText 
-                                [(ngModel)]="coordinates" 
-                            />        
+                            <input type="text" pInputText [(ngModel)]="coordinates" name="coordinates" />
                         </div>
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Tickets</h5>
-                            <input 
-                                type="text" 
-                                pInputText 
-                                [(ngModel)]="tickets" 
-                            />
+                            <input type="text" pInputText [(ngModel)]="tickets" name="tickets" />
                         </div>
                         <div style="margin-bottom: 0.5rem;">
                             <h5>Price</h5>
-                            <input 
-                                type="text" 
-                                pInputText 
-                                [(ngModel)]="price" 
-                            />
+                            <input type="text" pInputText [(ngModel)]="price" name="price" />
                         </div>
                         <div>
                             <h5>Cover</h5>
-                            <input type="file" id="file"  accept="image/*" (change)="onChange($event)" />
-                            <label for="file">
-                                {{ selectedFileName? selectedFileName : 'Choose photo' }}
-                            </label>
+                            <input type="file" id="file" accept="image/*" (change)="onChange($event)" name="cover" multiple/>
+                            <label for="file">{{ selectedFileName ? selectedFileName : 'Choose photo' }}</label>
                         </div>
                     </div>
-                </div> 
+                </div>
             </div>
             <div class="centered">
                 <div class="button-container">
-                    <button type="button" class="btn btn-blue" (click)="onClearAdd()" >Clear</button>
-                    <button type="button" class="btn btn-blue" (click)="onSubmit()">Submit</button>
+                    <button type="button" class="btn btn-blue" (click)="onClearAdd()">Clear</button>
+                    <button type="submit" class="btn btn-blue" (click)="onSubmit()">Submit</button>
                 </div>
             </div>
-        </p-panel>
+        </form>
+    </p-panel>
+    
    </div>
    <div class="outside-box-right">
         <p-panel header="Delete event" [toggleable]="true"  [collapsed]="!isPanelOpen">

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AdminServiceService } from '../../api-services/admin-service/admin-service.service';
-
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-admin-page',
@@ -24,7 +24,6 @@ export class AdminPageComponent {
   username:string = '';
   password: string = '';
   
-  users: any[] = [];
   admin: any[] = [];
 
   deleteEmail: string = '';
@@ -69,7 +68,6 @@ export class AdminPageComponent {
   }
 
   onSubmit(): void {
-
     if(!this.isValidEmail(this.adminEmail)){
       this.showToast('warn', 'Warning', 'Please give a right email.');
       return;
@@ -164,11 +162,11 @@ export class AdminPageComponent {
     this.editingAdmin = { ...admin }; 
   }
 
-  //Saves the changes
+  //Saves  changes
   onRowEditSave(admin: any): void {
-
     var updatedAdmin;
-    //Checkig is the email is changed. If the email is changed we send it to database. If we send the same email the changes are not suplied
+
+    //Checkig is the email is changed. If the email is changed we send it to database. If we send the same email, the changes are not suplied
     if(this.editingAdmin.email === admin.email){
       updatedAdmin = {
         uid: admin.uid,
@@ -201,8 +199,8 @@ export class AdminPageComponent {
       )
   }
 
-  //Discards the changes
-  onRowEditCancel(admin: any): void {
+  //Discards changes
+  onRowEditCancel(): void {
     if (this.editingAdmin) {
       const originalAdminIndex = this.admin.findIndex(a => a.uid === this.editingAdmin.uid);
       if (originalAdminIndex) {
@@ -213,4 +211,5 @@ export class AdminPageComponent {
     }
     this.editingAdmin = null;
   }
+  
 }

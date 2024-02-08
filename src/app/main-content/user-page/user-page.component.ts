@@ -172,7 +172,7 @@ export class UserPageComponent {
     this.editingUser = { ...user };
   }
 
-  //Saves the changes
+  //Saves changes
   onRowEditSave(user: any): void {
 
     var updatedUser;
@@ -209,7 +209,7 @@ export class UserPageComponent {
   }
 
   //Discards changes
-  onRowEditCancel(user: any): void {
+  onRowEditCancel(): void {
     if (this.editingUser) {
       const originalUserIndex = this.user.findIndex(u => u.uid === this.editingUser.uid);
       if (originalUserIndex) {

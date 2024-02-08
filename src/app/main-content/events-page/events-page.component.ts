@@ -13,20 +13,18 @@ import { EventsServiceService } from '../../api-services/events-service/events-s
 export class EventsPageComponent {
 
   constructor(
-    private dataService: DataService, 
+    private dataService: DataService,
     private messageService: MessageService,
     private eventService: EventsServiceService
-    ) {}
+  ) { }
 
   isFullScreen: boolean = true;
-  isPanelOpen =  false;
-  isLoading = true; 
-
-  uploadedCoverPath: string | null = null;
+  isPanelOpen = false;
+  isLoading = true;
 
   title: string = '';
   date: Date[] = [];
-  
+
   description: string = '';
   coordinates: string = '';
   cover: File | null = null;
@@ -49,14 +47,14 @@ export class EventsPageComponent {
   }
 
   //This method is called when the component initializes
-  ngOnInit(): void {  
+  ngOnInit(): void {
     this.checkLayout();
     this.eventService.getAllEvents()
       .subscribe(
         (data) => {
           this.event = data;
-          for( let i = 0; i<this.event.length; i++){
-            this.eventDropdownOptions[i] = this.event[i].event_name; 
+          for (let i = 0; i < this.event.length; i++) {
+            this.eventDropdownOptions[i] = this.event[i].event_name;
           }
           this.isLoading = false;
           console.log(this.event)
@@ -72,14 +70,14 @@ export class EventsPageComponent {
   }
 
   //Checks any change in the window
-  @HostListener('window:resize', ['$event']) 
+  @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
-      this.checkLayout();
-    }
+    this.checkLayout();
+  }
 
   //Checks for fullscreen or halfscreen
   private checkLayout(): void {
-    this.isFullScreen = window.innerWidth > 768; 
+    this.isFullScreen = window.innerWidth > 768;
   }
 
   onSubmit(): void {
@@ -90,28 +88,31 @@ export class EventsPageComponent {
       !this.coordinates ||
       !this.price ||
       !this.tickets ||
-      !this.date 
+      !this.date
     ) {
       this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
       return;
     }
-    //Creating a new variable with correct format from database
-    const eventsDatesandTickets = this.date.map(date => ({
-      date: date.toISOString(),
-      max_tickets: parseInt(this.tickets)
-    }));
-  
-    const newEvent = {
-      eventName: this.title,
-      description: this.description,
-      category: this.selectedCategory,
-      dates : eventsDatesandTickets,
-      coordinates: this.coordinates,
-      ticketPrice: parseInt(this.price), 
-      files: this.cover
-    };
 
-    this.eventService.addEvent(newEvent)
+    //Creating a formData to add an event with photo in database.
+    const formData = new FormData();
+    formData.append('eventName', this.title);
+    formData.append('description', this.description);
+    formData.append('category', this.selectedCategory);
+    formData.append('coordinates', this.coordinates);
+    formData.append('ticketPrice', this.price);
+
+    if (this.cover) {
+      formData.append('files', this.cover);
+    }
+
+    // Append dates and max_tickets to formData with correct format for dates
+    this.date.forEach((date, index) => {
+      formData.append(`dates[${index}][date]`, date.toISOString());
+      formData.append(`dates[${index}][max_tickets]`, this.tickets);
+    });
+
+    this.eventService.addEvent(formData)
       .subscribe(
         (response) => {
           this.showToast('success', 'Success', 'Event added successfully.');
@@ -119,23 +120,22 @@ export class EventsPageComponent {
         },
         (error) => {
           //Checks if fields are filled
-          if(error.status == 400){
+          if (error.status == 400) {
             this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
             console.log(error);
           }
 
           //Checks for duplicate admin
-          if(error.status == 409){
+          if (error.status == 409) {
             this.showToast('error', 'Error', 'This event already exists.');
-            console.log("Error in adding:",error);
+            console.log("Error in adding:", error);
           }
         }
       )
-
     this.onClearAdd();
   }
 
-  onDelete(){
+  onDelete() {
     if (!this.deleteTitle) {
       this.showToast('warn', 'Warning', 'Please enter the Event title to delete.');
       return;
@@ -153,23 +153,23 @@ export class EventsPageComponent {
         },
         (error) => {
           this.showToast('error', 'Error', 'Error deleting event.');
-          console.log("Error in adding:",error);
+          console.log("Error in adding:", error);
         }
       )
     this.onClearDelete();
   }
 
-  //Shows only 12 chars in the matrix's cells
+  //Shows only 20 chars in the matrix's cells
   getFirst20Characters(inputString: string): string {
     if (inputString.length <= 12) {
       return inputString;
     } else {
       return inputString.substring(0, 20) + '...';
     }
-  
+
   }
-  
-  //Method called when user clicks the clear button to clear the fields
+
+  //Clears fields in add panel
   onClearAdd(): void {
     this.title = '';
     this.description = '';
@@ -182,57 +182,59 @@ export class EventsPageComponent {
     this.selectedFileName = "";
   }
 
-  onClearDelete(){
+  //Clears field in delete panel
+  onClearDelete() {
     this.deleteTitle = '';
   }
 
-
+  //Saving the photo that user select.
   onChange(event: any) {
-    if(event.target.files.length > 0){
+    if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.selectedFileName = file.name;
       console.log(file);
       this.cover = file;
     }
-    console.log("Cover",this.cover);
+    console.log("Cover", this.cover);
   }
 
   //Makes a copy from the admin object before editing if user discards changes 
   onRowEditInit(event: any): void {
-    this.editingEvent= { ...event };
+    this.editingEvent = { ...event };
   }
 
+  //Saves changes
   onRowEditSave(event: any): void {
 
-    console.log("Event for edit", event);
+    console.log("Original event", this.editingEvent);
 
-    console.log("Event date",event.dates);
+    console.log("Event for edit", event);
+    console.log("Event date", event.event_dates);
 
     var updatedEvent;
 
-   
-    //Checkig is the email is changed. If the email is changed we send it to database. If we send the same email the changes are not suplied
-    if(this.editingEvent.event_name === event.event_name){
+    //Checkig is the event name is changed. If the name is changed we send it to database. If we send the same name, the changes are not suplied
+    if (this.editingEvent.event_name === event.event_name) {
       updatedEvent = {
         description: event.event_description,
         category: event.event_category,
-        dates : event.event_dates,
+        dates: event.event_dates,
         coordinates: event.event_coordinates,
-        ticketPrice: parseInt(event.event_ticket_price), 
-      }; 
-    }else{
+        ticketPrice: parseInt(event.event_ticket_price),
+      };
+    } else {
       updatedEvent = {
         eventName: event.event_name,
         description: event.event_description,
         category: event.event_category,
-        dates : event.event_dates,
+        dates: event.event_dates,
         coordinates: event.event_coordinates,
-        ticketPrice: parseInt(event.event_ticket_price), 
-      };  
+        ticketPrice: parseInt(event.event_ticket_price),
+      };
     }
 
     console.log("Updated Event", updatedEvent);
-    this.eventService.updateEvent(event)
+    this.eventService.updateEvent(updatedEvent, this.editingEvent.event_name)
       .subscribe(
         (updatedEvent) => {
           this.showToast('success', 'Success', 'Event updated successfully.');
@@ -245,8 +247,8 @@ export class EventsPageComponent {
       )
   }
 
-  //Discards the changes
-  onRowEditCancel(event: any): void {
+  //Discards changes
+  onRowEditCancel(): void {
 
     if (this.editingEvent) {
       const originalEventIndex = this.event.findIndex(e => e.title === this.editingEvent.title);
@@ -258,6 +260,5 @@ export class EventsPageComponent {
     }
     this.editingEvent = null;
   }
-
-
+  
 }
