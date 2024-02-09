@@ -20,7 +20,7 @@ p:hover{
 
 .rounded-box {
     background-color: white;
-    border-radius: 10px; /* Adjust the value to change the roundness */
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(7, 93, 197, 0.896);
     padding: 1.8rem;
 }

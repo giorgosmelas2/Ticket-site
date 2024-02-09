@@ -46,6 +46,18 @@ export class EventsPageComponent {
     this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
   }
 
+  //Splits the coordinates where ther is ,
+  split(input: string) : string{
+    var output = '';
+    for(let i = 0; i < input.length; i++){
+      output += input.charAt(i)
+      if (input.charAt(i) == ','){
+        output += '\n'
+      }
+    }
+    return output;
+  }
+
   //This method is called when the component initializes
   ngOnInit(): void {
     this.checkLayout();
@@ -160,11 +172,11 @@ export class EventsPageComponent {
   }
 
   //Shows only 20 chars in the matrix's cells
-  getFirst20Characters(inputString: string): string {
+  getFirst50Characters(inputString: string): string {
     if (inputString.length <= 12) {
       return inputString;
     } else {
-      return inputString.substring(0, 20) + '...';
+      return inputString.substring(0, 50) + '...';
     }
 
   }
@@ -195,7 +207,6 @@ export class EventsPageComponent {
       console.log(file);
       this.cover = file;
     }
-    console.log("Cover", this.cover);
   }
 
   //Makes a copy from the admin object before editing if user discards changes 
@@ -206,11 +217,6 @@ export class EventsPageComponent {
   //Saves changes
   onRowEditSave(event: any): void {
 
-    console.log("Original event", this.editingEvent);
-
-    console.log("Event for edit", event);
-    console.log("Event date", event.event_dates);
-
     var updatedEvent;
 
     //Checkig is the event name is changed. If the name is changed we send it to database. If we send the same name, the changes are not suplied
@@ -220,7 +226,7 @@ export class EventsPageComponent {
         category: event.event_category,
         dates: event.event_dates,
         coordinates: event.event_coordinates,
-        ticketPrice: parseInt(event.event_ticket_price),
+        ticket_price: parseInt(event.event_ticket_price),
       };
     } else {
       updatedEvent = {
@@ -229,11 +235,10 @@ export class EventsPageComponent {
         category: event.event_category,
         dates: event.event_dates,
         coordinates: event.event_coordinates,
-        ticketPrice: parseInt(event.event_ticket_price),
+        ticket_price: parseInt(event.event_ticket_price),
       };
     }
 
-    console.log("Updated Event", updatedEvent);
     this.eventService.updateEvent(updatedEvent, this.editingEvent.event_name)
       .subscribe(
         (updatedEvent) => {
@@ -242,7 +247,7 @@ export class EventsPageComponent {
         },
         (error) => {
           this.showToast('error', 'Error', 'An error has occured.');
-          console.error('Error updating admin:', error);
+          console.error('Error updating event:', error);
         }
       )
   }
@@ -260,5 +265,5 @@ export class EventsPageComponent {
     }
     this.editingEvent = null;
   }
-  
+
 }

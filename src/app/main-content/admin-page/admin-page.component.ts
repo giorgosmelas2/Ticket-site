@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AdminServiceService } from '../../api-services/admin-service/admin-service.service';
-import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-admin-page',
@@ -11,19 +10,19 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 
 export class AdminPageComponent {
-  constructor( 
+  constructor(
     private messageService: MessageService,
     private adminService: AdminServiceService
-    ) {}
- 
+  ) { }
+
   isFullScreen: boolean = true;
-  isPanelOpen =  false;
+  isPanelOpen = false;
   isLoading = true;
 
   adminEmail: string = '';
-  username:string = '';
+  username: string = '';
   password: string = '';
-  
+
   admin: any[] = [];
 
   deleteEmail: string = '';
@@ -39,21 +38,22 @@ export class AdminPageComponent {
   //This method is called when the component initializes
   ngOnInit(): void {
     this.checkLayout();
-    this.adminService.getAllUsers()
-    .subscribe(
-      (data) => {
-        this.admin = data.filter(admin => admin.role === 5150);
-        for( let i = 0; i<this.admin.length; i++){
-          this.adminDropdownOptions[i] = this.admin[i].email; 
+    this.adminService.getAllAdmins()
+      .subscribe(
+        (data) => {
+          this.admin = data.filter(admin => admin.role === 5150);
+          for (let i = 0; i < this.admin.length; i++) {
+            this.adminDropdownOptions[i] = this.admin[i].email;
+          }
+          console.log(this.admin);
+          this.isLoading = false;
+        },
+        (error) => {
+          this.showToast('error', 'Error', 'Error loading admins.');
+          console.log(error);
+          this.isLoading = false;
         }
-        this.isLoading = false;
-      },
-      (error) => {
-        this.showToast('error', 'Error', 'Error loading admins.');
-        console.log(error);
-        this.isLoading = false;
-      }
-    );
+      );
   }
 
   //Checks any change in the window
@@ -64,43 +64,42 @@ export class AdminPageComponent {
 
   //Checks for fullscreen or halfscreen
   private checkLayout(): void {
-    this.isFullScreen = window.innerWidth > 768; 
+    this.isFullScreen = window.innerWidth > 768;
   }
 
   onSubmit(): void {
-    if(!this.isValidEmail(this.adminEmail)){
+    if (!this.isValidEmail(this.adminEmail)) {
       this.showToast('warn', 'Warning', 'Please give a right email.');
       return;
     }
-    
+
     //Creating a variable with right format for database
     const newAdmin = {
-      userEmail: this.adminEmail, 
-      user: this.username, 
+      userEmail: this.adminEmail,
+      user: this.username,
       pwd: this.password,
       isAdmin: true
     };
-    
+
     this.adminService.registerAdmin(newAdmin)
       .subscribe(
         (response) => {
           this.showToast('success', 'Success', 'Admin added successfully.');
           console.log(response);
-          
         },
-        (error) =>{
+        (error) => {
           //Checks if fields are filled
-          if(error.status == 400){
+          if (error.status == 400) {
             this.showToast('warn', 'Warning', 'Please fill all fields before submitting.');
             console.log(error);
           }
 
           //Checks for duplicate admin
-          if(error.status == 409){
+          if (error.status == 409) {
             this.showToast('error', 'Error', 'This admin already exists.');
-            console.log("Error in adding:",error);
+            console.log("Error in adding:", error);
           }
-          
+
         }
       )
     this.onClearAdd();
@@ -113,7 +112,7 @@ export class AdminPageComponent {
     return emailRegex.test(email);
   }
 
-  onDelete(): void {    
+  onDelete(): void {
     if (!this.deleteEmail) {
       this.showToast('warn', 'Warning', 'Please select the Admin email to delete.');
       return;
@@ -129,11 +128,11 @@ export class AdminPageComponent {
         },
         (error) => {
           this.showToast('error', 'Error', 'Error deleting admin.');
-          console.log("Error in deleting:",error);
+          console.log("Error in deleting:", error);
         }
       )
 
-      this.onClearDelete();
+    this.onClearDelete();
   }
 
   //Shows only 20 chars in the matrix's cells
@@ -144,7 +143,7 @@ export class AdminPageComponent {
       return inputString.substring(0, 20) + '...';
     }
   }
-  
+
   //Clears fields in add panel
   onClearAdd(): void {
     this.adminEmail = '';
@@ -153,13 +152,13 @@ export class AdminPageComponent {
   }
 
   //Clears field in delete panel
-  onClearDelete(){
+  onClearDelete() {
     this.deleteEmail = '';
   }
 
   //Makes a copy from the admin object before editing if user discards changes 
   onRowEditInit(admin: any): void {
-    this.editingAdmin = { ...admin }; 
+    this.editingAdmin = { ...admin };
   }
 
   //Saves  changes
@@ -167,15 +166,15 @@ export class AdminPageComponent {
     var updatedAdmin;
 
     //Checkig is the email is changed. If the email is changed we send it to database. If we send the same email, the changes are not suplied
-    if(this.editingAdmin.email === admin.email){
+    if (this.editingAdmin.email === admin.email) {
       updatedAdmin = {
         uid: admin.uid,
         username: admin.username,
         pwd: admin.pwd,
         total_tickets: admin.total_tickets,
         total_money_spend: admin.total_money_spend
-      }; 
-    }else{
+      };
+    } else {
       updatedAdmin = {
         uid: admin.uid,
         email: admin.email,
@@ -183,7 +182,7 @@ export class AdminPageComponent {
         pwd: admin.pwd,
         total_tickets: admin.total_tickets,
         total_money_spend: admin.total_money_spend
-      }; 
+      };
     }
 
     this.adminService.updateAdmin(updatedAdmin)
@@ -211,5 +210,5 @@ export class AdminPageComponent {
     }
     this.editingAdmin = null;
   }
-  
+
 }

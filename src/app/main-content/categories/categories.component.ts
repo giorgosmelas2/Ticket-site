@@ -60,13 +60,9 @@ export class CategoriesComponent {
       return;
     }else{
       this.entries.push(this.input);
-
-      // Save data to localStorage
       this.dataService.setCategories(this.entries);
       this.showToast('success', 'Success', 'Category created successfully.');
-
     }
-
     this.onClearAdd();
   }
 

@@ -36,4 +36,8 @@ export class AuthenticationService {
   getCurrentUser(): string | null {
     return localStorage.getItem(this.USER_KEY);
   }
+
+  forgotPassword(email: any) {
+    return this.http.post(`${this.apiUrl}/forgotPassword`, email);
+  }
 }

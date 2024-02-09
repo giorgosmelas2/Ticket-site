@@ -11,33 +11,34 @@ import { OrderServiceService } from '../../api-services/order-service/order-serv
 })
 export class OrdersComponent {
 
-  constructor( 
+  constructor(
     private messageService: MessageService,
     private orderService: OrderServiceService
-    ){}
+  ) { }
 
   isFullScreen: boolean = true;
-  isPanelOpen =  false;
-  isLoading = true; 
+  isPanelOpen = false;
+  isLoading = true;
 
   order: any[] = [];
 
-  deleteOrderId: string ='';
-  orderDropdownOptions: any[] =[];
+  deleteOrderId: string = '';
+  orderDropdownOptions: any[] = [];
 
   //Method for toast messages
   private showToast(severity: string, summary: string, detail: string): void {
     this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
   }
-
-  ngOnInit():void {
+  
+  //This method is called when the component initializes
+  ngOnInit(): void {
     this.checkLayout();
     this.orderService.getAllOrders()
       .subscribe(
         (data) => {
           this.order = data;
-          for( let i = 0; i<this.order.length; i++){
-            this.orderDropdownOptions[i] = this.order[i].orderId; 
+          for (let i = 0; i < this.order.length; i++) {
+            this.orderDropdownOptions[i] = this.order[i].orderId;
           }
           this.isLoading = false;
           console.log(this.order)
@@ -51,17 +52,17 @@ export class OrdersComponent {
   }
 
   //Checks any change in the window
-  @HostListener('window:resize', ['$event']) 
+  @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
-      this.checkLayout();
-    }
+    this.checkLayout();
+  }
 
   //Checks for fullscreen or halfscreen
   private checkLayout(): void {
-    this.isFullScreen = window.innerWidth > 768; 
+    this.isFullScreen = window.innerWidth > 768;
   }
 
-  onDelete(): void {    
+  onDelete(): void {
     if (!this.deleteOrderId) {
       this.showToast('warn', 'Warning', 'Please select an order Id.');
       return;
@@ -77,13 +78,13 @@ export class OrdersComponent {
         },
         (error) => {
           this.showToast('error', 'Error', 'Error deleting order.');
-          console.log("Error in deleting:",error);
+          console.log("Error in deleting:", error);
         }
       )
   }
 
   //Clears field in delete panel
-  onClearDelete(){
+  onClearDelete() {
     this.deleteOrderId = '';
   }
 

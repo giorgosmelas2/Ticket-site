@@ -34,8 +34,16 @@ export class Sidebar2Component {
       this.router.navigate(['/login'], navigationExtras);
   }
 
-  getUsername(): string | null {
-    return this.authService.getCurrentUser();
+  //Returns username to be dispalyed in logout button
+  getUsername(): string {
+    var username = this.authService.getCurrentUser();
+    if (username && username.length <= 7) {
+      return username;
+    } else if (username) {
+      return username.substring(0, 7) + '...';
+    } else {
+      return ""; 
+    }
   }
 
   //Changes text on hover

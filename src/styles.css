@@ -135,6 +135,9 @@ h5{
 }
 
 .p-panel-header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
     background-color: var(--primary-color);
     color: white;
     padding: 0.5rem;
@@ -146,8 +149,7 @@ h5{
 }
 
 .p-panel-header-icon{
-    color: white;
-    
+    color: white;    
 }
 
 .p-panel-header-icon:hover{
@@ -178,11 +180,3 @@ td{
     background-color: var(--blue-600) !important;
 }
 
-/* .p-dropdown-label {
-    text-align: left;
-}
-
-.p-dropdown .p-dropdown-panel .p-dropdown-items-wrapper {
-    text-align: left;
-}
- */

@@ -5,20 +5,20 @@
 </div>
 <ng-template #eventsTable>
     <div style="margin-bottom: 1.5rem;">
-        <p-table [value]="event" dataKey="_id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+        <p-table [value]="event" dataKey="_id" editMode="row" [tableStyle]="{'min-width': '50rem'}">    
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width:10%">Title</th>
-                    <th style="width:15%">Date</th>
-                    <th style="width:13%">Coordinates</th>
-                    <th style="width:12%">Description</th>
+                    <th style="width:12%">Title</th>
+                    <th style="width:12%">Date</th>
+                    <th style="width:11%">Coordinates</th>
+                    <th style="width:13%">Description</th>
                     <th style="width:12%">Category</th>
                     <th style="width:11%">Cover</th>
                     <th style="width:5%">Tickets</th>
                     <th style="width:5%">Price</th>
                     <th style="width:7%"></th>
                 </tr>
-            </ng-template>
+            </ng-template>            
             <ng-template pTemplate="body" let-event let-editing="editing" let-ri="rowIndex">
                 <tr [pEditableRow]="event">
                     <td>
@@ -32,7 +32,6 @@
                                     [style]="{'width': '100%'}"
                                     [(ngModel)]="event.event_name" >
                                 </textarea>
-                                <!-- <input pInputText type="text" [(ngModel)]="event.event_name" [style]="{'width': '100%'}"> -->
                             </ng-template>
                             <ng-template pTemplate="output">
                                 {{ event.event_name}}
@@ -55,7 +54,7 @@
                             <ng-template pTemplate="output">
                                 <div *ngFor="let date of event.event_dates">
                                     {{ date.date | date }}
-                                  </div>
+                                    </div>
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -70,10 +69,9 @@
                                     [style]="{'width': '100%'}"
                                     [(ngModel)]="event.event_coordinates" >
                                 </textarea>
-                                <!-- <input pInputText type="text" [(ngModel)]="event.event_coordinates" [style]="{'width': '100%'}"> -->
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{event.event_coordinates}}
+                                {{split(event.event_coordinates)}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -90,7 +88,7 @@
                                 </textarea>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{ getFirst20Characters(event.event_description)}}
+                                {{ getFirst50Characters(event.event_description)}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -127,7 +125,7 @@
                             <ng-template pTemplate="input">
                                 <div *ngFor="let tickets of event.event_dates">
                                     <input pInputText type="text" [(ngModel)]="tickets.max_tickets" >
-                                   
+                                    
                                 </div>
                                 
                             </ng-template>
@@ -157,7 +155,7 @@
                         </div>
                     </td>
                 </tr>
-            </ng-template>
+            </ng-template> 
         </p-table>
     </div>
 </ng-template>

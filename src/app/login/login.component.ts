@@ -12,11 +12,11 @@ import { response } from 'express';
 export class LoginTestComponent {
   constructor(
     private router: Router,
-    private authService: AuthenticationService, 
+    private authService: AuthenticationService,
     private messageService: MessageService
-    ) {}
+  ) { }
 
-  username: string = ''; 
+  username: string = '';
   password: string = '';
 
   showForgotPasswordInput: boolean = false;
@@ -27,9 +27,9 @@ export class LoginTestComponent {
     this.messageService.add({ severity, summary, detail, key: 'bottomCenter' });
   }
 
-  async onLogin() {
+  onLogin() {
 
-    if(!this.username || !this.password){
+    if (!this.username || !this.password) {
       this.showToast('warn', 'Warning', 'Please fill the fields.');
       return;
     }
@@ -42,26 +42,51 @@ export class LoginTestComponent {
         },
         (error) => {
           //Checks if fields are filled
-          if(error.status == 400){
+          if (error.status == 400) {
             this.showToast('warn', 'Warning', 'Please fill all fields.');
             console.log(error);
           }
 
           //Wrong username or password
-          if(error.status == 401){
+          if (error.status == 401) {
             this.showToast('error', 'Error', 'Wrong username or password.');
             console.log(error);
           }
         }
-      )    
-    }
+      )
+  }
 
+  //Sents an email to changes your password
   sendForgotPasswordEmail() {
-    if(this.showForgotPasswordInput && this.forgotPasswordEmail){
-      this.showToast('success', 'Success', 'E-mail send! Please check your e-mails.');
-      this.showForgotPasswordInput = false;
-      this.forgotPasswordEmail = '';
-    }else{
+    if (this.showForgotPasswordInput && this.forgotPasswordEmail) {
+      const email = {
+        reqUserEmail: this.forgotPasswordEmail
+      }
+      this.authService.forgotPassword(email)
+        .subscribe(
+          (response) => {
+            this.showToast('success', 'Success', 'E-mail send! Please check your e-mails.');
+            this.showForgotPasswordInput = false;
+            this.forgotPasswordEmail = '';
+          },
+          (error) => {
+            //Checks if the field is filled
+            if (error.status == 400) {
+              this.showToast('warn', 'Warning', 'Please fill the email field.');
+              console.log(error);
+            }
+
+            //Wrong email
+            if (error.status == 401) {
+              this.showToast('error', 'Error', 'Wrong e-mail');
+              console.log(error);
+            }
+
+          }
+        )
+
+
+    } else {
       this.showToast('warn', 'Warning', 'Please fill the email field.');
       return;
     }
